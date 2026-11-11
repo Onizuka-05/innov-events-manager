@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mxfile host="app.diagrams.net" pages="6">
   <diagram name="01 Prospect" id="Dah5BIrEzKWyUxnGH_6Z">
-    <mxGraphModel dx="1807" dy="977" grid="1" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="820" pageHeight="560" math="0" shadow="0">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="820" pageHeight="560" math="0" shadow="0">
       <root>
         <mxCell id="qk5hi-c0tR2wff4qDBKr-0" />
         <mxCell id="qk5hi-c0tR2wff4qDBKr-1" parent="qk5hi-c0tR2wff4qDBKr-0" />
@@ -155,7 +155,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="03 Événements" id="Qm53w0704MBCzfylqHUJ">
-    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1460" pageHeight="650" math="0" shadow="0">
+    <mxGraphModel dx="2130" dy="1177" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="700" math="0" shadow="0">
       <root>
         <mxCell id="jN9nmeutHcl66lUyH2B--0" />
         <mxCell id="jN9nmeutHcl66lUyH2B--1" parent="jN9nmeutHcl66lUyH2B--0" />
@@ -163,25 +163,25 @@
           <mxGeometry height="34" width="1380" x="40" y="18" as="geometry" />
         </mxCell>
         <mxCell id="xtDldNOyy1woZNR-XkLp-2" parent="jN9nmeutHcl66lUyH2B--1" style="ellipse;html=1;shape=startState;fillColor=#1F2D3D;strokeColor=#1F2D3D;" value="" vertex="1">
-          <mxGeometry height="26" width="26" x="40" y="147" as="geometry" />
+          <mxGeometry height="26" width="26" x="46" y="147" as="geometry" />
         </mxCell>
         <mxCell id="xtDldNOyy1woZNR-XkLp-3" parent="jN9nmeutHcl66lUyH2B--1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;strokeColor=#3A5470;strokeWidth=1.5;fontSize=16;fontStyle=1;fontColor=#1F2D3D;align=center;verticalAlign=middle;spacing=8;fillColor=#DCEBFA;" value="Brouillon" vertex="1">
-          <mxGeometry height="60" width="190" x="100" y="130" as="geometry" />
+          <mxGeometry height="60" width="190" x="106" y="130" as="geometry" />
         </mxCell>
         <mxCell id="xtDldNOyy1woZNR-XkLp-4" parent="jN9nmeutHcl66lUyH2B--1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;strokeColor=#3A5470;strokeWidth=1.5;fontSize=16;fontStyle=1;fontColor=#1F2D3D;align=center;verticalAlign=middle;spacing=8;fillColor=#DCEBFA;" value="Accepté" vertex="1">
-          <mxGeometry height="60" width="190" x="430" y="130" as="geometry" />
+          <mxGeometry height="60" width="190" x="560" y="130" as="geometry" />
         </mxCell>
         <mxCell id="xtDldNOyy1woZNR-XkLp-5" parent="jN9nmeutHcl66lUyH2B--1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;strokeColor=#3A5470;strokeWidth=1.5;fontSize=16;fontStyle=1;fontColor=#1F2D3D;align=center;verticalAlign=middle;spacing=8;fillColor=#FFF3CE;" value="En cours" vertex="1">
-          <mxGeometry height="60" width="190" x="780" y="130" as="geometry" />
+          <mxGeometry height="60" width="190" x="926" y="130" as="geometry" />
         </mxCell>
         <mxCell id="xtDldNOyy1woZNR-XkLp-6" parent="jN9nmeutHcl66lUyH2B--1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;strokeColor=#3A5470;strokeWidth=1.5;fontSize=16;fontStyle=1;fontColor=#1F2D3D;align=center;verticalAlign=middle;spacing=8;fillColor=#DAF5E4;" value="Terminé" vertex="1">
-          <mxGeometry height="60" width="190" x="1130" y="130" as="geometry" />
+          <mxGeometry height="60" width="190" x="1276" y="130" as="geometry" />
         </mxCell>
         <mxCell id="xtDldNOyy1woZNR-XkLp-7" parent="jN9nmeutHcl66lUyH2B--1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;strokeColor=#3A5470;strokeWidth=1.5;fontSize=16;fontStyle=1;fontColor=#1F2D3D;align=center;verticalAlign=middle;spacing=8;fillColor=#FCE3E0;" value="Annulé" vertex="1">
           <mxGeometry height="60" width="190" x="605" y="330" as="geometry" />
         </mxCell>
         <mxCell id="xtDldNOyy1woZNR-XkLp-8" parent="jN9nmeutHcl66lUyH2B--1" style="ellipse;html=1;shape=endState;fillColor=#1F2D3D;strokeColor=#1F2D3D;" value="" vertex="1">
-          <mxGeometry height="28" width="28" x="1380" y="146" as="geometry" />
+          <mxGeometry height="28" width="28" x="1526" y="146" as="geometry" />
         </mxCell>
         <mxCell id="xtDldNOyy1woZNR-XkLp-9" parent="jN9nmeutHcl66lUyH2B--1" style="ellipse;html=1;shape=endState;fillColor=#1F2D3D;strokeColor=#1F2D3D;" value="" vertex="1">
           <mxGeometry height="28" width="28" x="686" y="440" as="geometry" />
@@ -189,8 +189,11 @@
         <mxCell id="xtDldNOyy1woZNR-XkLp-10" edge="1" parent="jN9nmeutHcl66lUyH2B--1" source="xtDldNOyy1woZNR-XkLp-2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A6E85;strokeWidth=1.5;endArrow=block;endFill=1;endSize=8;fontSize=14;fontColor=#2B3A4C;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="xtDldNOyy1woZNR-XkLp-3" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="xtDldNOyy1woZNR-XkLp-11" edge="1" parent="jN9nmeutHcl66lUyH2B--1" source="xtDldNOyy1woZNR-XkLp-3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A6E85;strokeWidth=1.5;endArrow=block;endFill=1;endSize=8;fontSize=14;fontColor=#2B3A4C;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="xtDldNOyy1woZNR-XkLp-4" value="Devis accepté">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="xtDldNOyy1woZNR-XkLp-11" edge="1" parent="jN9nmeutHcl66lUyH2B--1" source="xtDldNOyy1woZNR-XkLp-3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A6E85;strokeWidth=1.5;endArrow=block;endFill=1;endSize=8;fontSize=14;fontColor=#2B3A4C;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="xtDldNOyy1woZNR-XkLp-4" value="Devis accepté · Validation admin">
+          <mxGeometry relative="1" x="-0.0379" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="302" y="160" as="sourcePoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="xtDldNOyy1woZNR-XkLp-12" edge="1" parent="jN9nmeutHcl66lUyH2B--1" source="xtDldNOyy1woZNR-XkLp-4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A6E85;strokeWidth=1.5;endArrow=block;endFill=1;endSize=8;fontSize=14;fontColor=#2B3A4C;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="xtDldNOyy1woZNR-XkLp-5" value="Démarrage admin">
           <mxGeometry relative="1" as="geometry" />
@@ -201,8 +204,13 @@
         <mxCell id="xtDldNOyy1woZNR-XkLp-14" edge="1" parent="jN9nmeutHcl66lUyH2B--1" source="xtDldNOyy1woZNR-XkLp-3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A6E85;strokeWidth=1.5;endArrow=block;endFill=1;endSize=8;fontSize=14;fontColor=#2B3A4C;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="xtDldNOyy1woZNR-XkLp-7" value="Annulation">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="xtDldNOyy1woZNR-XkLp-15" edge="1" parent="jN9nmeutHcl66lUyH2B--1" source="xtDldNOyy1woZNR-XkLp-4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A6E85;strokeWidth=1.5;endArrow=block;endFill=1;endSize=8;fontSize=14;fontColor=#2B3A4C;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="xtDldNOyy1woZNR-XkLp-7" value="Annulation">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="xtDldNOyy1woZNR-XkLp-15" edge="1" parent="jN9nmeutHcl66lUyH2B--1" source="xtDldNOyy1woZNR-XkLp-4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A6E85;strokeWidth=1.5;endArrow=block;endFill=1;endSize=8;fontSize=14;fontColor=#2B3A4C;labelBackgroundColor=#FFFFFF;exitX=0.495;exitY=0.996;exitDx=0;exitDy=0;entryX=0.259;entryY=-0.004;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;" target="xtDldNOyy1woZNR-XkLp-7" value="Annulation">
+          <mxGeometry relative="1" x="-0.1435" y="-4" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points" />
+            <mxPoint x="656.25" y="190" as="sourcePoint" />
+            <mxPoint x="653.75" y="330" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="xtDldNOyy1woZNR-XkLp-16" edge="1" parent="jN9nmeutHcl66lUyH2B--1" source="xtDldNOyy1woZNR-XkLp-5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A6E85;strokeWidth=1.5;endArrow=block;endFill=1;endSize=8;fontSize=14;fontColor=#2B3A4C;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="xtDldNOyy1woZNR-XkLp-7" value="Annulation">
           <mxGeometry relative="1" as="geometry" />
@@ -213,7 +221,7 @@
         <mxCell id="xtDldNOyy1woZNR-XkLp-19" edge="1" parent="jN9nmeutHcl66lUyH2B--1" source="xtDldNOyy1woZNR-XkLp-7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A6E85;strokeWidth=1.5;endArrow=block;endFill=1;endSize=8;fontSize=14;fontColor=#2B3A4C;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="xtDldNOyy1woZNR-XkLp-9" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="xtDldNOyy1woZNR-XkLp-20" parent="jN9nmeutHcl66lUyH2B--1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;size=14;fillColor=#FFF3CE;strokeColor=#B89B4A;fontSize=14;fontColor=#1F2D3D;align=left;verticalAlign=middle;spacingLeft=14;spacingRight=20;" value="L’événement est créé en « Brouillon » et passe à « Accepté » dès que son devis est accepté. Il peut être annulé tant qu’il n’est pas terminé." vertex="1">
+        <mxCell id="xtDldNOyy1woZNR-XkLp-20" parent="jN9nmeutHcl66lUyH2B--1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;size=14;fillColor=#FFF3CE;strokeColor=#B89B4A;fontSize=14;fontColor=#1F2D3D;align=left;verticalAlign=middle;spacingLeft=14;spacingRight=20;" value="L’événement est créé en « Brouillon » ou, sur choix de l’admin, directement en « Accepté ». Un événement en brouillon passe à « Accepté » dès qu’un devis est accepté ou sur validation de l’admin (accord obtenu hors plateforme). Il peut être annulé tant qu’il n’est pas terminé." vertex="1">
           <mxGeometry height="72" width="1380" x="40" y="510" as="geometry" />
         </mxCell>
         <mxCell id="xtDldNOyy1woZNR-XkLp-21" parent="jN9nmeutHcl66lUyH2B--1" style="text;html=1;fontSize=13;fontColor=#5A6E85;align=left;verticalAlign=middle;whiteSpace=wrap;" value="● état initial · ◉ état final · Bleu : traitement interne · Jaune : en cours · Vert : favorable · Rouge : défavorable" vertex="1">
@@ -319,7 +327,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="06 Comptes" id="o75nP0xVxgtFsQcdIKQ1">
-    <mxGraphModel dx="2177" dy="1177" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="740" pageHeight="610" math="0" shadow="0">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="740" pageHeight="610" math="0" shadow="0">
       <root>
         <mxCell id="PIZihV_AVMU-kWYZS2_t-0" />
         <mxCell id="PIZihV_AVMU-kWYZS2_t-1" parent="PIZihV_AVMU-kWYZS2_t-0" />

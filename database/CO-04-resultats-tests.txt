@@ -1,0 +1,73 @@
+CO-04 — Journal d'execution des tests des contraintes
+Date : 2026-11-11 16:12 UTC
+Serveur : PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
+Base : neuve ; compte d'execution : proprietaire de la base (superutilisateur)
+
+1) psql -v ON_ERROR_STOP=1 -q -f CO-04-script-postgresql.sql
+   -> termine sans erreur
+
+2) psql -v ON_ERROR_STOP=1 -q -f CO-04-tests-contraintes.sql
+   OK  (refus attendu) le role applicatif ne peut pas modifier les types
+   OK  (refus attendu) le role applicatif ne peut pas creer de table
+   OK  le role applicatif modifie les parametres
+   OK  insertion avec identite sans GRANT sur sequence
+   OK  (refus attendu) id impose refuse (ALWAYS)
+   OK  (refus attendu) email unique sans tenir compte de la casse
+   OK  (refus attendu) role inconnu refuse
+   OK  mdp oublie : temporaire ajoute, ancien conserve
+   OK  (refus attendu) temporaire sans expiration refuse
+   OK  compte auto-cree avec seulement un temporaire
+   OK  (refus attendu) compte actif sans aucun mot de passe refuse
+   OK  (refus attendu) suppression logique interdite pour un client
+   OK  (refus attendu) compte supprime avec mot de passe refuse
+   OK  (refus attendu) client sans telephone refuse
+   OK  (refus attendu) anonymisation partielle refusee
+   OK  (refus attendu) converti sans client refuse
+   OK  (refus attendu) client rattache sans conversion refuse
+   OK  (refus attendu) echoue sans date de dernier contact refuse
+   OK  date_dernier_contact vide a la creation
+   OK  conversion
+   OK  le client retire son accord (visible_public reste coche)
+   OK  (refus attendu) dates incoherentes refusees
+   OK  (refus attendu) un prospect ne donne qu un evenement
+   OK  formule alternative acceptee en parallele
+   OK  (refus attendu) envoye sans date_envoi refuse
+   OK  (refus attendu) modification sans motif refusee
+   OK  (refus attendu) motif sans date de modification refuse
+   OK  demande de modification
+   OK  contre-proposition sur place, dernier motif conserve
+   OK  acceptation et refus automatique des autres devis ouverts
+   OK  (refus attendu) deux devis acceptes refuses
+   OK  permutation de deux lignes
+   OK  (refus attendu) ordre en double refuse a la verification
+   OK  ordre permute
+   OK  suppression d un devis en preparation supprime ses lignes
+   OK  lignes supprimees
+   OK  (refus attendu) note sans auteur refusee
+   OK  (refus attendu) note hors 1..5 refusee
+   OK  (refus attendu) deuxieme avis refuse
+   OK  (refus attendu) suppression physique d un employe refusee
+   OK  reaffectation des taches en cours a l admin
+   OK  taches : 1 reaffectee, 1 terminee restee a l employe
+   OK  suppression logique de l employe
+   OK  identite anonymisee, mots de passe effaces
+   OK  sa note et sa tache terminee restent rattachees
+   OK  (refus attendu) fonction employe refusee sur un compte client
+   OK  (refus attendu) fonction employe refusee sur le compte admin
+   OK  suppression du compte client
+   OK  compte efface
+   OK  fiche client anonymisee
+   OK  demande de devis du client supprimee
+   OK  notes de ses evenements supprimees, note globale gardee
+   OK  evenement, devis et avis conserves
+   OK  (refus attendu) evenement avec devis non supprimable
+   OK  (refus attendu) client avec evenements non supprimable
+   OK  suppression evenement sans devis
+   OK  taches et avis de l evenement supprimes
+   OK  suppression d un client sans evenement
+   OK  ses demandes de devis supprimees avec lui
+   OK  session ecrite
+   TOUS LES TESTS PASSENT
+
+Bilan : 60 tests reussis, 0 echec.
+Base apres les tests (transaction annulee) : 0 utilisateur, 0 type d'evenement : base inchangee.
