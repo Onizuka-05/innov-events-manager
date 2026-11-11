@@ -1,4 +1,3 @@
-
 Type : feature / fix / docs
 
 Branche cible : dev / main
@@ -34,7 +33,7 @@ Refs #
 - [ ] Aucun secret exposé
 - [ ] RGPD et RGAA vérifiés si concernés
 - [ ] Champ « Validé par les tests » mis à jour dans le Projet
-- [ ] Mode de fusion respecté (squash vers dev, merge commit vers main)
+- [ ] Mode de fusion respecté (merge commit vers dev et vers main)
 
 ## Résultats des vérifications
 
