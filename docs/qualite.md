@@ -1,4 +1,3 @@
-
 # Procédures qualité — Innov'Events Manager
 
 ## 1. Objectif
@@ -23,13 +22,10 @@ Circuit de contribution :
 4. Effectuer la revue et fusionner dans `dev`.
 5. Ouvrir une PR de `dev` vers `main` pour intégrer
    les modifications validées.
-6. Respecter les modes de fusion :
-   - PR `feature/*`, `fix/*`, `docs/*` vers `dev` :
-     fusion par squash.
-   - PR `dev` vers `main` : fusion par merge commit,
-     jamais par squash ni rebase, afin de préserver
-     l'historique commun des deux branches et
-     d'éviter des divergences artificielles.
+6. Fusionner toutes les PR par merge commit, vers `dev`
+   comme vers `main`, jamais par squash ni rebase, afin
+   de conserver le détail des commits et d'éviter des
+   divergences artificielles entre les branches.
 
 Convention de commits : `type: message`
 
@@ -82,6 +78,9 @@ Une tâche de développement est terminée sur `dev` lorsque :
 - Le build est réussi lorsque pertinent.
 - Une revue de code est documentée.
 - La documentation concernée est actualisée.
+- La preuve de vérification (test, capture ou lien) est
+  ajoutée en commentaire de l'issue et le champ
+  « Validé par les tests » est renseigné.
 - La PR a été fusionnée dans `dev`.
 
 Une tâche de conception ou de documentation est terminée
@@ -114,7 +113,8 @@ Aucune approbation GitHub par un tiers n'est exigée.
 ## 6. Intégration continue (CI)
 
 À J3, GitHub Actions exécutera les contrôles adaptés
-aux applications lors des PR vers `dev` et `main`.
+aux applications à chaque push et à chaque PR sur
+`dev` et `main`.
 
 Contrôles prévus :
 - Lint.
@@ -131,8 +131,12 @@ avant toute fusion vers `main`.
 La CD préparera les livrables des applications
 validées.
 
-- Web : build et déploiement selon l'hébergement retenu.
-- API : build et livraison du service Node.js.
+Hébergement : Render (web, mobile et API, déployés depuis
+leurs Dockerfiles), Neon (PostgreSQL), MongoDB Atlas
+(MongoDB) et Brevo (envoi des e-mails).
+
+- Web : build et déploiement sur Render.
+- API : build et déploiement du service Node.js sur Render.
 - Mobile : application PWA Ionic + Angular,
   packagée dans un conteneur Docker avec Nginx,
   déployée en HTTPS et accessible sur Android
@@ -140,7 +144,10 @@ validées.
 
 
 La fusion de la PR vers `main` vaut validation manuelle ;
-le déploiement est ensuite automatique.
+le déploiement est ensuite automatique : les services
+Render sont reliés au dépôt GitHub et ne déploient `main`
+qu'après réussite des vérifications CI (option
+« After CI Checks Pass »).
 
 Chaque livraison sur `main` reçoit un tag `vX.Y.Z` ;
 le retour arrière consiste à redéployer le tag précédent.
