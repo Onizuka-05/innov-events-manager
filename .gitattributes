@@ -1,0 +1,9 @@
+# Fins de ligne Unix pour tous les fichiers texte, quel que soit le reglage Git du poste :
+# les scripts executes dans les conteneurs Linux et le controle Prettier l'exigent.
+* text=auto eol=lf
+
+# Fichiers binaires : jamais convertis.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.ico binary
