@@ -41,6 +41,11 @@ export function creerApp({ postgres, mongodb, configuration, stockageSession }: 
   // IP du client : aucune confiance par defaut ; Compose regle 1 (nginx local).
   app.set('trust proxy', configuration.trustProxyHops);
   app.use(helmet());
+  // Route de santé avant la limitation de débit, la session et le CSRF :
+  // les sondes de l'hébergeur ne créent pas de session et ne consomment pas le quota.
+  const repository = new SanteRepository(postgres, mongodb, configuration.mongodbDatabase);
+  const controller = new SanteController(new SanteService(repository));
+  app.use('/api/sante', creerRoutesSante(controller));
   app.use(express.json({ limit: '32kb' }));
   app.use(
     rateLimit({
@@ -75,10 +80,6 @@ export function creerApp({ postgres, mongodb, configuration, stockageSession }: 
   // transmettent le jeton dans l'en-tete X-CSRF-Token.
   app.use(csrf());
   app.use('/api/csrf', creerRoutesCsrf(new CsrfController()));
-
-  const repository = new SanteRepository(postgres, mongodb, configuration.mongodbDatabase);
-  const controller = new SanteController(new SanteService(repository));
-  app.use('/api/sante', creerRoutesSante(controller));
   app.use(routeAbsente);
   app.use(gererErreurs);
   return app;

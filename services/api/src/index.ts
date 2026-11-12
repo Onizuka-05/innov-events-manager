@@ -17,6 +17,9 @@ async function demarrer(): Promise<void> {
           max: 10,
         },
   );
+  postgres.on('error', (erreur) => {
+    console.error(`Connexion PostgreSQL inactive perdue : ${erreur.message}`);
+  });
   const mongodb = new MongoClient(configuration.mongodbUrl, { serverSelectionTimeoutMS: 3_000 });
   const app = creerApp({ postgres, mongodb, configuration });
   const serveur = app.listen(configuration.port, '0.0.0.0', () => {

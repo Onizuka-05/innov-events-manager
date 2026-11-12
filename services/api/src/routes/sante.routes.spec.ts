@@ -41,6 +41,11 @@ describe('GET /api/sante', () => {
     });
   });
 
+  it('ne crée pas de session (aucun cookie)', async () => {
+    const resultat = await request(application()).get('/api/sante');
+    expect(resultat.headers['set-cookie']).toBeUndefined();
+  });
+
   it('retourne 503 sans divulguer les erreurs SQL', async () => {
     const resultat = await request(application(false, true)).get('/api/sante');
     expect(resultat.status).toBe(503);
