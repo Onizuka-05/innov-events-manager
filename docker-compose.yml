@@ -1,0 +1,125 @@
+name: innov-events-manager
+
+services:
+  postgres:
+    image: postgres:16.15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: innov_events
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:?Definir POSTGRES_ADMIN_PASSWORD dans .env}
+      POSTGRES_APP_PASSWORD: ${POSTGRES_APP_PASSWORD:?Definir POSTGRES_APP_PASSWORD dans .env}
+    # Accessible depuis ce poste seulement : developpement de l'API hors Docker.
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/CO-04-script-postgresql.sql:/docker-entrypoint-initdb.d/01-CO-04-script-postgresql.sql:ro
+      - ./database/init/02-configurer-role.sh:/docker-entrypoint-initdb.d/02-configurer-role.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres -d innov_events"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [interne]
+
+  mongo:
+    image: mongo:8.0
+    restart: unless-stopped
+    # Accessible depuis ce poste seulement : developpement de l'API hors Docker.
+    ports:
+      - '127.0.0.1:27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'quit(db.adminCommand({ping:1}).ok ? 0 : 1)' 127.0.0.1:27017"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks: [interne]
+
+  mailpit:
+    image: axllent/mailpit:v1.32.0
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:8025:8025'
+      - '127.0.0.1:1025:1025'
+    healthcheck:
+      test: ["CMD", "/mailpit", "readyz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [interne]
+
+  api:
+    build: ./services/api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: '3000'
+      TRUST_PROXY_HOPS: '1'
+      SESSION_SECRET: ${SESSION_SECRET:?Definir SESSION_SECRET dans .env}
+      PGHOST: postgres
+      PGPORT: '5432'
+      PGDATABASE: innov_events
+      PGUSER: innov_events_app
+      PGPASSWORD: ${POSTGRES_APP_PASSWORD:?Definir POSTGRES_APP_PASSWORD dans .env}
+      MONGODB_URL: mongodb://mongo:27017
+      MONGODB_DATABASE: innov_events_logs
+      INTERNAL_PROXY_SECRET: ${INTERNAL_PROXY_SECRET:?Definir INTERNAL_PROXY_SECRET dans .env}
+    depends_on:
+      postgres: {condition: service_healthy}
+      mongo: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/sante').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    networks: [interne]
+
+  web:
+    build: ./apps/web
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:8080:8080'
+    environment:
+      API_UPSTREAM: http://api:3000
+      NGINX_SCHEME: http
+      NGINX_CLIENT_IP_SOURCE: '$$remote_addr'
+      INTERNAL_PROXY_SECRET: ${INTERNAL_PROXY_SECRET:?Definir INTERNAL_PROXY_SECRET dans .env}
+    depends_on:
+      api: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [interne]
+
+  mobile:
+    build: ./apps/mobile
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:8100:8080'
+    environment:
+      API_UPSTREAM: http://api:3000
+      NGINX_SCHEME: http
+      NGINX_CLIENT_IP_SOURCE: '$$remote_addr'
+      INTERNAL_PROXY_SECRET: ${INTERNAL_PROXY_SECRET:?Definir INTERNAL_PROXY_SECRET dans .env}
+    depends_on:
+      api: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [interne]
+
+volumes:
+  postgres_data:
+  mongo_data:
+
+networks:
+  interne:
+    driver: bridge
