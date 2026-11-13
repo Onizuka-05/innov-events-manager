@@ -42,7 +42,8 @@ export function creerApp({ postgres, mongodb, configuration, stockageSession }: 
   // IP du client : aucune confiance par defaut ; Compose regle 1 (nginx local).
   app.set('trust proxy', configuration.trustProxyHops);
   app.use(helmet());
-  // D-033 : refuse tout appel qui ne passe pas par nginx, sauf GET /api/sante (sondes de l'hebergeur).
+  // Refuse tout appel qui ne passe pas par l'un des deux nginx (en-tête secret),
+  // sauf GET /api/sante, appelée par les sondes de l'hébergeur.
   app.use(verifierAccesProxy(configuration.secretProxyInterne));
   // Route de santé avant la limitation de débit, la session et le CSRF :
   // les sondes de l'hébergeur ne créent pas de session et ne consomment pas le quota.

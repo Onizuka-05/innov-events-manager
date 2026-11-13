@@ -40,9 +40,14 @@ export function chargerConfiguration(env: NodeJS.ProcessEnv = process.env): Conf
   if (!env.DATABASE_URL && !env.PGPASSWORD) {
     throw new Error('Configurer DATABASE_URL ou PGPASSWORD');
   }
+  const production = env.NODE_ENV === 'production';
+  // En production, aucun repli sur une base locale : l'API refuse de démarrer.
+  if (production && !env.MONGODB_URL) {
+    throw new Error('MONGODB_URL obligatoire en production');
+  }
   return {
     port: entierDansPlage(env.PORT, 3000, 1, 65535),
-    production: env.NODE_ENV === 'production',
+    production,
     trustProxyHops: entierDansPlage(env.TRUST_PROXY_HOPS, 0, 0, 3),
     sessionSecret: secret,
     secretProxyInterne,
