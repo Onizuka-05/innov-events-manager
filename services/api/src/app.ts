@@ -9,6 +9,7 @@ import type { Pool } from 'pg';
 import type { Configuration } from './config/config.js';
 import { CsrfController } from './controllers/csrf.controller.js';
 import { SanteController } from './controllers/sante.controller.js';
+import { verifierAccesProxy } from './middlewares/acces-proxy.middleware.js';
 import { gererErreurs, routeAbsente } from './middlewares/erreurs.middleware.js';
 import { SanteRepository } from './repositories/sante.repository.js';
 import { creerRoutesCsrf } from './routes/csrf.routes.js';
@@ -41,6 +42,8 @@ export function creerApp({ postgres, mongodb, configuration, stockageSession }: 
   // IP du client : aucune confiance par defaut ; Compose regle 1 (nginx local).
   app.set('trust proxy', configuration.trustProxyHops);
   app.use(helmet());
+  // D-033 : refuse tout appel qui ne passe pas par nginx, sauf GET /api/sante (sondes de l'hebergeur).
+  app.use(verifierAccesProxy(configuration.secretProxyInterne));
   // Route de santé avant la limitation de débit, la session et le CSRF :
   // les sondes de l'hébergeur ne créent pas de session et ne consomment pas le quota.
   const repository = new SanteRepository(postgres, mongodb, configuration.mongodbDatabase);

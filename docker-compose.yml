@@ -66,6 +66,7 @@ services:
       PGPASSWORD: ${POSTGRES_APP_PASSWORD:?Definir POSTGRES_APP_PASSWORD dans .env}
       MONGODB_URL: mongodb://mongo:27017
       MONGODB_DATABASE: innov_events_logs
+      INTERNAL_PROXY_SECRET: ${INTERNAL_PROXY_SECRET:?Definir INTERNAL_PROXY_SECRET dans .env}
     depends_on:
       postgres: {condition: service_healthy}
       mongo: {condition: service_healthy}
@@ -86,6 +87,7 @@ services:
       API_UPSTREAM: http://api:3000
       NGINX_SCHEME: http
       NGINX_CLIENT_IP_SOURCE: '$$remote_addr'
+      INTERNAL_PROXY_SECRET: ${INTERNAL_PROXY_SECRET:?Definir INTERNAL_PROXY_SECRET dans .env}
     depends_on:
       api: {condition: service_healthy}
     healthcheck:
@@ -104,6 +106,7 @@ services:
       API_UPSTREAM: http://api:3000
       NGINX_SCHEME: http
       NGINX_CLIENT_IP_SOURCE: '$$remote_addr'
+      INTERNAL_PROXY_SECRET: ${INTERNAL_PROXY_SECRET:?Definir INTERNAL_PROXY_SECRET dans .env}
     depends_on:
       api: {condition: service_healthy}
     healthcheck:

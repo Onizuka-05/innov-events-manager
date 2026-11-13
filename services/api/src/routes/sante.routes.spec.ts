@@ -10,6 +10,7 @@ const configuration: Configuration = {
   production: false,
   trustProxyHops: 0,
   sessionSecret: 'un-secret-de-test-d-au-moins-32-caracteres',
+  secretProxyInterne: 'secret-proxy-de-test-d-au-moins-32-caracteres',
   pgHost: 'localhost',
   pgPort: 5432,
   pgDatabase: 'innov_events',

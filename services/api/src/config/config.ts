@@ -3,6 +3,7 @@ export interface Configuration {
   production: boolean;
   trustProxyHops: number;
   sessionSecret: string;
+  secretProxyInterne: string;
   databaseUrl?: string;
   pgHost: string;
   pgPort: number;
@@ -32,6 +33,10 @@ export function chargerConfiguration(env: NodeJS.ProcessEnv = process.env): Conf
   if (secret.length < 32) {
     throw new Error('SESSION_SECRET doit contenir au moins 32 caracteres');
   }
+  const secretProxyInterne = env.INTERNAL_PROXY_SECRET ?? '';
+  if (!/^[A-Za-z0-9_-]{32,128}$/.test(secretProxyInterne)) {
+    throw new Error('INTERNAL_PROXY_SECRET invalide : 32 a 128 caracteres base64url');
+  }
   if (!env.DATABASE_URL && !env.PGPASSWORD) {
     throw new Error('Configurer DATABASE_URL ou PGPASSWORD');
   }
@@ -40,6 +45,7 @@ export function chargerConfiguration(env: NodeJS.ProcessEnv = process.env): Conf
     production: env.NODE_ENV === 'production',
     trustProxyHops: entierDansPlage(env.TRUST_PROXY_HOPS, 0, 0, 3),
     sessionSecret: secret,
+    secretProxyInterne,
     databaseUrl: env.DATABASE_URL || undefined,
     pgHost: env.PGHOST || 'localhost',
     pgPort: entierDansPlage(env.PGPORT, 5432, 1, 65535),
