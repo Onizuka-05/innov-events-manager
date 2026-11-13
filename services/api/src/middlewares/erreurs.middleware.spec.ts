@@ -11,6 +11,7 @@ const configuration: Configuration = {
   production: false,
   trustProxyHops: 0,
   sessionSecret: 'un-secret-de-test-d-au-moins-32-caracteres',
+  secretProxyInterne: 'secret-proxy-de-test-d-au-moins-32-caracteres',
   pgHost: 'localhost',
   pgPort: 5432,
   pgDatabase: 'innov_events',
@@ -31,7 +32,9 @@ function application() {
 
 describe('Gestionnaire central des erreurs', () => {
   it('repond 404 sans detail pour une route absente', async () => {
-    const resultat = await request(application()).get('/api/inexistant');
+    const resultat = await request(application())
+      .get('/api/inexistant')
+      .set('X-Innov-Proxy-Secret', configuration.secretProxyInterne);
     expect(resultat.status).toBe(404);
     expect(resultat.body).toEqual({ erreur: 'Ressource introuvable' });
   });
@@ -39,6 +42,7 @@ describe('Gestionnaire central des erreurs', () => {
   it('repond 400 pour un JSON mal forme, sans detail technique', async () => {
     const resultat = await request(application())
       .post('/api/essai')
+      .set('X-Innov-Proxy-Secret', configuration.secretProxyInterne)
       .set('Content-Type', 'application/json')
       .send('{"nom":');
     expect(resultat.status).toBe(400);
@@ -48,6 +52,7 @@ describe('Gestionnaire central des erreurs', () => {
   it('repond 413 pour un corps superieur a 32 ko', async () => {
     const resultat = await request(application())
       .post('/api/essai')
+      .set('X-Innov-Proxy-Secret', configuration.secretProxyInterne)
       .set('Content-Type', 'application/json')
       .send(JSON.stringify({ texte: 'x'.repeat(40 * 1024) }));
     expect(resultat.status).toBe(413);
