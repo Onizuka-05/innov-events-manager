@@ -7,6 +7,8 @@ const minimum = {
   PGPASSWORD: 'test',
 };
 
+const production = { ...minimum, NODE_ENV: 'production', MONGODB_URL: 'mongodb://mongo:27017' };
+
 describe('chargerConfiguration', () => {
   it('ne fait confiance a aucun proxy par defaut', () => {
     expect(chargerConfiguration(minimum).trustProxyHops).toBe(0);
@@ -44,7 +46,15 @@ describe('chargerConfiguration', () => {
   });
 
   it('active le mode production uniquement si NODE_ENV vaut production', () => {
-    expect(chargerConfiguration({ ...minimum, NODE_ENV: 'production' }).production).toBe(true);
+    expect(chargerConfiguration(production).production).toBe(true);
     expect(chargerConfiguration({ ...minimum, NODE_ENV: 'development' }).production).toBe(false);
+  });
+
+  it('exige MONGODB_URL en production, sans repli sur localhost', () => {
+    expect(() => chargerConfiguration({ ...minimum, NODE_ENV: 'production' })).toThrow(
+      'MONGODB_URL',
+    );
+    expect(chargerConfiguration(production).mongodbUrl).toBe('mongodb://mongo:27017');
+    expect(chargerConfiguration(minimum).mongodbUrl).toBe('mongodb://localhost:27017');
   });
 });
