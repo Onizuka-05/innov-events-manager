@@ -1,3 +1,5 @@
+import { ApiService } from './core/api.service';
+import { AuthentificationService } from './core/authentification.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { App } from './app';
@@ -11,7 +13,13 @@ describe('Site public', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter(routes)],
+      providers: [
+        provideRouter(routes),
+        {
+          provide: ApiService,
+          useValue: { get: vi.fn(async () => [{ id_type_evenement: 1, libelle: 'Séminaire' }]) },
+        },
+      ],
     }).compileComponents();
     fixture = TestBed.createComponent(App);
     router = TestBed.inject(Router);
@@ -39,11 +47,11 @@ describe('Site public', () => {
     lien?.click();
     await fixture.whenStable();
     expect(router.url).toBe('/demande-devis');
-    expect(element.querySelector('h1')?.textContent).toBe('Demander un devis');
-    expect(element.querySelector('main')?.textContent).toContain(
-      'Aucune demande ne peut être envoyée',
+    expect(element.querySelector('h1')?.textContent).toBe('Donnons forme à votre événement');
+    expect(element.querySelectorAll('form input, form select, form textarea')).toHaveLength(10);
+    expect(element.querySelector('button[type=submit]')?.textContent).toContain(
+      'Envoyer ma demande',
     );
-    expect(element.querySelector('form')).toBeNull();
   });
 
   it('expose les six entrees de navigation et marque seulement la page courante', async () => {
@@ -64,6 +72,37 @@ describe('Site public', () => {
     expect(element.querySelector('header [aria-current="page"]')?.getAttribute('href')).toBe(
       '/contact',
     );
+  });
+
+  it('remplace Connexion par Mon espace et Deconnexion pour un utilisateur connecte', async () => {
+    const auth = TestBed.inject(AuthentificationService);
+    const deconnecter = vi.spyOn(auth, 'deconnecter').mockImplementation(async () => {
+      auth.utilisateur.set(null);
+    });
+    auth.utilisateur.set({
+      id_utilisateur: '1',
+      email_connexion: 'client@example.org',
+      nom_utilisateur: 'client',
+      prenom: 'Camille',
+      nom: 'Martin',
+      role: 'client',
+    });
+    fixture.detectChanges();
+    const liens = [...element.querySelectorAll('header nav a')].map((lien) =>
+      lien.getAttribute('href'),
+    );
+    expect(liens).toContain('/espace');
+    expect(liens).not.toContain('/connexion');
+    const bouton = [...element.querySelectorAll<HTMLButtonElement>('header nav button')].find((b) =>
+      b.textContent?.includes('Déconnexion'),
+    );
+    expect(bouton).toBeDefined();
+    bouton?.click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(deconnecter).toHaveBeenCalledOnce();
+    expect(router.url).toBe('/');
+    expect(element.querySelector('header nav a[href="/connexion"]')).not.toBeNull();
   });
 
   it('ouvre le menu avec un bouton et le referme avec Echap en rendant le focus', async () => {
@@ -124,7 +163,7 @@ describe('Site public', () => {
     ['/avis', 'Avis'],
     ['/contact', 'Contact'],
     ['/connexion', 'Connexion'],
-    ['/demande-devis', 'Demander un devis'],
+    ['/demande-devis', 'Donnons forme'],
     ['/adresse-inconnue', 'Page introuvable'],
   ])('garde le gabarit et un titre coherent sur %s', async (url, titre) => {
     await router.navigateByUrl(url);

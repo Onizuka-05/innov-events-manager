@@ -7,6 +7,8 @@ export class SanteController {
 
   verifier = async (_requete: Request, reponse: Response): Promise<void> => {
     const etat = await this.service.verifier();
+    if (etat.statut !== 'ok')
+      console.info(JSON.stringify({ evenement: 'sante_degradee', ...etat.services }));
     reponse.setHeader('Cache-Control', 'no-store');
     reponse.status(etat.statut === 'ok' ? 200 : 503).json(etat);
   };

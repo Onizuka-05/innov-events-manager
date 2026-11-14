@@ -1,3 +1,4 @@
+import { ErreurHttp } from '../http/erreur-http.js';
 import type { ErrorRequestHandler, RequestHandler } from 'express';
 
 /** Reponse neutre pour les routes absentes. */
@@ -26,7 +27,13 @@ export const gererErreurs: ErrorRequestHandler = (erreur: unknown, _requete, rep
     suivant(erreur);
     return;
   }
+  if (erreur instanceof ErreurHttp) {
+    reponse
+      .status(erreur.statut)
+      .json({ erreur: erreur.message, ...(erreur.code ? { code: erreur.code } : {}) });
+    return;
+  }
   const { statut, message } = qualifierErreur(erreur);
-  if (statut === 500) console.error('Erreur interne de traitement', erreur);
+  if (statut === 500) console.error(JSON.stringify({ evenement: 'erreur_interne' }));
   reponse.status(statut).json({ erreur: message });
 };

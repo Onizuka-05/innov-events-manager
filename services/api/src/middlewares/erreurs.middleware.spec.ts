@@ -34,7 +34,8 @@ describe('Gestionnaire central des erreurs', () => {
   it('repond 404 sans detail pour une route absente', async () => {
     const resultat = await request(application())
       .get('/api/inexistant')
-      .set('X-Innov-Proxy-Secret', configuration.secretProxyInterne);
+      .set('X-Innov-Proxy-Secret', configuration.secretProxyInterne)
+      .set('X-Innov-Client-Ip', '192.0.2.1');
     expect(resultat.status).toBe(404);
     expect(resultat.body).toEqual({ erreur: 'Ressource introuvable' });
   });
@@ -43,6 +44,7 @@ describe('Gestionnaire central des erreurs', () => {
     const resultat = await request(application())
       .post('/api/essai')
       .set('X-Innov-Proxy-Secret', configuration.secretProxyInterne)
+      .set('X-Innov-Client-Ip', '192.0.2.1')
       .set('Content-Type', 'application/json')
       .send('{"nom":');
     expect(resultat.status).toBe(400);
@@ -53,6 +55,7 @@ describe('Gestionnaire central des erreurs', () => {
     const resultat = await request(application())
       .post('/api/essai')
       .set('X-Innov-Proxy-Secret', configuration.secretProxyInterne)
+      .set('X-Innov-Client-Ip', '192.0.2.1')
       .set('Content-Type', 'application/json')
       .send(JSON.stringify({ texte: 'x'.repeat(40 * 1024) }));
     expect(resultat.status).toBe(413);

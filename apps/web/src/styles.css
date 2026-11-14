@@ -178,3 +178,63 @@ li {
 main:not(:has(> router-outlet + *)) + .pied-page {
   display: none;
 }
+
+.page-formulaire {
+  max-width: 720px;
+}
+.carte {
+  background: var(--surface);
+  border: 1px solid #dce5ee;
+  border-radius: 12px;
+  padding: 24px;
+}
+.formulaire .champ {
+  margin-bottom: 16px;
+  min-width: 0;
+}
+.formulaire label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.formulaire input,
+.formulaire select,
+.formulaire textarea {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px 12px;
+}
+.formulaire textarea {
+  resize: vertical;
+}
+.formulaire [aria-invalid='true'] {
+  border: 2px solid #b42318;
+}
+.aide {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-top: 8px;
+}
+.formulaire button[type='submit'] {
+  width: 100%;
+  margin-block: 16px;
+  font-weight: 600;
+}
+.formulaire button:disabled {
+  cursor: wait;
+}
+.erreur {
+  background: #fff0ee;
+  color: #b42318;
+  padding: 12px;
+  border-left: 4px solid currentColor;
+}
+.succes {
+  background: var(--surface-alt);
+  color: var(--primary);
+  padding: 16px;
+}

@@ -16,6 +16,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./database/CO-04-script-postgresql.sql:/docker-entrypoint-initdb.d/01-CO-04-script-postgresql.sql:ro
       - ./database/init/02-configurer-role.sh:/docker-entrypoint-initdb.d/02-configurer-role.sh:ro
+      - ./database/init/03-parametres-et-types.sql:/docker-entrypoint-initdb.d/03-parametres-et-types.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres -d innov_events"]
       interval: 5s
@@ -56,6 +57,10 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: development
+      SMTP_HOST: mailpit
+      SMTP_PORT: '1025'
+      MAIL_EXPEDITEUR: ne-pas-repondre@innov-events.invalid
+      MAIL_CONTACT: contact@innov-events.invalid
       PORT: '3000'
       TRUST_PROXY_HOPS: '1'
       SESSION_SECRET: ${SESSION_SECRET:?Definir SESSION_SECRET dans .env}
@@ -123,3 +128,4 @@ volumes:
 networks:
   interne:
     driver: bridge
+

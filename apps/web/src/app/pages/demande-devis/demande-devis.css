@@ -1,0 +1,72 @@
+.demande > nav {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 20px;
+}
+.disposition-devis {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-top: 40px;
+  align-items: start;
+}
+.formulaire h2 {
+  margin-bottom: 24px;
+}
+.formulaire h2:not(:first-child) {
+  margin-top: 24px;
+}
+.deux-colonnes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 24px;
+}
+.deux-colonnes > .aide {
+  align-self: center;
+}
+.etapes {
+  list-style: none;
+  padding: 0;
+  counter-reset: etape;
+}
+.etapes li {
+  counter-increment: etape;
+  position: relative;
+  padding-left: 42px;
+  margin-top: 28px;
+}
+.etapes li::before {
+  content: counter(etape);
+  position: absolute;
+  left: 0;
+  background: var(--surface-alt);
+  color: var(--primary);
+  border-radius: 8px;
+  padding: 2px 10px;
+  font-weight: 700;
+}
+.etapes p {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-top: 8px;
+}
+.confirmation {
+  margin-top: 24px;
+  padding: 24px;
+  background: #e7f2ff;
+  color: var(--link);
+  border-radius: 12px;
+}
+.confirmation h3 {
+  font-size: 1rem;
+}
+@media (max-width: 900px) {
+  .disposition-devis {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 540px) {
+  .deux-colonnes {
+    grid-template-columns: 1fr;
+  }
+}

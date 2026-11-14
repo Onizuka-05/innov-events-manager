@@ -7,7 +7,14 @@ const minimum = {
   PGPASSWORD: 'test',
 };
 
-const production = { ...minimum, NODE_ENV: 'production', MONGODB_URL: 'mongodb://mongo:27017' };
+const production = {
+  ...minimum,
+  NODE_ENV: 'production',
+  MONGODB_URL: 'mongodb://mongo:27017',
+  BREVO_API_KEY: 'test-cle',
+  MAIL_EXPEDITEUR: 'demo@example.org',
+  MAIL_CONTACT: 'contact@example.org',
+};
 
 describe('chargerConfiguration', () => {
   it('ne fait confiance a aucun proxy par defaut', () => {

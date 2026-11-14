@@ -50,7 +50,8 @@ describe('Acces a l API par le proxy', () => {
   it('accepte un en-tete correct', async () => {
     const resultat = await request(application())
       .get('/api/csrf')
-      .set('X-Innov-Proxy-Secret', configuration.secretProxyInterne);
+      .set('X-Innov-Proxy-Secret', configuration.secretProxyInterne)
+      .set('X-Innov-Client-Ip', '192.0.2.1');
     expect(resultat.status).toBe(200);
     expect(typeof resultat.body.jeton_csrf).toBe('string');
   });
