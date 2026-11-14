@@ -101,6 +101,19 @@ describe('Site public', () => {
     expect(document.activeElement).toBe(element.querySelector('main'));
   });
 
+  it('ferme le menu et place le focus sur le contenu en choisissant la page courante', async () => {
+    const bouton = element.querySelector<HTMLButtonElement>('.bouton-menu');
+    bouton?.click();
+    await fixture.whenStable();
+    const accueil = element.querySelector<HTMLAnchorElement>('header nav a[href="/"]');
+    accueil?.focus();
+    accueil?.click();
+    await fixture.whenStable();
+    expect(router.url).toBe('/');
+    expect(bouton?.getAttribute('aria-expanded')).toBe('false');
+    expect(document.activeElement).toBe(element.querySelector('main'));
+  });
+
   it.each([
     ['/', 'Des événements'],
     ['/mentions-legales', 'Mentions légales'],

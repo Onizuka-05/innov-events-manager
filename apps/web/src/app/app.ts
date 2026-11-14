@@ -49,6 +49,17 @@ export class App {
     this.menuOuvert.set(false);
   }
 
+  /**
+   * Ferme le menu mobile apres le choix d'un lien et place le focus sur le contenu,
+   * y compris pour la page courante, ou le routeur ne declenche aucune navigation.
+   */
+  protected choisirLien(): void {
+    if (this.menuOuvert()) {
+      this.fermerMenu();
+      this.contenu()?.nativeElement.focus({ preventScroll: true });
+    }
+  }
+
   /** Rend le focus au bouton avant de masquer les liens du menu mobile. */
   protected fermerMenuAuClavier(): void {
     if (this.menuOuvert()) {

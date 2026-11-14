@@ -12,8 +12,8 @@
 | `npm run format:check` | Réussi |
 | `npm run lint` | Réussi, aucune erreur ni avertissement |
 | `npm run typecheck` | Réussi |
-| `npm run test:coverage` | **23 tests réussis sur 23** ; instructions 97,4 %, branches 95,31 %, fonctions 79,41 %, lignes 100 % |
-| `npm run build` | Réussi, budgets respectés ; paquet initial 243,09 kB bruts, 66,44 kB transférés |
+| `npm run test:coverage` | **24 tests réussis sur 24** ; instructions 97,8 %, branches 93,93 %, fonctions 82,85 %, lignes 100 % |
+| `npm run build` | Réussi, budgets respectés ; paquet initial 243,20 kB bruts, 66,40 kB transférés |
 
 La couverture mesurée porte sur les éléments instrumentés par ce lancement Angular (templates compilés inclus) ; elle ne représente pas toute l’application. Le rapport HTML est régénérable dans `coverage/web/index.html`.
 
@@ -39,7 +39,7 @@ Chrome, fenêtre de navigation privée (extensions désactivées).
 | Vérification | Résultat | Date |
 |---|---|---|
 | Écran 320, 375, 768 et 1440 px ; zoom 200 % | OK | 14/11/2026 |
-| Clavier : lien d’évitement (y compris depuis `/cgu`), menu (Entrée, Échap, retour du focus) | OK | 14/11/2026 |
+| Clavier : lien d’évitement (y compris depuis `/cgu`), menu (Entrée, Échap, retour du focus, choix de la page courante) | OK | 14/11/2026 |
 | Défilement : CGU → CGV en haut de page, retour arrière à la position précédente | OK | 14/11/2026 |
 | Liens du menu et du pied de page, titres, pages d’attente, page introuvable | OK | 14/11/2026 |
 | Réseau : aucune ressource hors de l’origine du site (filtre `-domain:127.0.0.1` vide) | OK | 14/11/2026 |
