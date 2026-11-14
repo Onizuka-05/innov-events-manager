@@ -1,0 +1,32 @@
+@if (page(); as contenu) {
+  <article class="conteneur page page-legale">
+    <p class="surtitre">Informations légales</p>
+    <h1>{{ contenu.titre }}</h1>
+    <p class="texte-secondaire">Version du 13 novembre 2026</p>
+    <p class="avis-demo">{{ contenu.introduction }}</p>
+    @for (section of contenu.sections; track section.titre) {
+      <section>
+        <h2>{{ section.titre }}</h2>
+        @for (paragraphe of section.paragraphes; track $index) {
+          <p>{{ paragraphe }}</p>
+        }
+        @if (section.points) {
+          <ul>
+            @for (point of section.points; track $index) {
+              <li>{{ point }}</li>
+            }
+          </ul>
+        }
+        @if (section.liens) {
+          <ul>
+            @for (lien of section.liens; track lien.url) {
+              <li>
+                <a [href]="lien.url">{{ lien.libelle }}</a>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+    }
+  </article>
+}

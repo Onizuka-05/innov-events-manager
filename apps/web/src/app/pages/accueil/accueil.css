@@ -1,0 +1,93 @@
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 48px;
+}
+.hero-texte {
+  padding-block: 24px;
+}
+.hero h1 {
+  margin-bottom: 24px;
+}
+.introduction {
+  max-width: 48ch;
+  color: var(--text-muted);
+  font-size: 1.125rem;
+}
+.precision {
+  margin-block: 16px 0;
+  font-size: 0.875rem;
+}
+.hero-image {
+  margin: 0;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--surface-alt);
+}
+.hero-image img {
+  border-radius: 8px;
+}
+figcaption {
+  padding-top: 12px;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+.section {
+  margin-top: 48px;
+}
+.grille-services {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.carte {
+  padding: 24px;
+  border-radius: 12px;
+  background: var(--surface);
+}
+.numero {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: var(--primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.carte p {
+  margin-bottom: 0;
+  color: var(--text-muted);
+}
+.invitation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 32px;
+  padding: 24px;
+  border-radius: 12px;
+  background: var(--surface);
+}
+.invitation img {
+  border-radius: 8px;
+}
+@media (max-width: 1023px) {
+  .hero {
+    gap: 24px;
+  }
+}
+@media (max-width: 767px) {
+  .hero,
+  .invitation,
+  .grille-services {
+    grid-template-columns: 1fr;
+  }
+  .hero-texte {
+    padding-block: 0;
+  }
+  .carte,
+  .invitation {
+    padding: 16px;
+  }
+  .bouton {
+    width: 100%;
+  }
+}
