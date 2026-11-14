@@ -43,6 +43,23 @@ jobs:
           npm ci
           mkdir -p artifacts
 
+      - name: PostgreSQL jetable pour les tests API
+        if: matrix.application == 'api'
+        run: |
+          docker run -d --name j7-postgres -e POSTGRES_PASSWORD=test-ci -e POSTGRES_DB=innov_events_tests -p 5432:5432 postgres:16.15-alpine
+          for i in {1..30}; do
+            if docker exec j7-postgres pg_isready -U postgres -d innov_events_tests; then break; fi
+            sleep 1
+          done
+          docker exec j7-postgres pg_isready -U postgres -d innov_events_tests
+
+      - name: Installer nginx pour les tests de falsification
+        if: matrix.application == 'api'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq nginx
+          echo "NGINX_BIN=$(command -v nginx)" >> "$GITHUB_ENV"
+
       - name: Controle de formatage
         run: npm run format:check 2>&1 | tee artifacts/format.log
 
@@ -56,6 +73,8 @@ jobs:
 
       - name: Tests et couverture
         if: success() || failure()
+        env:
+          TEST_DATABASE_URL: ${{ matrix.application == 'api' && 'postgresql://postgres:test-ci@localhost:5432/innov_events_tests' || '' }}
         run: npm run test:coverage 2>&1 | tee artifacts/tests.log
 
       - name: Build
@@ -76,3 +95,4 @@ jobs:
           path: |
             ${{ matrix.chemin }}/artifacts/
             ${{ matrix.chemin }}/coverage/
+

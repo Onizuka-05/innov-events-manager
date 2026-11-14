@@ -24,8 +24,18 @@ if [ "${#INTERNAL_PROXY_SECRET}" -lt 32 ] || [ "${#INTERNAL_PROXY_SECRET}" -gt 1
   exit 1
 fi
 
+# Source limitee aux deux topologies supportees. Aucun repli sur un en-tete client.
+case "${NGINX_CLIENT_IP_SOURCE:-}" in
+  '$remote_addr')
+    [ "$NGINX_SCHEME" = http ] || { echo 'Source IP locale incoherente' >&2; exit 1; } ;;
+  '$http_cf_connecting_ip')
+    [ "$NGINX_SCHEME" = https ] || { echo 'Source IP Render incoherente' >&2; exit 1; } ;;
+  *) echo 'NGINX_CLIENT_IP_SOURCE invalide' >&2; exit 1 ;;
+esac
+
 # Remplacer uniquement les variables du modele ; $uri, $host, $proxy_host
 # et $remote_addr doivent rester des variables nginx.
 envsubst '${API_UPSTREAM} ${NGINX_SCHEME} ${NGINX_CLIENT_IP_SOURCE} ${INTERNAL_PROXY_SECRET}' \
   < /etc/nginx/nginx.conf.template > /etc/nginx/conf.d/default.conf
 exec nginx -g 'daemon off;'
+

@@ -52,13 +52,31 @@
         (click)="choisirLien()"
         >Contact</a
       >
-      <a
-        routerLink="/connexion"
-        routerLinkActive="actif"
-        ariaCurrentWhenActive="page"
-        (click)="choisirLien()"
-        >Connexion</a
-      >
+      @if (auth.utilisateur()) {
+        <a
+          routerLink="/espace"
+          routerLinkActive="actif"
+          ariaCurrentWhenActive="page"
+          (click)="choisirLien()"
+          >Mon espace</a
+        >
+        <button
+          class="bouton bouton-secondaire"
+          type="button"
+          [disabled]="deconnexion()"
+          (click)="deconnecter()"
+        >
+          Déconnexion
+        </button>
+      } @else {
+        <a
+          routerLink="/connexion"
+          routerLinkActive="actif"
+          ariaCurrentWhenActive="page"
+          (click)="choisirLien()"
+          >Connexion</a
+        >
+      }
       <a
         class="bouton bouton-primaire"
         routerLink="/demande-devis"

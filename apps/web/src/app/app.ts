@@ -2,8 +2,9 @@ import { Component, ElementRef, inject, signal, viewChild } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
+import { AuthentificationService } from './core/authentification.service';
 
-/** Gabarit commun aux pages publiques. La session sera raccordee avec AUTH-02. */
+/** Gabarit commun aux pages publiques. Navigation adaptee a la session courante. */
 @Component({
   imports: [RouterLink, RouterLinkActive, RouterOutlet],
   selector: 'app-root',
@@ -12,14 +13,20 @@ import { filter } from 'rxjs';
   templateUrl: './app.html',
 })
 export class App {
+  protected readonly auth = inject(AuthentificationService);
   protected readonly menuOuvert = signal(false);
   private readonly contenu = viewChild<ElementRef<HTMLElement>>('contenu');
   private readonly boutonMenu = viewChild<ElementRef<HTMLButtonElement>>('boutonMenu');
   private navigationInitiale = true;
 
+  private readonly router = inject(Router);
+  protected readonly deconnexion = signal(false);
+
   constructor() {
-    inject(Router)
-      .events.pipe(
+    // Etat d'affichage du menu apres un rechargement ; les droits restent controles par l'API.
+    this.auth.charger().catch(() => undefined);
+    this.router.events
+      .pipe(
         filter((evenement): evenement is NavigationEnd => evenement instanceof NavigationEnd),
         takeUntilDestroyed(),
       )
@@ -65,6 +72,21 @@ export class App {
     if (this.menuOuvert()) {
       this.fermerMenu();
       this.boutonMenu()?.nativeElement.focus();
+    }
+  }
+
+  /** Detruit la session cote serveur depuis le menu, puis revient a l'accueil. */
+  protected async deconnecter(): Promise<void> {
+    if (this.deconnexion()) return;
+    this.deconnexion.set(true);
+    this.fermerMenu();
+    try {
+      await this.auth.deconnecter();
+      await this.router.navigateByUrl('/');
+    } catch {
+      // Session conservee : le lien reste disponible pour une nouvelle tentative.
+    } finally {
+      this.deconnexion.set(false);
     }
   }
 }

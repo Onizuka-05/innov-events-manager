@@ -1,0 +1,72 @@
+<section class="conteneur page page-formulaire">
+  <h1>{{ titre }}</h1>
+  @if (mode === 'changement') {
+    <p>
+      Votre session temporaire permet uniquement de choisir un nouveau mot de passe, pendant 15
+      minutes. Si elle expire, faites une nouvelle demande de mot de passe oublié.
+    </p>
+  }
+  <form
+    class="carte formulaire"
+    [formGroup]="formulaire"
+    (ngSubmit)="envoyer()"
+    [attr.aria-busy]="envoi()"
+  >
+    <p>Tous les champs sont obligatoires.</p>
+    @for (champ of champs; track champ.nom) {
+      <div class="champ">
+        <label [for]="champ.nom">{{ champ.label }} *</label>
+        <input
+          [id]="champ.nom"
+          [type]="champ.type"
+          [formControlName]="champ.nom"
+          [autocomplete]="champ.autocomplete"
+          [maxlength]="champ.max"
+          required
+          [attr.aria-invalid]="
+            formulaire.controls[champ.nom].touched && formulaire.controls[champ.nom].invalid
+          "
+          [attr.aria-describedby]="champ.nom + '-aide'"
+        />
+        <p class="aide" [id]="champ.nom + '-aide'">
+          @if (champ.nom === 'mot_de_passe' && mode !== 'connexion') {
+            8 caractères minimum, avec une majuscule, une minuscule, un chiffre et un caractère
+            spécial.
+          }
+          @if (formulaire.controls[champ.nom].touched && formulaire.controls[champ.nom].invalid) {
+            Ce champ est obligatoire et doit être valide.
+          }
+        </p>
+      </div>
+    }
+    @if (erreur()) {
+      <p class="erreur" role="alert">{{ erreur() }}</p>
+    }
+    @if (message()) {
+      <p class="succes" role="status">{{ message() }}</p>
+    }
+    <button class="bouton-primaire" type="submit" [disabled]="envoi()">
+      {{
+        envoi()
+          ? 'Envoi en cours…'
+          : mode === 'connexion'
+            ? 'Se connecter'
+            : mode === 'changement'
+              ? 'Enregistrer le mot de passe'
+              : 'Envoyer'
+      }}
+    </button>
+    @if (mode === 'connexion') {
+      <p><a routerLink="/mot-de-passe-oublie">Mot de passe oublié ?</a></p>
+      <p><a routerLink="/inscription">Créer un compte</a></p>
+    } @else if (mode === 'changement') {
+      <p>
+        <button type="button" (click)="annuler()" [disabled]="envoi()">
+          Annuler cette session et demander un autre mot de passe
+        </button>
+      </p>
+    } @else {
+      <p><a routerLink="/connexion">Revenir à la connexion</a></p>
+    }
+  </form>
+</section>
