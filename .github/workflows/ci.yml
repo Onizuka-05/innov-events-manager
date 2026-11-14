@@ -48,10 +48,10 @@ jobs:
         run: |
           docker run -d --name j7-postgres -e POSTGRES_PASSWORD=test-ci -e POSTGRES_DB=innov_events_tests -p 5432:5432 postgres:16.15-alpine
           for i in {1..30}; do
-            if docker exec j7-postgres pg_isready -U postgres -d innov_events_tests; then break; fi
+            if docker exec j7-postgres pg_isready -h 127.0.0.1 -U postgres -d innov_events_tests; then break; fi
             sleep 1
           done
-          docker exec j7-postgres pg_isready -U postgres -d innov_events_tests
+          docker exec j7-postgres pg_isready -h 127.0.0.1 -U postgres -d innov_events_tests
 
       - name: Installer nginx pour les tests de falsification
         if: matrix.application == 'api'
