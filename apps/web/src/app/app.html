@@ -1,4 +1,88 @@
-<main>
-  <h1>Innov'Events Manager</h1>
-</main>
-<router-outlet />
+<a class="lien-evitement" href="#contenu" (click)="allerAuContenu($event)">Aller au contenu</a>
+<div class="bandeau-demo">
+  Démonstration pédagogique · Utilisez uniquement des données fictives.
+</div>
+<header class="entete">
+  <div class="conteneur entete-interieur">
+    <a class="marque" routerLink="/" aria-label="Innov’Events — Accueil">
+      <span class="marque-symbole" aria-hidden="true">i.</span>
+      <span>Innov’Events<span class="marque-sous-titre">Créateur de rencontres</span></span>
+    </a>
+    <button
+      #boutonMenu
+      class="bouton-menu"
+      type="button"
+      aria-controls="navigation-principale"
+      [attr.aria-expanded]="menuOuvert()"
+      (click)="basculerMenu()"
+    >
+      {{ menuOuvert() ? 'Fermer le menu' : 'Ouvrir le menu' }}
+    </button>
+    <nav
+      id="navigation-principale"
+      aria-label="Navigation principale"
+      [class.ouvert]="menuOuvert()"
+    >
+      <a
+        routerLink="/"
+        routerLinkActive="actif"
+        [routerLinkActiveOptions]="{ exact: true }"
+        ariaCurrentWhenActive="page"
+        (click)="choisirLien()"
+        >Accueil</a
+      >
+      <a
+        routerLink="/evenements"
+        routerLinkActive="actif"
+        ariaCurrentWhenActive="page"
+        (click)="choisirLien()"
+        >Événements</a
+      >
+      <a
+        routerLink="/avis"
+        routerLinkActive="actif"
+        ariaCurrentWhenActive="page"
+        (click)="choisirLien()"
+        >Avis</a
+      >
+      <a
+        routerLink="/contact"
+        routerLinkActive="actif"
+        ariaCurrentWhenActive="page"
+        (click)="choisirLien()"
+        >Contact</a
+      >
+      <a
+        routerLink="/connexion"
+        routerLinkActive="actif"
+        ariaCurrentWhenActive="page"
+        (click)="choisirLien()"
+        >Connexion</a
+      >
+      <a
+        class="bouton bouton-primaire"
+        routerLink="/demande-devis"
+        routerLinkActive="actif"
+        ariaCurrentWhenActive="page"
+        (click)="choisirLien()"
+        >Demander un devis</a
+      >
+    </nav>
+  </div>
+</header>
+<main id="contenu" #contenu tabindex="-1"><router-outlet /></main>
+<footer class="pied-page">
+  <div class="conteneur pied-interieur">
+    <div>
+      <p class="pied-marque">Innov’Events</p>
+      <p>De l’idée au moment partagé.</p>
+      <p class="texte-secondaire">Projet de démonstration · Aucun achat en ligne.</p>
+    </div>
+    <nav aria-label="Informations légales">
+      <a routerLink="/mentions-legales">Mentions légales</a>
+      <a routerLink="/cgu">Conditions générales d’utilisation</a>
+      <a routerLink="/cgv">Conditions générales de vente</a>
+      <a routerLink="/confidentialite">Politique de confidentialité</a>
+    </nav>
+  </div>
+</footer>

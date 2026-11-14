@@ -1,1 +1,180 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --page: #f5f8fc;
+  --surface: #fff;
+  --surface-alt: #edf3f7;
+  --text: #192a3f;
+  --text-muted: #465569;
+  --primary: #075e57;
+  --primary-hover: #05473f;
+  --link: #135da0;
+  --link-hover: #0d427b;
+  --border: #687b90;
+  --focus: #6d28d9;
+  --warning-text: #8b520a;
+  --warning-bg: #fff1d6;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Arial,
+    sans-serif;
+  color: var(--text);
+  background: var(--page);
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+h1 {
+  font-size: 2rem;
+  line-height: 1.25;
+}
+h2 {
+  font-size: 1.625rem;
+  line-height: 1.3;
+}
+h3 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+p {
+  margin-bottom: 16px;
+}
+a {
+  color: var(--link);
+  text-underline-offset: 3px;
+}
+a:hover {
+  color: var(--link-hover);
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+button,
+.bouton {
+  min-height: 44px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  background: white;
+  color: var(--text);
+  cursor: pointer;
+}
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+}
+.bouton-primaire {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: white;
+}
+.bouton-primaire:hover {
+  border-color: var(--primary-hover);
+  background: var(--primary-hover);
+  color: white;
+  text-decoration: underline;
+}
+.bouton-secondaire {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.bouton-secondaire:hover {
+  border-color: var(--primary-hover);
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+.conteneur {
+  width: min(100%, 1200px);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+.page {
+  padding-top: 48px;
+}
+.surtitre {
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.texte-secondaire {
+  color: var(--text-muted);
+}
+.avis-demo {
+  padding: 16px;
+  border-left: 4px solid var(--warning-text);
+  background: var(--warning-bg);
+  color: var(--warning-text);
+}
+.page-legale {
+  max-width: 840px;
+}
+.page-legale section {
+  margin-top: 32px;
+}
+.page-legale ul {
+  padding-left: 24px;
+}
+.page-legale li {
+  margin-bottom: 8px;
+}
+.page-legale a,
+p,
+h1,
+h2,
+h3,
+li {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 767px) {
+  .conteneur {
+    padding-inline: 16px;
+  }
+  .page {
+    padding-top: 32px;
+  }
+  h1 {
+    font-size: 1.75rem;
+    line-height: 1.2857;
+  }
+}
+
+/* Pied de page masque tant que la page n'est pas chargee : evite son decalage au chargement. */
+main:not(:has(> router-outlet + *)) + .pied-page {
+  display: none;
+}
