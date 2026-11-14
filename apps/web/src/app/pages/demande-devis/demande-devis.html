@@ -1,0 +1,269 @@
+<section class="conteneur page demande">
+  <nav aria-label="Fil d’Ariane"><a routerLink="/">Accueil</a> / Demande de devis</nav>
+  <h1>Donnons forme à votre événement</h1>
+  <p>Présentez-nous votre projet pour recevoir une proposition adaptée.</p>
+  @if (message()) {
+    <div class="carte" role="status">
+      <h2>Votre demande a été enregistrée</h2>
+      <p>{{ message() }}</p>
+      @if (!notification()) {
+        <p>
+          La notification à l’équipe n’a pas pu être envoyée. Votre demande reste enregistrée ; ne
+          la renvoyez pas.
+        </p>
+      }
+      <button type="button" (click)="message.set('')">Faire une autre demande</button>
+    </div>
+  } @else {
+    <div class="disposition-devis">
+      <form
+        class="carte formulaire"
+        [formGroup]="formulaire"
+        (ngSubmit)="envoyer()"
+        [attr.aria-busy]="envoi() || chargement()"
+      >
+        <h2>Votre entreprise et votre contact</h2>
+        <div class="champ">
+          <label for="entreprise">Entreprise *</label
+          ><input
+            id="entreprise"
+            formControlName="entreprise"
+            autocomplete="organization"
+            maxlength="255"
+            required
+            aria-describedby="entreprise-erreur"
+            [attr.aria-invalid]="
+              formulaire.controls.entreprise.touched && formulaire.controls.entreprise.invalid
+            "
+          />
+          @if (formulaire.controls.entreprise.touched && formulaire.controls.entreprise.invalid) {
+            <p id="entreprise-erreur" class="aide erreur">Vérifiez ce champ.</p>
+          }
+        </div>
+        <div class="deux-colonnes">
+          <div class="champ">
+            <label for="nom">Nom *</label
+            ><input
+              id="nom"
+              formControlName="nom"
+              autocomplete="family-name"
+              maxlength="120"
+              required
+              aria-describedby="nom-erreur"
+              [attr.aria-invalid]="
+                formulaire.controls.nom.touched && formulaire.controls.nom.invalid
+              "
+            />
+            @if (formulaire.controls.nom.touched && formulaire.controls.nom.invalid) {
+              <p id="nom-erreur" class="aide erreur">Vérifiez ce champ.</p>
+            }
+          </div>
+          <div class="champ">
+            <label for="prenom">Prénom *</label
+            ><input
+              id="prenom"
+              formControlName="prenom"
+              autocomplete="given-name"
+              maxlength="120"
+              required
+              aria-describedby="prenom-erreur"
+              [attr.aria-invalid]="
+                formulaire.controls.prenom.touched && formulaire.controls.prenom.invalid
+              "
+            />
+            @if (formulaire.controls.prenom.touched && formulaire.controls.prenom.invalid) {
+              <p id="prenom-erreur" class="aide erreur">Vérifiez ce champ.</p>
+            }
+          </div>
+          <div class="champ">
+            <label for="email">E-mail *</label
+            ><input
+              id="email"
+              type="email"
+              formControlName="email"
+              autocomplete="email"
+              maxlength="255"
+              required
+              aria-describedby="email-erreur"
+              [attr.aria-invalid]="
+                formulaire.controls.email.touched && formulaire.controls.email.invalid
+              "
+            />
+            @if (formulaire.controls.email.touched && formulaire.controls.email.invalid) {
+              <p id="email-erreur" class="aide erreur">Vérifiez ce champ.</p>
+            }
+          </div>
+          <div class="champ">
+            <label for="telephone">Téléphone *</label
+            ><input
+              id="telephone"
+              type="tel"
+              formControlName="telephone"
+              autocomplete="tel"
+              maxlength="35"
+              required
+              aria-describedby="telephone-erreur"
+              [attr.aria-invalid]="
+                formulaire.controls.telephone.touched && formulaire.controls.telephone.invalid
+              "
+            />
+            @if (formulaire.controls.telephone.touched && formulaire.controls.telephone.invalid) {
+              <p id="telephone-erreur" class="aide erreur">Vérifiez ce champ.</p>
+            }
+          </div>
+        </div>
+        <h2>Votre événement</h2>
+        <div class="champ">
+          <label for="lieu_souhaite">Lieu souhaité *</label
+          ><input
+            id="lieu_souhaite"
+            formControlName="lieu_souhaite"
+            maxlength="2000"
+            required
+            aria-describedby="lieu_souhaite-erreur"
+            [attr.aria-invalid]="
+              formulaire.controls.lieu_souhaite.touched && formulaire.controls.lieu_souhaite.invalid
+            "
+          />
+          @if (
+            formulaire.controls.lieu_souhaite.touched && formulaire.controls.lieu_souhaite.invalid
+          ) {
+            <p id="lieu_souhaite-erreur" class="aide erreur">Vérifiez ce champ.</p>
+          }
+        </div>
+        <div class="deux-colonnes">
+          <div class="champ">
+            <label for="date_souhaitee">Date souhaitée *</label
+            ><input
+              id="date_souhaitee"
+              type="date"
+              formControlName="date_souhaitee"
+              required
+              aria-describedby="date_souhaitee-erreur"
+              [attr.aria-invalid]="
+                formulaire.controls.date_souhaitee.touched &&
+                formulaire.controls.date_souhaitee.invalid
+              "
+            />
+            @if (
+              formulaire.controls.date_souhaitee.touched &&
+              formulaire.controls.date_souhaitee.invalid
+            ) {
+              <p id="date_souhaitee-erreur" class="aide erreur">Vérifiez ce champ.</p>
+            }
+          </div>
+          <div class="champ">
+            <label for="id_type_evenement">Type d’événement *</label
+            ><select
+              id="id_type_evenement"
+              formControlName="id_type_evenement"
+              required
+              aria-describedby="id_type_evenement-erreur"
+              [attr.aria-invalid]="
+                formulaire.controls.id_type_evenement.touched &&
+                formulaire.controls.id_type_evenement.invalid
+              "
+            >
+              <option value="">Choisissez un type</option>
+              @for (type of types(); track type.id_type_evenement) {
+                <option [value]="type.id_type_evenement">{{ type.libelle }}</option>
+              }
+            </select>
+            @if (
+              formulaire.controls.id_type_evenement.touched &&
+              formulaire.controls.id_type_evenement.invalid
+            ) {
+              <p id="id_type_evenement-erreur" class="aide erreur">Vérifiez ce champ.</p>
+            }
+          </div>
+          <div class="champ">
+            <label for="nb_participants">Nombre de participants *</label
+            ><input
+              id="nb_participants"
+              type="number"
+              min="1"
+              max="2147483647"
+              step="1"
+              formControlName="nb_participants"
+              required
+              aria-describedby="nb_participants-erreur"
+              [attr.aria-invalid]="
+                formulaire.controls.nb_participants.touched &&
+                formulaire.controls.nb_participants.invalid
+              "
+            />
+            @if (
+              formulaire.controls.nb_participants.touched &&
+              formulaire.controls.nb_participants.invalid
+            ) {
+              <p id="nb_participants-erreur" class="aide erreur">Vérifiez ce champ.</p>
+            }
+          </div>
+          <p class="aide">Tous les champs marqués d’un * sont obligatoires.</p>
+        </div>
+        <div class="champ">
+          <label for="description_besoin">Description du besoin *</label
+          ><textarea
+            id="description_besoin"
+            rows="5"
+            formControlName="description_besoin"
+            maxlength="5000"
+            required
+            aria-describedby="description_besoin-erreur"
+            [attr.aria-invalid]="
+              formulaire.controls.description_besoin.touched &&
+              formulaire.controls.description_besoin.invalid
+            "
+          ></textarea>
+          @if (
+            formulaire.controls.description_besoin.touched &&
+            formulaire.controls.description_besoin.invalid
+          ) {
+            <p id="description_besoin-erreur" class="aide erreur">Vérifiez ce champ.</p>
+          }
+        </div>
+        <p class="aide">
+          Aucun compte nécessaire. Consultez notre
+          <a routerLink="/confidentialite">politique de confidentialité</a>.
+        </p>
+        @if (erreur()) {
+          <p role="alert" class="erreur">{{ erreur() }}</p>
+        }
+        @if (!chargement() && !types().length) {
+          <p role="status">Les types d’événement sont indisponibles.</p>
+          <button type="button" (click)="chargerTypes()">Réessayer</button>
+        }
+        <button
+          class="bouton-primaire"
+          type="submit"
+          [disabled]="envoi() || chargement() || !types().length"
+        >
+          {{ envoi() ? 'Envoi en cours…' : 'Envoyer ma demande' }}
+        </button>
+      </form>
+      <aside aria-label="Étapes de votre demande">
+        <div class="carte">
+          <h2>Un projet, trois étapes</h2>
+          <ol class="etapes">
+            <li>
+              <strong>Décrivez votre besoin</strong>
+              <p>Les informations du formulaire nous aident à comprendre votre projet.</p>
+            </li>
+            <li>
+              <strong>Nous étudions votre demande</strong>
+              <p>L’équipe vous recontacte pour qualifier votre événement.</p>
+            </li>
+            <li>
+              <strong>Consultez vos propositions</strong>
+              <p>Retrouvez ensuite vos devis dans votre espace client.</p>
+            </li>
+          </ol>
+        </div>
+        <div class="confirmation">
+          <h3>Une confirmation à l’écran</h3>
+          <p>Un message de confirmation s’affiche après un envoi réussi.</p>
+        </div>
+      </aside>
+    </div>
+  }
+</section>

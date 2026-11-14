@@ -12,6 +12,11 @@ export interface Configuration {
   pgPassword: string;
   mongodbUrl: string;
   mongodbDatabase: string;
+  mailExpediteur?: string;
+  mailContact?: string;
+  brevoApiKey?: string;
+  smtpHost?: string;
+  smtpPort?: number;
 }
 
 function entierDansPlage(
@@ -45,7 +50,19 @@ export function chargerConfiguration(env: NodeJS.ProcessEnv = process.env): Conf
   if (production && !env.MONGODB_URL) {
     throw new Error('MONGODB_URL obligatoire en production');
   }
+  if (production && (!env.BREVO_API_KEY || !env.MAIL_EXPEDITEUR || !env.MAIL_CONTACT)) {
+    throw new Error('Configurer BREVO_API_KEY, MAIL_EXPEDITEUR et MAIL_CONTACT en production');
+  }
+  for (const adresse of [env.MAIL_EXPEDITEUR, env.MAIL_CONTACT]) {
+    if (adresse && !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/u.test(adresse))
+      throw new Error('Adresse de courriel de configuration invalide');
+  }
   return {
+    mailExpediteur: env.MAIL_EXPEDITEUR || 'ne-pas-repondre@innov-events.invalid',
+    mailContact: env.MAIL_CONTACT || 'contact@innov-events.invalid',
+    brevoApiKey: env.BREVO_API_KEY,
+    smtpHost: env.SMTP_HOST || 'localhost',
+    smtpPort: entierDansPlage(env.SMTP_PORT, 1025, 1, 65535),
     port: entierDansPlage(env.PORT, 3000, 1, 65535),
     production,
     trustProxyHops: entierDansPlage(env.TRUST_PROXY_HOPS, 0, 0, 3),

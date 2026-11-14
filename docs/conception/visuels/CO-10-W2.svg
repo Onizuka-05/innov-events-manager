@@ -1,0 +1,327 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="2688" viewBox="0 0 1440 2688">
+  <title>CO-10 W2 - Préparer et envoyer un devis</title>
+  <rect stroke-width="1" x="0" y="0" width="1440" height="2688" rx="0" fill="#F5F8FC" stroke="none" />
+  <rect stroke-width="1" x="0" y="0" width="1440" height="88" rx="0" fill="#FFFFFF" stroke="none" />
+  <rect stroke-width="1" x="0" y="87" width="1440" height="1" rx="0" fill="#EDF3F7" stroke="none" />
+  <rect stroke-width="1" x="120" y="24" width="40" height="40" rx="8" fill="#075E57" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" text-decoration="none" x="140.0" y="50.2" fill="#FFFFFF">
+    <tspan x="140.0" dy="0">IE</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="23" font-weight="700" text-anchor="start" text-decoration="none" x="172" y="51" fill="#075E57">
+    <tspan x="172" dy="0">Innov’Events</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="underline" x="424" y="50.4" fill="#135DA0">
+    <tspan x="424" dy="0">Accueil</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="underline" x="512" y="50.4" fill="#135DA0">
+    <tspan x="512" dy="0">Événements</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="underline" x="640" y="50.4" fill="#135DA0">
+    <tspan x="640" dy="0">Avis</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="underline" x="704" y="50.4" fill="#135DA0">
+    <tspan x="704" dy="0">Contact</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="underline" x="800" y="50.4" fill="#135DA0">
+    <tspan x="800" dy="0">Demander un devis</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="end" text-decoration="none" x="1172" y="45" fill="#465569">
+    <tspan x="1172" dy="0">Chloé · Administration</tspan>
+  </text>
+  <rect stroke-width="2" x="1192" y="20" width="128" height="48" rx="8" fill="#FFFFFF" stroke="#075E57" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" text-decoration="none" x="1256.0" y="49.6" fill="#075E57">
+    <tspan x="1256.0" dy="0">Déconnexion</tspan>
+  </text>
+  <rect stroke-width="1" x="0" y="88" width="1440" height="56" rx="0" fill="#EDF3F7" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="underline" x="120" y="122.4" fill="#135DA0">
+    <tspan x="120" dy="0">Prospects</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="underline" x="280" y="122.4" fill="#135DA0">
+    <tspan x="280" dy="0">Événements</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="underline" x="448" y="122.4" fill="#135DA0">
+    <tspan x="448" dy="0">Devis</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="underline" x="552" y="122.4" fill="#135DA0">
+    <tspan x="552" dy="0">Clients</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="underline" x="672" y="122.4" fill="#135DA0">
+    <tspan x="672" dy="0">Journal des actions</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="none" x="120" y="190" fill="#465569">
+    <tspan x="120" dy="0">Administration / Prospects / Société Aster</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="32" font-weight="700" text-anchor="start" text-decoration="none" x="120" y="248" fill="#192A3F">
+    <tspan x="120" dy="0">Préparer et envoyer un devis</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="120" y="288" fill="#192A3F">
+    <tspan x="120" dy="0">De la qualification du besoin à la proposition commerciale.</tspan>
+  </text>
+  <rect stroke-width="1" x="120" y="320" width="1200" height="56" rx="12" fill="#EDF3F7" stroke="none" />
+  <rect stroke-width="1" x="144" y="332" width="32" height="32" rx="8" fill="#075E57" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" text-decoration="none" x="160.0" y="350" fill="#FFFFFF">
+    <tspan x="160.0" dy="0">1</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="188" y="351" fill="#075E57">
+    <tspan x="188" dy="0">Qualification et conversion</tspan>
+  </text>
+  <rect stroke-width="1" x="568" y="332" width="32" height="32" rx="8" fill="#075E57" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" text-decoration="none" x="584.0" y="350" fill="#FFFFFF">
+    <tspan x="584.0" dy="0">2</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="612" y="351" fill="#075E57">
+    <tspan x="612" dy="0">Événement associé</tspan>
+  </text>
+  <rect stroke-width="1" x="968" y="332" width="32" height="32" rx="8" fill="#075E57" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" text-decoration="none" x="984.0" y="350" fill="#FFFFFF">
+    <tspan x="984.0" dy="0">3</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="1012" y="351" fill="#075E57">
+    <tspan x="1012" dy="0">Prestations et devis</tspan>
+  </text>
+  <rect stroke-width="1" x="120" y="400" width="832" height="568" rx="12" fill="#FFFFFF" stroke="#EDF3F7" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" text-anchor="start" text-decoration="none" x="144" y="450" fill="#192A3F">
+    <tspan x="144" dy="0">1. Qualification et conversion</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="start" text-decoration="none" x="144" y="500" fill="#192A3F">
+    <tspan x="144" dy="0">Société Aster</tspan>
+  </text>
+  <rect stroke-width="1" x="772" y="478" width="156" height="30" rx="6" fill="#E8F2FC" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" text-anchor="start" text-decoration="none" x="784" y="496" fill="#1559A8">
+    <tspan x="784" dy="0">À contacter</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="144" y="540" fill="#465569">
+    <tspan x="144" dy="0">Camille Martin · client@example.org</tspan>
+    <tspan x="144" dy="24.0">Séminaire · 28 janvier 2027 · 80 personnes</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="144" y="608" fill="#192A3F">
+    <tspan x="144" dy="0">Compte-rendu de qualification</tspan>
+  </text>
+  <rect stroke-width="2" x="144" y="624" width="784" height="64" rx="8" fill="#FFFFFF" stroke="#687B90" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="160" y="652" fill="#192A3F">
+    <tspan x="160" dy="0">Échange réalisé, faisabilité vérifiée.</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="144" y="720" fill="#192A3F">
+    <tspan x="144" dy="0">Adresse postale du client *</tspan>
+  </text>
+  <rect stroke-width="2" x="144" y="736" width="784" height="56" rx="8" fill="#FFFFFF" stroke="#687B90" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="160" y="764" fill="#192A3F">
+    <tspan x="160" dy="0">12 rue de l’Exemple, 00000 Ville fictive</tspan>
+  </text>
+  <rect stroke-width="2" x="144" y="824" width="304" height="48" rx="8" fill="#075E57" stroke="#075E57" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" text-decoration="none" x="296.0" y="854.4" fill="#FFFFFF">
+    <tspan x="296.0" dy="0">Convertir en client</tspan>
+  </text>
+  <rect stroke-width="2" x="472" y="824" width="304" height="48" rx="8" fill="#FFFFFF" stroke="#075E57" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" text-decoration="none" x="624.0" y="854.4" fill="#075E57">
+    <tspan x="624.0" dy="0">Marquer échoué</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="none" x="144" y="910" fill="#465569">
+    <tspan x="144" dy="0">Les coordonnées sont reprises à la conversion. L’adresse du client</tspan>
+    <tspan x="144" dy="21.0">est distincte du lieu de l’événement.</tspan>
+  </text>
+  <rect stroke-width="1" x="120" y="992" width="832" height="840" rx="12" fill="#FFFFFF" stroke="#EDF3F7" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" text-anchor="start" text-decoration="none" x="144" y="1042" fill="#192A3F">
+    <tspan x="144" dy="0">2. Événement associé</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="144" y="1088" fill="#192A3F">
+    <tspan x="144" dy="0">Nom de l’événement *</tspan>
+  </text>
+  <rect stroke-width="2" x="144" y="1104" width="784" height="48" rx="8" fill="#FFFFFF" stroke="#687B90" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="160" y="1132" fill="#192A3F">
+    <tspan x="160" dy="0">Séminaire Aster</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="144" y="1192" fill="#192A3F">
+    <tspan x="144" dy="0">Début *</tspan>
+  </text>
+  <rect stroke-width="2" x="144" y="1208" width="380" height="48" rx="8" fill="#FFFFFF" stroke="#687B90" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="160" y="1236" fill="#192A3F">
+    <tspan x="160" dy="0">28/01/2027 · 09:00</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="548" y="1192" fill="#192A3F">
+    <tspan x="548" dy="0">Fin *</tspan>
+  </text>
+  <rect stroke-width="2" x="548" y="1208" width="380" height="48" rx="8" fill="#FFFFFF" stroke="#687B90" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="564" y="1236" fill="#192A3F">
+    <tspan x="564" dy="0">28/01/2027 · 18:00</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="144" y="1296" fill="#192A3F">
+    <tspan x="144" dy="0">Lieu *</tspan>
+  </text>
+  <rect stroke-width="2" x="144" y="1312" width="784" height="48" rx="8" fill="#FFFFFF" stroke="#687B90" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="160" y="1340" fill="#192A3F">
+    <tspan x="160" dy="0">Paris · adresse du lieu</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="144" y="1400" fill="#192A3F">
+    <tspan x="144" dy="0">Type d’événement *</tspan>
+  </text>
+  <rect stroke-width="2" x="144" y="1416" width="380" height="48" rx="8" fill="#FFFFFF" stroke="#687B90" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="160" y="1444" fill="#192A3F">
+    <tspan x="160" dy="0">Séminaire</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="22" font-weight="400" text-anchor="middle" text-decoration="none" x="500.0" y="1445" fill="#465569">
+    <tspan x="500.0" dy="0">⌄</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="548" y="1400" fill="#192A3F">
+    <tspan x="548" dy="0">Thème</tspan>
+  </text>
+  <rect stroke-width="2" x="548" y="1416" width="380" height="48" rx="8" fill="#FFFFFF" stroke="#687B90" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="564" y="1444" fill="#192A3F">
+    <tspan x="564" dy="0">Autre</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="22" font-weight="400" text-anchor="middle" text-decoration="none" x="904.0" y="1445" fill="#465569">
+    <tspan x="904.0" dy="0">⌄</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="144" y="1504" fill="#192A3F">
+    <tspan x="144" dy="0">Statut</tspan>
+  </text>
+  <rect stroke-width="2" x="144" y="1520" width="380" height="48" rx="8" fill="#FFFFFF" stroke="#687B90" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="160" y="1548" fill="#192A3F">
+    <tspan x="160" dy="0">Brouillon</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="22" font-weight="400" text-anchor="middle" text-decoration="none" x="500.0" y="1549" fill="#465569">
+    <tspan x="500.0" dy="0">⌄</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="none" x="548" y="1534" fill="#465569">
+    <tspan x="548" dy="0">L’administratrice peut aussi valider</tspan>
+    <tspan x="548" dy="21.0">l’événement avec le statut « Accepté ».</tspan>
+  </text>
+  <rect stroke-width="2" x="144" y="1600" width="24" height="24" rx="4" fill="#FFFFFF" stroke="#687B90" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="184" y="1620.4" fill="#192A3F">
+    <tspan x="184" dy="0">Visible sur la page Événements</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="144" y="1672" fill="#192A3F">
+    <tspan x="144" dy="0">URL image HTTPS (facultatif)</tspan>
+  </text>
+  <rect stroke-width="2" x="144" y="1688" width="784" height="48" rx="8" fill="#FFFFFF" stroke="#687B90" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="160" y="1716" fill="#465569">
+    <tspan x="160" dy="0">https://example.org/image.jpg</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="none" x="144" y="1774" fill="#465569">
+    <tspan x="144" dy="0">L’accord du client est requis pour publier l’événement.</tspan>
+    <tspan x="144" dy="21.0">Un événement en brouillon n’est jamais publié.</tspan>
+  </text>
+  <rect stroke-width="1" x="120" y="1856" width="832" height="696" rx="12" fill="#FFFFFF" stroke="#EDF3F7" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" text-anchor="start" text-decoration="none" x="144" y="1906" fill="#192A3F">
+    <tspan x="144" dy="0">3. Prestations et devis</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="144" y="1952" fill="#192A3F">
+    <tspan x="144" dy="0">Intitulé de la formule *</tspan>
+  </text>
+  <rect stroke-width="2" x="144" y="1968" width="784" height="48" rx="8" fill="#FFFFFF" stroke="#687B90" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="160" y="1996" fill="#192A3F">
+    <tspan x="160" dy="0">Formule séminaire standard</tspan>
+  </text>
+  <rect stroke-width="1" x="144" y="2048" width="784" height="40" rx="6" fill="#EDF3F7" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" text-anchor="start" text-decoration="none" x="160" y="2071" fill="#465569">
+    <tspan x="160" dy="0">Prestation</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" text-anchor="end" text-decoration="none" x="912" y="2071" fill="#465569">
+    <tspan x="912" dy="0">Montant HT</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="160" y="2115" fill="#192A3F">
+    <tspan x="160" dy="0">Location de salle</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="end" text-decoration="none" x="912" y="2115" fill="#192A3F">
+    <tspan x="912" dy="0">1 200,00 €</tspan>
+  </text>
+  <rect stroke-width="1" x="144" y="2135" width="784" height="1" rx="0" fill="#EDF3F7" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="160" y="2163" fill="#192A3F">
+    <tspan x="160" dy="0">Traiteur (80 personnes)</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="end" text-decoration="none" x="912" y="2163" fill="#192A3F">
+    <tspan x="912" dy="0">2 400,00 €</tspan>
+  </text>
+  <rect stroke-width="1" x="144" y="2183" width="784" height="1" rx="0" fill="#EDF3F7" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="160" y="2211" fill="#192A3F">
+    <tspan x="160" dy="0">Animation</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="end" text-decoration="none" x="912" y="2211" fill="#192A3F">
+    <tspan x="912" dy="0">400,00 €</tspan>
+  </text>
+  <rect stroke-width="1" x="144" y="2231" width="784" height="1" rx="0" fill="#EDF3F7" stroke="none" />
+  <rect stroke-width="2" x="144" y="2256" width="264" height="48" rx="8" fill="#FFFFFF" stroke="#075E57" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" text-decoration="none" x="276.0" y="2286.4" fill="#075E57">
+    <tspan x="276.0" dy="0">+ Ajouter une ligne</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="560" y="2272" fill="#465569">
+    <tspan x="560" dy="0">Total HT</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="end" text-decoration="none" x="928" y="2272" fill="#192A3F">
+    <tspan x="928" dy="0">4 000,00 €</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="560" y="2312" fill="#465569">
+    <tspan x="560" dy="0">TVA · 20 %</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="end" text-decoration="none" x="928" y="2312" fill="#192A3F">
+    <tspan x="928" dy="0">800,00 €</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="start" text-decoration="none" x="560" y="2360" fill="#192A3F">
+    <tspan x="560" dy="0">Total TTC</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="end" text-decoration="none" x="928" y="2364" fill="#192A3F">
+    <tspan x="928" dy="0">4 800,00 €</tspan>
+  </text>
+  <rect stroke-width="2" x="144" y="2424" width="380" height="48" rx="8" fill="#FFFFFF" stroke="#075E57" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" text-decoration="none" x="334.0" y="2454.4" fill="#075E57">
+    <tspan x="334.0" dy="0">Générer le PDF</tspan>
+  </text>
+  <rect stroke-width="2" x="548" y="2424" width="380" height="48" rx="8" fill="#075E57" stroke="#075E57" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" text-decoration="none" x="738.0" y="2454.4" fill="#FFFFFF">
+    <tspan x="738.0" dy="0">Envoyer au client</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="none" x="144" y="2506" fill="#465569">
+    <tspan x="144" dy="0">L’envoi passe le devis en « étude côté client ».</tspan>
+    <tspan x="144" dy="21.0">Plusieurs formules peuvent être proposées ; une seule sera acceptée.</tspan>
+  </text>
+  <rect stroke-width="1" x="976" y="400" width="344" height="426" rx="12" fill="#FFFFFF" stroke="#EDF3F7" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" text-anchor="start" text-decoration="none" x="1000" y="450" fill="#192A3F">
+    <tspan x="1000" dy="0">Le projet en bref</tspan>
+  </text>
+  <rect stroke-width="1" x="1000" y="480" width="176" height="30" rx="6" fill="#E9EFF6" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" text-anchor="start" text-decoration="none" x="1012" y="498" fill="#30465E">
+    <tspan x="1012" dy="0">En préparation</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="start" text-decoration="none" x="1000" y="556" fill="#192A3F">
+    <tspan x="1000" dy="0">Séminaire Aster</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="1000" y="620" fill="#465569">
+    <tspan x="1000" dy="0">28 janvier 2027</tspan>
+    <tspan x="1000" dy="24.0">09:00 - 18:00</tspan>
+    <tspan x="1000" dy="24.0">Paris · 80 participants</tspan>
+  </text>
+  <rect stroke-width="1" x="1000" y="704" width="296" height="1" rx="0" fill="#EDF3F7" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="none" x="1000" y="742" fill="#465569">
+    <tspan x="1000" dy="0">Total TTC de la formule</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="32" font-weight="700" text-anchor="start" text-decoration="none" x="1000" y="794" fill="#075E57">
+    <tspan x="1000" dy="0">4 800,00 €</tspan>
+  </text>
+  <rect stroke-width="1" x="976" y="850" width="344" height="160" rx="12" fill="#E8F2FC" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="start" text-decoration="none" x="1000" y="892" fill="#1559A8">
+    <tspan x="1000" dy="0">Un parcours par étapes</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="none" x="1000" y="944" fill="#1559A8">
+    <tspan x="1000" dy="0">Validez la conversion et l’événement</tspan>
+    <tspan x="1000" dy="21.0">avant de préparer et envoyer</tspan>
+    <tspan x="1000" dy="21.0">la proposition au client.</tspan>
+  </text>
+  <rect stroke-width="1" x="0" y="2592" width="1440" height="96" rx="0" fill="#FFFFFF" stroke="none" />
+  <rect stroke-width="1" x="0" y="2592" width="1440" height="1" rx="0" fill="#EDF3F7" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="start" text-decoration="none" x="120" y="2640" fill="#075E57">
+    <tspan x="120" dy="0">Innov’Events</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="underline" x="480" y="2639.6" fill="#135DA0">
+    <tspan x="480" dy="0">Mentions légales</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="underline" x="660" y="2639.6" fill="#135DA0">
+    <tspan x="660" dy="0">CGU</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="underline" x="752" y="2639.6" fill="#135DA0">
+    <tspan x="752" dy="0">CGV</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="underline" x="844" y="2639.6" fill="#135DA0">
+    <tspan x="844" dy="0">Confidentialité</tspan>
+  </text>
+</svg>

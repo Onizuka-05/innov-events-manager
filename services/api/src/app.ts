@@ -1,7 +1,6 @@
 import csrf from '@dr.pogodin/csurf';
 import connectPgSimple from 'connect-pg-simple';
 import express from 'express';
-import { rateLimit } from 'express-rate-limit';
 import session from 'express-session';
 import helmet from 'helmet';
 import type { MongoClient } from 'mongodb';
@@ -15,6 +14,20 @@ import { SanteRepository } from './repositories/sante.repository.js';
 import { creerRoutesCsrf } from './routes/csrf.routes.js';
 import { creerRoutesSante } from './routes/sante.routes.js';
 import { SanteService } from './services/sante.service.js';
+import { lireIpClient, limiterDebit } from './middlewares/ip-client.middleware.js';
+import { restreindreSession } from './middlewares/authentification.middleware.js';
+import { UtilisateursRepository } from './repositories/utilisateurs.repository.js';
+import { LogsRepository } from './repositories/logs.repository.js';
+import { FormulairesRepository } from './repositories/formulaires.repository.js';
+import { AuthentificationService } from './services/authentification.service.js';
+import { CourrielsService, type EnvoiCourriels } from './services/courriels.service.js';
+import { MotsDePasseService } from './services/mots-de-passe.service.js';
+import { LogsService } from './services/logs.service.js';
+import { FormulairesService } from './services/formulaires.service.js';
+import { AuthentificationController } from './controllers/authentification.controller.js';
+import { FormulairesController } from './controllers/formulaires.controller.js';
+import { creerRoutesAuthentification } from './routes/authentification.routes.js';
+import { creerRoutesFormulaires } from './routes/formulaires.routes.js';
 
 export interface Dependances {
   postgres: Pool;
@@ -22,6 +35,7 @@ export interface Dependances {
   configuration: Configuration;
   /** Stockage des sessions ; PostgreSQL par defaut, remplacable dans les tests. */
   stockageSession?: session.Store;
+  courriels?: EnvoiCourriels;
 }
 
 /** Cree le stockage des sessions dans la table innov_events.sessions creee par le script SQL. */
@@ -36,7 +50,13 @@ function creerStockagePostgresql(postgres: Pool): session.Store {
 }
 
 /** Assemble les middlewares et les couches de l'application. */
-export function creerApp({ postgres, mongodb, configuration, stockageSession }: Dependances) {
+export function creerApp({
+  postgres,
+  mongodb,
+  configuration,
+  stockageSession,
+  courriels,
+}: Dependances) {
   const app = express();
   app.disable('x-powered-by');
   // IP du client : aucune confiance par defaut ; Compose regle 1 (nginx local).
@@ -51,14 +71,12 @@ export function creerApp({ postgres, mongodb, configuration, stockageSession }: 
   const controller = new SanteController(new SanteService(repository));
   app.use('/api/sante', creerRoutesSante(controller));
   app.use(express.json({ limit: '32kb' }));
-  app.use(
-    rateLimit({
-      windowMs: 15 * 60_000,
-      limit: 120,
-      standardHeaders: 'draft-8',
-      legacyHeaders: false,
-    }),
-  );
+  app.use(lireIpClient);
+  app.use(limiterDebit(120));
+  app.use((_requete, reponse, suivant) => {
+    reponse.setHeader('Cache-Control', 'no-store');
+    suivant();
+  });
 
   app.use(
     session({
@@ -82,8 +100,32 @@ export function creerApp({ postgres, mongodb, configuration, stockageSession }: 
 
   // Le secret CSRF est conserve dans la session. Les appels modifiant des donnees
   // transmettent le jeton dans l'en-tete X-CSRF-Token.
+  const envoi = courriels ?? new CourrielsService(configuration);
+  const auth = new AuthentificationService(
+    new UtilisateursRepository(postgres),
+    new MotsDePasseService(),
+    envoi,
+    new LogsService(new LogsRepository(mongodb, configuration.mongodbDatabase)),
+  );
+  const formulaires = new FormulairesRepository(postgres);
+  app.use(restreindreSession(auth));
   app.use(csrf());
   app.use('/api/csrf', creerRoutesCsrf(new CsrfController()));
+  app.use('/api', creerRoutesAuthentification(new AuthentificationController(auth), auth));
+  app.use(
+    '/api',
+    creerRoutesFormulaires(
+      new FormulairesController(
+        new FormulairesService(
+          formulaires,
+          envoi,
+          configuration.mailContact ?? 'contact@innov-events.invalid',
+        ),
+        formulaires,
+      ),
+      auth,
+    ),
+  );
   app.use(routeAbsente);
   app.use(gererErreurs);
   return app;

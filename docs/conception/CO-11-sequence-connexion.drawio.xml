@@ -1,0 +1,996 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="CO11-standard" name="CO-11 — Connexion normale, session régénérée et CSRF renouvelé">
+    <mxGraphModel dx="2440" dy="3184" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2440" pageHeight="3184" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CO11-standard-life-0" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="180" y="212" />
+            <mxPoint as="targetPoint" x="180" y="3129" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-life-1" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="212" />
+            <mxPoint as="targetPoint" x="520" y="3129" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-life-2" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="212" />
+            <mxPoint as="targetPoint" x="860" y="3129" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-life-3" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="212" />
+            <mxPoint as="targetPoint" x="1200" y="3129" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-life-4" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="212" />
+            <mxPoint as="targetPoint" x="1540" y="3129" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-life-5" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1880" y="212" />
+            <mxPoint as="targetPoint" x="1880" y="3129" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-life-6" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="2220" y="212" />
+            <mxPoint as="targetPoint" x="2220" y="3129" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-note-1" value="Préconditions : web ou PWA sur sa propre origine. Cookie HttpOnly / SameSite ; Secure en production. Le secret proxy reste sur les serveurs." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="250" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-standard-phase-2" value="1. Obtenir le jeton CSRF avant le formulaire" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="352" width="2330" height="54" />
+        </mxCell>
+        <mxCell id="CO11-standard-m3" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="180" y="489" />
+            <mxPoint as="targetPoint" x="520" y="489" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m3-label" value="GET /api/csrf" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="431" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m4" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="575" />
+            <mxPoint as="targetPoint" x="860" y="575" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m4-label" value="Relayer /api/csrf&#10;Secret proxy + IP contrôlée" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="517" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-note-5" value="Le middleware CSRF crée un secret dans req.session si nécessaire. Le store connect-pg-simple charge et persiste la session ; le CSRF n’exécute aucun SQL." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="604" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-standard-m6" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="763" />
+            <mxPoint as="targetPoint" x="1880" y="763" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m6-label" value="Charger / enregistrer la session&#10;Par le store connect-pg-simple" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="990.0" y="705" width="760" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m7" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="849" />
+            <mxPoint as="targetPoint" x="520" y="849" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m7-label" value="200 { jeton_csrf }&#10;Cookie innov.sid si session créée" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="791" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m8" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="935" />
+            <mxPoint as="targetPoint" x="180" y="935" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m8-label" value="Jeton CSRF disponible&#10;Cookie conservé par le navigateur" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="877" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-phase-9" value="2. Authentifier et régénérer la session" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="964" width="2330" height="54" />
+        </mxCell>
+        <mxCell id="CO11-standard-m10" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="180" y="1101" />
+            <mxPoint as="targetPoint" x="520" y="1101" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m10-label" value="POST /api/sessions&#10;E-mail + mot de passe + CSRF" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="1043" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m11" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="1187" />
+            <mxPoint as="targetPoint" x="860" y="1187" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m11-label" value="Relayer la requête&#10;Écraser le secret proxy" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="1129" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-note-12" value="Contrôles : proxy, débit global, session, CSRF, validation ; limite dédiée aux tentatives de connexion. L’IP réelle et l’efficacité des compteurs restent à vérifier en production." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="1216" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-standard-m13" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="1375" />
+            <mxPoint as="targetPoint" x="1200" y="1375" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m13-label" value="SessionsController → AuthService&#10;authentifier(...)" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="870.0" y="1317" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m14" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="1461" />
+            <mxPoint as="targetPoint" x="1540" y="1461" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m14-label" value="UtilisateurRepository&#10;rechercherParEmail(...)" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="1403" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m15" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="1547" />
+            <mxPoint as="targetPoint" x="1880" y="1547" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m15-label" value="SELECT colonnes explicites&#10;Requête paramétrée" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="1489" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m16" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1880" y="1633" />
+            <mxPoint as="targetPoint" x="1540" y="1633" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m16-label" value="Compte, hachages et statut" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="1575" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m17" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="1719" />
+            <mxPoint as="targetPoint" x="1200" y="1719" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m17-label" value="Utilisateur interne" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="1661" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-note-18" value="AuthService : vérification Argon2id et compte actif. Si le compte est absent, vérification factice pour atténuer les écarts de temps. Le mot de passe habituel est essayé avant un provisoire non expiré." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="1748" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-standard-m19" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="1907" />
+            <mxPoint as="targetPoint" x="860" y="1907" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m19-label" value="Identité et rôle validés" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="870.0" y="1849" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m20" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="1993" />
+            <mxPoint as="targetPoint" x="1880" y="1993" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m20-label" value="Régénérer la session puis enregistrer id_utilisateur et rôle&#10;Store connect-pg-simple ; ancien identifiant invalidé" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="990.0" y="1935" width="760" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m21" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="2079" />
+            <mxPoint as="targetPoint" x="1200" y="2079" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m21-label" value="Demander la journalisation&#10;de la connexion réussie" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="870.0" y="2021" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m22" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="2165" />
+            <mxPoint as="targetPoint" x="1540" y="2165" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m22-label" value="JournalRepository&#10;enregistrerConnexionReussie(...)" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="2107" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m23" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="2251" />
+            <mxPoint as="targetPoint" x="2220" y="2251" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m23-label" value="logs.insertOne(CONNEXION_REUSSIE)&#10;Identifiant + IP + horodatage" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="2193" width="660" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m24" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="2337" />
+            <mxPoint as="targetPoint" x="520" y="2337" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m24-label" value="200 + cookie de session renouvelé" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="2279" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m25" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="2423" />
+            <mxPoint as="targetPoint" x="180" y="2423" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m25-label" value="Connexion réussie&#10;Reprendre l’action demandée" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="2365" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-phase-26" value="3. Renouveler le CSRF avant toute nouvelle action modifiante" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="2452" width="2330" height="54" />
+        </mxCell>
+        <mxCell id="CO11-standard-m27" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="180" y="2589" />
+            <mxPoint as="targetPoint" x="520" y="2589" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m27-label" value="GET /api/csrf&#10;Avec le cookie renouvelé" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="2531" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m28" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="2675" />
+            <mxPoint as="targetPoint" x="860" y="2675" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m28-label" value="Relayer avec le secret proxy" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="2617" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-note-29" value="La nouvelle session ne contient pas l’ancien secret CSRF. Le middleware en crée un dans req.session ; le contrôleur renvoie le jeton associé." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="2704" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-standard-m30" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="2863" />
+            <mxPoint as="targetPoint" x="1880" y="2863" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m30-label" value="Persister la session et son nouveau secret CSRF&#10;Store connect-pg-simple" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="990.0" y="2805" width="760" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m31" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="2949" />
+            <mxPoint as="targetPoint" x="520" y="2949" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m31-label" value="200 { jeton_csrf } renouvelé" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="2891" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-m32" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="3035" />
+            <mxPoint as="targetPoint" x="180" y="3035" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-standard-m32-label" value="Nouveau jeton disponible" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="2977" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-standard-title" value="CO-11 — Connexion normale, session régénérée et CSRF renouvelé" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#E6E9ED;strokeColor=#88929D;fontColor=#28313A;fontSize=26;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="25" width="2330" height="68" />
+        </mxCell>
+        <mxCell id="CO11-standard-actor-0" value="Navigateur&#10;Angular / Ionic" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="35" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-standard-actor-1" value="nginx&#10;web / mobile" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="375" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-standard-actor-2" value="API : middlewares&#10;SessionsController" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="715" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-standard-actor-3" value="AuthService&#10;Service métier" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1055" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-standard-actor-4" value="UtilisateurRepository&#10;JournalRepository" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1395" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-standard-actor-5" value="PostgreSQL&#10;Utilisateurs + sessions" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1735" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-standard-actor-6" value="MongoDB&#10;Collection logs" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="2075" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-standard-status" value="Conception à implémenter et tester. Le socle déployé valide les sessions et le CSRF ; il ne prouve pas les parcours d’authentification ci-dessus." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="3136" width="2330" height="38" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="CO11-temporaire" name="CO-11 — Mot de passe provisoire à usage unique et changement obligatoire">
+    <mxGraphModel dx="2440" dy="3636" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2440" pageHeight="3636" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CO11-temporaire-life-0" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="180" y="212" />
+            <mxPoint as="targetPoint" x="180" y="3581" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-life-1" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="212" />
+            <mxPoint as="targetPoint" x="520" y="3581" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-life-2" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="212" />
+            <mxPoint as="targetPoint" x="860" y="3581" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-life-3" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="212" />
+            <mxPoint as="targetPoint" x="1200" y="3581" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-life-4" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="212" />
+            <mxPoint as="targetPoint" x="1540" y="3581" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-life-5" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1880" y="212" />
+            <mxPoint as="targetPoint" x="1880" y="3581" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-life-6" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="2220" y="212" />
+            <mxPoint as="targetPoint" x="2220" y="3581" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-note-1" value="Préconditions : jeton CSRF disponible ; provisoire non expiré (environ 1 h pour un oubli, 7 jours pour un compte créé à l’envoi d’un devis). Le mot de passe habituel reste inchangé." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="250" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-phase-2" value="1. Consommer le provisoire une seule fois" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="352" width="2330" height="54" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m3" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="180" y="489" />
+            <mxPoint as="targetPoint" x="520" y="489" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m3-label" value="POST /api/sessions&#10;Identifiants + CSRF" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="431" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m4" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="575" />
+            <mxPoint as="targetPoint" x="860" y="575" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m4-label" value="Relayer via nginx&#10;Secret proxy + IP contrôlée" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="517" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m5" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="661" />
+            <mxPoint as="targetPoint" x="1200" y="661" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m5-label" value="Contrôles validés&#10;authentifier(...)" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="870.0" y="603" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m6" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="747" />
+            <mxPoint as="targetPoint" x="1540" y="747" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m6-label" value="UtilisateurRepository&#10;rechercherParEmail(...)" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="689" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m7" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="833" />
+            <mxPoint as="targetPoint" x="1880" y="833" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m7-label" value="SELECT hachages, statut, rôle&#10;et expiration (paramétré)" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="775" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m8" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1880" y="919" />
+            <mxPoint as="targetPoint" x="1540" y="919" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m8-label" value="Compte et hachages internes" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="861" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m9" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="1005" />
+            <mxPoint as="targetPoint" x="1200" y="1005" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m9-label" value="Utilisateur interne" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="947" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-note-10" value="Vérifier le compte actif ; essayer le mot de passe habituel, puis le provisoire non expiré avec Argon2id. Aucun accès métier n’est accordé avant consommation et changement." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="1034" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m11" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="1193" />
+            <mxPoint as="targetPoint" x="1540" y="1193" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m11-label" value="Consommer le provisoire&#10;Identifiant + hachage vérifié" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="1135" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m12" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="1279" />
+            <mxPoint as="targetPoint" x="1880" y="1279" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m12-label" value="Consommer par UPDATE&#10;conditionnel + RETURNING" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="1221" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-note-13" value="Consommation atomique : UPDATE seulement si le compte est actif, le hachage est celui vérifié et l’échéance est future ; fixer une échéance toujours passée (ex. 01/01/1970 UTC). Une seule tentative concurrente réussit. Conserver le hachage jusqu’au changement préserve CO-04 sans permettre sa réutilisation." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="1308" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m14" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1880" y="1467" />
+            <mxPoint as="targetPoint" x="1540" y="1467" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m14-label" value="Une ligne : consommé&#10;Zéro ligne : refus" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="1409" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m15" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="1553" />
+            <mxPoint as="targetPoint" x="1200" y="1553" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m15-label" value="Résultat de consommation" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="1495" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m16" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="1639" />
+            <mxPoint as="targetPoint" x="860" y="1639" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m16-label" value="Identité + changement_obligatoire" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="870.0" y="1581" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m17" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="1725" />
+            <mxPoint as="targetPoint" x="1880" y="1725" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m17-label" value="Régénérer et enregistrer une session restreinte&#10;Identifiant utilisateur + preuve liée au provisoire consommé" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="990.0" y="1667" width="760" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m18" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="1811" />
+            <mxPoint as="targetPoint" x="1200" y="1811" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m18-label" value="Journaliser la connexion restreinte" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="870.0" y="1753" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m19" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="1897" />
+            <mxPoint as="targetPoint" x="1540" y="1897" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m19-label" value="JournalRepository&#10;enregistrerConnexionReussie(...)" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="1839" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m20" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="1983" />
+            <mxPoint as="targetPoint" x="2220" y="1983" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m20-label" value="logs.insertOne(CONNEXION_REUSSIE)&#10;Identifiant + IP ; aucun secret" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="1925" width="660" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m21" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="2069" />
+            <mxPoint as="targetPoint" x="520" y="2069" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m21-label" value="200 { changement_obligatoire: true }&#10;Cookie renouvelé" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="2011" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m22" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="2155" />
+            <mxPoint as="targetPoint" x="180" y="2155" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m22-label" value="Afficher le changement obligatoire" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="2097" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-note-23" value="La session restreinte dure environ 15 minutes : son échéance est enregistrée dans la session et contrôlée par l’API à chaque requête. Elle autorise seulement le changement, GET /api/csrf et la déconnexion, et interdit devis et autres données métier. À l’échéance, la session est détruite et le client repasse par « mot de passe oublié ». Le navigateur redemande un jeton CSRF après la régénération." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="2184" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-phase-24" value="2. Choisir le nouveau mot de passe" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="2286" width="2330" height="54" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m25" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="180" y="2423" />
+            <mxPoint as="targetPoint" x="520" y="2423" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m25-label" value="POST /api/utilisateurs/mot-de-passe/changement&#10;Session restreinte + CSRF" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="2365" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m26" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="2509" />
+            <mxPoint as="targetPoint" x="860" y="2509" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m26-label" value="Relayer avec le secret proxy" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="2451" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m27" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="2595" />
+            <mxPoint as="targetPoint" x="1200" y="2595" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m27-label" value="Contrôler CSRF et session restreinte&#10;changerMotDePasse(...)" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="870.0" y="2537" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-note-28" value="AuthService applique la politique du mot de passe et produit le nouveau hachage Argon2id. La consommation doit correspondre à la session restreinte ; un provisoire remplacé ne réactive pas une ancienne session." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="2624" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m29" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="2783" />
+            <mxPoint as="targetPoint" x="1540" y="2783" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m29-label" value="Enregistrer le nouveau hachage&#10;Et révoquer les autres sessions" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="2725" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m30" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="2869" />
+            <mxPoint as="targetPoint" x="1880" y="2869" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m30-label" value="Changer le hachage&#10;Effacer le provisoire&#10;Révoquer les autres sessions" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="2811" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m31" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1880" y="2955" />
+            <mxPoint as="targetPoint" x="1540" y="2955" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m31-label" value="Transaction confirmée" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="2897" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m32" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="3041" />
+            <mxPoint as="targetPoint" x="1200" y="3041" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m32-label" value="Changement enregistré" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="2983" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m33" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="3127" />
+            <mxPoint as="targetPoint" x="860" y="3127" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m33-label" value="Changement réussi" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="870.0" y="3069" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m34" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="3213" />
+            <mxPoint as="targetPoint" x="1880" y="3213" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m34-label" value="Régénérer une session normale&#10;Enregistrer id_utilisateur et rôle via le store" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="990.0" y="3155" width="760" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m35" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="3299" />
+            <mxPoint as="targetPoint" x="520" y="3299" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m35-label" value="200 + cookie renouvelé" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="3241" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-m36" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="3385" />
+            <mxPoint as="targetPoint" x="180" y="3385" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-temporaire-m36-label" value="Changement terminé&#10;Reprendre l’action initiale" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="3327" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-note-37" value="Avant l’action suivante : refaire GET /api/csrf avec le cookie renouvelé. Si la session restreinte est perdue après consommation, une nouvelle demande de mot de passe oublié est nécessaire." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="3414" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-title" value="CO-11 — Mot de passe provisoire à usage unique et changement obligatoire" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#E6E9ED;strokeColor=#88929D;fontColor=#28313A;fontSize=26;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="25" width="2330" height="68" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-actor-0" value="Navigateur&#10;Angular / Ionic" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="35" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-actor-1" value="nginx&#10;web / mobile" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="375" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-actor-2" value="API : middlewares&#10;SessionsController" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="715" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-actor-3" value="AuthService&#10;Service métier" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1055" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-actor-4" value="UtilisateurRepository&#10;JournalRepository" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1395" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-actor-5" value="PostgreSQL&#10;Utilisateurs + sessions" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1735" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-actor-6" value="MongoDB&#10;Collection logs" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="2075" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-temporaire-status" value="Conception à implémenter et tester. Le socle déployé valide les sessions et le CSRF ; il ne prouve pas les parcours d’authentification ci-dessus." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="3588" width="2330" height="38" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="CO11-refus" name="CO-11 — Refus de connexion et suspension d’un compte">
+    <mxGraphModel dx="2440" dy="3104" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2440" pageHeight="3104" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CO11-refus-life-0" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="180" y="212" />
+            <mxPoint as="targetPoint" x="180" y="3049" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-life-1" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="212" />
+            <mxPoint as="targetPoint" x="520" y="3049" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-life-2" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="212" />
+            <mxPoint as="targetPoint" x="860" y="3049" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-life-3" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="212" />
+            <mxPoint as="targetPoint" x="1200" y="3049" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-life-4" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="212" />
+            <mxPoint as="targetPoint" x="1540" y="3049" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-life-5" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1880" y="212" />
+            <mxPoint as="targetPoint" x="1880" y="3049" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-life-6" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=none;dashed=1;strokeColor=#A3ADB9;strokeWidth=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="2220" y="212" />
+            <mxPoint as="targetPoint" x="2220" y="3049" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-phase-1" value="1. Refuser une tentative de connexion" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="250" width="2330" height="54" />
+        </mxCell>
+        <mxCell id="CO11-refus-m2" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="180" y="387" />
+            <mxPoint as="targetPoint" x="520" y="387" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m2-label" value="POST /api/sessions&#10;Avec jeton CSRF" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="329" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m3" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="473" />
+            <mxPoint as="targetPoint" x="860" y="473" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m3-label" value="Relayer avec secret proxy&#10;Et IP contrôlée" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="415" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-note-4" value="Branches précoces : débit dépassé → 429 ; CSRF absent ou invalide → 403 ; secret proxy absent ou invalide → 403, sauf GET /api/sante." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="502" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-refus-m5" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="661" />
+            <mxPoint as="targetPoint" x="1200" y="661" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m5-label" value="Demander l’authentification" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="870.0" y="603" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m6" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="747" />
+            <mxPoint as="targetPoint" x="1540" y="747" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m6-label" value="Rechercher le compte par e-mail" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="689" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m7" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="833" />
+            <mxPoint as="targetPoint" x="1880" y="833" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m7-label" value="SELECT paramétré&#10;Statut, hachages, expiration" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="775" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m8" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1880" y="919" />
+            <mxPoint as="targetPoint" x="1540" y="919" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m8-label" value="Utilisateur / absence de compte" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="861" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m9" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="1005" />
+            <mxPoint as="targetPoint" x="1200" y="1005" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m9-label" value="Résultat interne" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="947" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-note-10" value="Réponse uniforme : compte absent, suspendu, employé supprimé, mot de passe incorrect, provisoire expiré ou déjà consommé. Argon2id réel ou factice ; aucun détail d’existence du compte au navigateur." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="1034" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-refus-m11" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="1193" />
+            <mxPoint as="targetPoint" x="1540" y="1193" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m11-label" value="JournalRepository&#10;enregistrerConnexionEchouee(...)" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="1135" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m12" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="1279" />
+            <mxPoint as="targetPoint" x="2220" y="1279" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m12-label" value="logs.insertOne(CONNEXION_ECHOUEE)&#10;id_utilisateur=null, e-mail tenté, IP, date" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="1221" width="660" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m13" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="1365" />
+            <mxPoint as="targetPoint" x="860" y="1365" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m13-label" value="Échec générique" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="870.0" y="1307" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m14" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="1451" />
+            <mxPoint as="targetPoint" x="520" y="1451" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m14-label" value="401 · Identifiants incorrects" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="1393" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m15" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="1537" />
+            <mxPoint as="targetPoint" x="180" y="1537" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m15-label" value="Même message d’échec" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="1479" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-phase-16" value="2. Action distincte : l’administratrice suspend le compte" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="1566" width="2330" height="54" />
+        </mxCell>
+        <mxCell id="CO11-refus-m17" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="180" y="1703" />
+            <mxPoint as="targetPoint" x="520" y="1703" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m17-label" value="PATCH /api/utilisateurs/:id/suspension&#10;Session administratrice + CSRF" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="1645" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m18" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="1789" />
+            <mxPoint as="targetPoint" x="860" y="1789" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m18-label" value="Relayer avec le secret proxy" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="1731" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-note-19" value="Après contrôle admin + CSRF, transaction unique : UPDATE statut_compte = 'suspendu' et DELETE FROM innov_events.sessions WHERE sess-&gt;&gt;'id_utilisateur' = $1, puis COMMIT. La révocation intervient à la suspension, sans attendre une tentative de connexion." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="1818" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-refus-m20" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="1977" />
+            <mxPoint as="targetPoint" x="1200" y="1977" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m20-label" value="UtilisateursController → CompteService&#10;suspendreCompte(...)" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="870.0" y="1919" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m21" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="2063" />
+            <mxPoint as="targetPoint" x="1540" y="2063" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m21-label" value="Suspendre et révoquer&#10;Dans une même transaction" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="2005" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m22" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="2149" />
+            <mxPoint as="targetPoint" x="1880" y="2149" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m22-label" value="Transaction : suspendre&#10;Et révoquer les sessions" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="2091" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m23" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1880" y="2235" />
+            <mxPoint as="targetPoint" x="1540" y="2235" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m23-label" value="Suspension et révocation confirmées" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="2177" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m24" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="2321" />
+            <mxPoint as="targetPoint" x="1200" y="2321" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m24-label" value="Compte suspendu" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="2263" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m25" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="2407" />
+            <mxPoint as="targetPoint" x="1540" y="2407" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m25-label" value="JournalRepository&#10;enregistrerSuspension(...)" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1210.0" y="2349" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m26" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=block;endFill=1;strokeColor=#4B5663;strokeWidth=1.5;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1540" y="2493" />
+            <mxPoint as="targetPoint" x="2220" y="2493" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m26-label" value="logs.insertOne(SUSPENSION_COMPTE)&#10;Acteur, cible et horodatage" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1550.0" y="2435" width="660" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m27" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="1200" y="2579" />
+            <mxPoint as="targetPoint" x="860" y="2579" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m27-label" value="Action confirmée" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="870.0" y="2521" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m28" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="860" y="2665" />
+            <mxPoint as="targetPoint" x="520" y="2665" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m28-label" value="200 · Compte suspendu" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="530.0" y="2607" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-m29" style="edgeStyle=none;noEdgeStyle=1;html=0;endArrow=open;strokeColor=#4B5663;strokeWidth=1.5;dashed=1;" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <mxPoint as="sourcePoint" x="520" y="2751" />
+            <mxPoint as="targetPoint" x="180" y="2751" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CO11-refus-m29-label" value="Confirmation administratrice" style="rounded=0;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="190.0" y="2693" width="320" height="56" />
+        </mxCell>
+        <mxCell id="CO11-refus-note-30" value="Les contrôles d’accès doivent refuser un compte suspendu. Tester une session déjà ouverte, la tentative de reconnexion et les requêtes concurrentes à la suspension. La suppression d’un compte révoque aussi ses sessions." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="2780" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-refus-note-31" value="Journaux : dates MongoDB de type Date, action, identifiant et détails strictement utiles. Connexions avec IP : six mois via TTL partiel ; autres journaux : un an. Jamais de mot de passe, hachage ni jeton CSRF. L’IP vient uniquement de la chaîne de proxys vérifiée." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="2882" width="2330" height="76" />
+        </mxCell>
+        <mxCell id="CO11-refus-title" value="CO-11 — Refus de connexion et suspension d’un compte" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#E6E9ED;strokeColor=#88929D;fontColor=#28313A;fontSize=26;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="25" width="2330" height="68" />
+        </mxCell>
+        <mxCell id="CO11-refus-actor-0" value="Navigateur&#10;Client / administratrice" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="35" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-refus-actor-1" value="nginx&#10;web / mobile" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="375" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-refus-actor-2" value="API : middlewares&#10;SessionsController /&#10;UtilisateursController" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="715" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-refus-actor-3" value="AuthService /&#10;CompteService" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1055" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-refus-actor-4" value="UtilisateurRepository /&#10;JournalRepository" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1395" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-refus-actor-5" value="PostgreSQL&#10;Utilisateurs + sessions" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1735" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-refus-actor-6" value="MongoDB&#10;Collection logs" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="2075" y="115" width="290" height="96" />
+        </mxCell>
+        <mxCell id="CO11-refus-status" value="Conception à implémenter et tester. Le socle déployé valide les sessions et le CSRF ; il ne prouve pas les parcours d’authentification ci-dessus." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="55" y="3056" width="2330" height="38" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,93 @@
+<section class="conteneur page page-formulaire">
+  <h1>Contact</h1>
+  <p>Une question ? Écrivez à notre équipe.</p>
+  <form
+    class="carte formulaire"
+    [formGroup]="formulaire"
+    (ngSubmit)="envoyer()"
+    [attr.aria-busy]="envoi()"
+  >
+    <div class="champ">
+      <label for="nom_utilisateur">Nom d’utilisateur (facultatif)</label
+      ><input
+        id="nom_utilisateur"
+        autocomplete="username"
+        formControlName="nom_utilisateur"
+        maxlength="100"
+        aria-describedby="nom_utilisateur-erreur"
+        [attr.aria-invalid]="
+          formulaire.controls.nom_utilisateur.touched && formulaire.controls.nom_utilisateur.invalid
+        "
+      />
+      @if (
+        formulaire.controls.nom_utilisateur.touched && formulaire.controls.nom_utilisateur.invalid
+      ) {
+        <p id="nom_utilisateur-erreur" class="aide erreur">Vérifiez ce champ.</p>
+      }
+    </div>
+    <div class="champ">
+      <label for="email"
+        >E-mail
+        @if (!formulaire.controls.nom_utilisateur.value.trim()) {
+          *
+        }</label
+      ><input
+        id="email"
+        type="email"
+        autocomplete="email"
+        formControlName="email"
+        maxlength="255"
+        [required]="!formulaire.controls.nom_utilisateur.value.trim()"
+        aria-describedby="email-aide"
+        [attr.aria-invalid]="formulaire.controls.email.touched && formulaire.controls.email.invalid"
+      />
+      @if (formulaire.controls.email.touched && formulaire.controls.email.invalid) {
+        <p id="email-erreur" class="aide erreur">Vérifiez ce champ.</p>
+      }
+      <p id="email-aide" class="aide">Obligatoire si le nom d’utilisateur est absent.</p>
+    </div>
+    <div class="champ">
+      <label for="titre">Titre *</label
+      ><input
+        id="titre"
+        formControlName="titre"
+        maxlength="150"
+        required
+        aria-describedby="titre-erreur"
+        [attr.aria-invalid]="formulaire.controls.titre.touched && formulaire.controls.titre.invalid"
+      />
+      @if (formulaire.controls.titre.touched && formulaire.controls.titre.invalid) {
+        <p id="titre-erreur" class="aide erreur">Vérifiez ce champ.</p>
+      }
+    </div>
+    <div class="champ">
+      <label for="description">Description *</label
+      ><textarea
+        id="description"
+        formControlName="description"
+        maxlength="5000"
+        rows="6"
+        required
+        aria-describedby="description-erreur"
+        [attr.aria-invalid]="
+          formulaire.controls.description.touched && formulaire.controls.description.invalid
+        "
+      ></textarea>
+      @if (formulaire.controls.description.touched && formulaire.controls.description.invalid) {
+        <p id="description-erreur" class="aide erreur">Vérifiez ce champ.</p>
+      }
+    </div>
+    @if (erreur()) {
+      <p role="alert" class="erreur">{{ erreur() }}</p>
+    }
+    @if (message()) {
+      <p role="status" class="succes">{{ message() }}</p>
+    }
+    <p class="aide">
+      Consultez notre <a routerLink="/confidentialite">politique de confidentialité</a>.
+    </p>
+    <button class="bouton-primaire" type="submit" [disabled]="envoi()">
+      {{ envoi() ? 'Envoi en cours…' : 'Envoyer mon message' }}
+    </button>
+  </form>
+</section>

@@ -1,0 +1,603 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" agent="InnovEvents" version="24.7.17" type="device">
+  <diagram id="CO07-W1" name="W1 - Web - Demande de devis">
+    <mxGraphModel dx="1850" dy="1150" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1640" pageHeight="1210" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CO07-W1-2" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#E6E9ED;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="50" y="35" width="1540" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-3" value="Innov'Events Manager" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=24;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="54" width="375" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-4" value="VISITEUR · Formulaire public" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=right;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="525" y="57" width="1010" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-5" value="Accueil     Événements     Avis     Contact     Demander un devis     Connexion / Déconnexion" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="124" width="1490" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-6" value="[Lien d’évitement clavier : Aller au contenu principal]" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=12;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="153" width="1490" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-7" value="Demander un devis" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=30;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="85" y="200" width="1400" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-8" value="Tous les champs sont obligatoires. Une confirmation sera affichée après validation." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="85" y="247" width="1400" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-9" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="75" y="290" width="1490" height="780" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-10" value="Entreprise *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="105" y="320" width="650" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-11" value="[Nom de la société]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="105" y="350" width="650" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-12" value="Nom *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="105" y="438" width="650" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-13" value="[Nom]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="105" y="468" width="650" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-14" value="Prénom *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="105" y="556" width="650" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-15" value="[Prénom]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="105" y="586" width="650" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-16" value="Lieu souhaité *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="105" y="674" width="650" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-17" value="[Ville ou adresse du lieu]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="105" y="704" width="650" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-18" value="Date souhaitée *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="105" y="792" width="650" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-19" value="[JJ/MM/AAAA — calendrier accessible]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="105" y="822" width="650" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-20" value="E-mail *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="820" y="320" width="650" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-21" value="[contact@example.org]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="820" y="350" width="650" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-22" value="Téléphone *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="820" y="438" width="650" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-23" value="[00 00 00 00 00]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="820" y="468" width="650" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-24" value="Type d'événement *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="820" y="556" width="650" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-25" value="[Choisir un type ▾]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="820" y="586" width="650" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-26" value="Nombre de participants *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="820" y="674" width="650" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-27" value="[Nombre entier supérieur à 0]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="820" y="704" width="650" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-28" value="Description du besoin *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="820" y="792" width="650" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-29" value="[Préciser les besoins, les horaires, les prestations…]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="820" y="822" width="650" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-30" value="Lien vers la politique de confidentialité · Aucun compte nécessaire à la demande" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="105" y="989" width="940" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-31" value="Envoyer ma demande" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#D5DADF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1225" y="985" width="245" height="63" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-32" value="Pied de page : Mentions légales · CGU · CGV · Confidentialité" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="1093" width="1450" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W1-33" value="États : erreurs associées aux champs, envoi en cours, confirmation de réception (message modifiable)." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=13;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="1137" width="1450" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="CO07-W2" name="W2 - Web - Préparer et envoyer un devis">
+    <mxGraphModel dx="1850" dy="1150" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1950" pageHeight="1230" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CO07-W2-2" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#E6E9ED;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="50" y="35" width="1850" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-3" value="Innov'Events Manager" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=24;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="54" width="375" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-4" value="ADMINISTRATRICE · Gestion commerciale" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=right;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="525" y="57" width="1320" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-5" value="Accueil     Événements     Avis     Contact     Demander un devis     Connexion / Déconnexion" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="124" width="1800" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-6" value="[Lien d’évitement clavier : Aller au contenu principal]" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=12;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="153" width="1800" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-7" value="Prospect → Conversion → Événement → Devis" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=29;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="208" width="1700" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-8" value="Étapes réalisées dans le parcours administratif ; les étapes suivantes sont bloquées avant qualification / conversion." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="255" width="1750" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-9" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="55" y="308" width="530" height="812" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-10" value="1. Qualification et conversion" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="322" width="475" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-11" value="Prospect : Société Aster · à contacter" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="368" width="475" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-12" value="Contact" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="411" width="480" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-13" value="Camille Martin · client@example.org" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#F2F3F5;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="80" y="441" width="480" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-14" value="Événement souhaité" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="511" width="480" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-15" value="Séminaire · 28/01/2027 · 80 pers." style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#F2F3F5;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="80" y="541" width="480" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-16" value="Compte-rendu de qualification" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="611" width="480" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-17" value="[Échange réalisé, faisabilité vérifiée]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="80" y="641" width="480" height="102" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-18" value="Convertir en client" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#D5DADF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="886" width="230" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-19" value="Marquer échoué" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="326" y="886" width="230" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-20" value="Conversion : coordonnées reprises ; adresse postale obligatoire, distincte du lieu de l’événement.&#10;Échec : e-mail d’information envoyé." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="964" width="475" height="106" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-21" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="615" y="308" width="590" height="812" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-22" value="2. Événement associé" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="640" y="322" width="540" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-23" value="Nom de l’événement *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="640" y="390" width="540" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-24" value="Séminaire Aster" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="640" y="420" width="540" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-25" value="Début *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="640" y="488" width="260" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-26" value="28/01/2027, 09:00" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="640" y="518" width="260" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-27" value="Fin *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="921" y="488" width="259" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-28" value="28/01/2027, 18:00" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="921" y="518" width="259" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-29" value="Lieu *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="640" y="586" width="540" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-30" value="Lieu fictif — Paris" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="640" y="616" width="540" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-31" value="Statut" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="640" y="684" width="258" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-32" value="[Brouillon ▾]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="640" y="714" width="258" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-33" value="Type / thème" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="922" y="684" width="258" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-34" value="Séminaire / autre" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="922" y="714" width="258" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-35" value="" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="640" y="800" width="36" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-36" value="Visible sur la page événements (si accord)" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="685" y="800" width="485" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-37" value="URL image HTTPS (facultatif)" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="640" y="855" width="540" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-38" value="[https://example.org/image.jpg]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="640" y="885" width="540" height="43" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-39" value="Accord du client requis pour publication.&#10;Un brouillon n’est jamais publié.&#10;Statut modifiable par l’administratrice." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="640" y="942" width="540" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-40" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="1235" y="308" width="650" height="812" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-41" value="3. Prestations et devis" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="322" width="600" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-42" value="Intitulé de la formule *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="395" width="600" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-43" value="Formule séminaire standard" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="425" width="600" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-44" value="Prestation                         Montant HT" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="498" width="600" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-45" value="Location de salle                                1 200,00 €" style="rounded=1;arcSize=6;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="539" width="600" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-46" value="Traiteur (80 personnes)                     2 400,00 €" style="rounded=1;arcSize=6;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="611" width="600" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-47" value="Animation                                               400,00 €" style="rounded=1;arcSize=6;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="683" width="600" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-48" value="+ Ajouter une ligne" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="754" width="245" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-49" value="Total HT : 4 000,00 €" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=right;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="1550" y="809" width="300" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-50" value="TVA 20 % : 800,00 €" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=right;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="1550" y="843" width="300" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-51" value="Total TTC : 4 800,00 €" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=right;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="1550" y="882" width="300" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-52" value="Générer le PDF" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#D5DADF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="965" width="265" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-53" value="Envoyer au client" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#D5DADF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1540" y="965" width="320" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-54" value="Envoi : statut devient « étude côté client ».&#10;Plusieurs formules possibles ; une seule acceptée." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=13;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="1041" width="590" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-55" value="Liens de navigation : Prospects · Événements · Devis · Clients · Journal des actions" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="1153" width="1750" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-adresse-label" value="Adresse postale du client *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="760" width="480" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W2-adresse-champ" value="[Adresse postale complète du client]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="80" y="790" width="480" height="68" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="CO07-W3" name="W3 - Web - Mes devis">
+    <mxGraphModel dx="1850" dy="1150" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1740" pageHeight="1240" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CO07-W3-2" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#E6E9ED;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="50" y="35" width="1640" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-3" value="Innov'Events Manager" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=24;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="54" width="375" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-4" value="CLIENT · Espace personnel" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=right;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="525" y="57" width="1110" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-5" value="Accueil     Événements     Avis     Contact     Demander un devis     Connexion / Déconnexion" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="124" width="1590" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-6" value="[Lien d’évitement clavier : Aller au contenu principal]" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=12;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="153" width="1590" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-7" value="Mes devis" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=30;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="205" width="1500" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-8" value="Consultez vos propositions, téléchargez le PDF et choisissez une réponse." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="254" width="1530" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-9" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="65" y="303" width="520" height="785" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-10" value="Toutes les propositions" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="95" y="327" width="455" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-11" value="Formule séminaire standard&#10;Étude côté client · 4 800,00 € TTC&#10;[Voir le détail]" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#E6E9ED;strokeColor=#3F4650;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="90" y="394" width="470" height="137" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-12" value="Formule séminaire premium&#10;Étude côté client · 6 240,00 € TTC&#10;[Consulter]" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="90" y="552" width="470" height="126" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-13" value="Autre événement · Devis accepté&#10;[Consulter l’historique]" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="90" y="704" width="470" height="126" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-14" value="Autres statuts possibles : modification,&#10;accepté, refusé (un devis en préparation n’est pas visible)." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="95" y="905" width="465" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-15" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="615" y="303" width="1060" height="785" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-16" value="Formule séminaire standard" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=24;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="645" y="326" width="970" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-17" value="Statut : étude côté client · Événement : Séminaire Aster" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="645" y="377" width="970" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-18" value="Prestations                                  HT" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="645" y="434" width="950" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-19" value="Location de salle                        1 200,00 €" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="645" y="471" width="980" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-20" value="Traiteur                                      2 400,00 €" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="645" y="528" width="980" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-21" value="Animation                                      400,00 €" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="645" y="585" width="980" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-22" value="HT : 4 000,00 € · TVA : 800,00 €" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=right;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="646" width="405" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-23" value="TTC : 4 800,00 €" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=20;fontFamily=Arial;align=right;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="688" width="395" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-24" value="Télécharger le PDF" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="645" y="677" width="340" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-25" value="Votre décision sur ce devis" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=19;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="645" y="757" width="950" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-26" value="Accepter le devis" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#D5DADF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="645" y="805" width="290" height="61" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-27" value="Demander une modification" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="951" y="805" width="305" height="61" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-28" value="Refuser le devis" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="1272" y="805" width="353" height="61" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-29" value="Motif de modification * (obligatoire pour cette action)" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="645" y="893" width="980" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-30" value="[Préciser les éléments à modifier]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="645" y="923" width="980" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-31" value="Envoyer la demande de modification" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="1285" y="1044" width="340" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-W3-32" value="Règles : acceptation = notification e-mail et refus automatique des autres devis ouverts du même événement.&#10;Modification = motif obligatoire et contre-proposition par l’administratrice. Refus = statut refusé." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="72" y="1116" width="1590" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="CO07-M1" name="M1 - Mobile - Événements à venir">
+    <mxGraphModel dx="1850" dy="1150" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1150" pageHeight="1020" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CO07-M1-2" value="" style="rounded=1;arcSize=18;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="235" y="65" width="430" height="880" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-3" value="Innov’Events · Événements" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#E6E9ED;strokeColor=#8B929A;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="80" width="400" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-4" value="Accueil    Événements    CGU    CGV" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=12;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="255" y="902" width="390" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-5" value="" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=#8B929A;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="250" y="890" width="400" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-6" value="Événements à venir" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=23;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="164" width="380" height="39" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-7" value="Triés par date de début (croissant)" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=13;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="211" width="380" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-8" value="" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="256" y="270" width="388" height="149" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-9" value="28 JAN · 09:00" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="271" y="281" width="354" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-10" value="Séminaire Aster" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="271" y="312" width="354" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-11" value="Paris · Accepté" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="271" y="345" width="354" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-12" value="Client : Société Aster      Voir la fiche ›" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=13;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="271" y="378" width="354" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-13" value="" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="256" y="438" width="388" height="149" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-14" value="03 FÉV · 18:30" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="271" y="449" width="354" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-15" value="Soirée Horizon" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="271" y="480" width="354" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-16" value="Lyon · En cours" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="271" y="513" width="354" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-17" value="Client : Groupe Horizon      Voir la fiche ›" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=13;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="271" y="546" width="354" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-18" value="" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="256" y="606" width="388" height="149" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-19" value="12 FÉV · 08:00" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="271" y="617" width="354" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-20" value="Conférence Alpha" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="271" y="648" width="354" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-21" value="Marseille · Accepté" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="271" y="681" width="354" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-22" value="Client : Alpha Conseil      Voir la fiche ›" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=13;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="271" y="714" width="354" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-23" value="Connexion requise (administratrice / employé).&#10;Liste des événements futurs, non filtrée sur l’auteur." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=13;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="785" width="380" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-24" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="718" y="149" width="380" height="345" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-25" value="Interactions" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="747" y="170" width="330" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-26" value="• Ouvrir une carte → M2.&#10;• Revenir à la liste → M1.&#10;• Recherche/tri possible en complément.&#10;• Dates et statuts écrits en toutes lettres.&#10;• CGU et CGV accessibles dans le menu." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="748" y="224" width="319" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M1-27" value="Événements issus de la gestion administrative : validation manuelle ou acceptation d’un devis." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="718" y="537" width="350" height="76" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="CO07-M2" name="M2 - Mobile - Fiche événement et note">
+    <mxGraphModel dx="1850" dy="1150" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1130" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CO07-M2-2" value="" style="rounded=1;arcSize=18;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="235" y="65" width="430" height="990" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-3" value="← Événements    ·    Fiche projet" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#E6E9ED;strokeColor=#8B929A;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="80" width="400" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-4" value="Accueil    Événements    CGU    CGV" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=12;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="255" y="1012" width="390" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-5" value="" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=#8B929A;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="250" y="1000" width="400" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-6" value="Séminaire Aster" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=23;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="163" width="380" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-7" value="Statut : accepté" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#E6E9ED;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="258" y="211" width="384" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-8" value="Début : 28/01/2027 à 09:00" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="265" width="380" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-9" value="Fin : 28/01/2027 à 18:00" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="305" width="380" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-10" value="Lieu : Paris · adresse du lieu" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="345" width="380" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-11" value="Type : Séminaire" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="385" width="380" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-12" value="Client : Société Aster&#10;Camille Martin          Voir la fiche client ›" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="258" y="441" width="384" height="91" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-13" value="Notes partagées" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=19;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="549" width="380" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-14" value="[Note précédente]&#10;« Prévoir les badges des invités »" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="258" y="593" width="384" height="74" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-15" value="+ Ajouter une note" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#D5DADF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="258" y="686" width="384" height="57" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-16" value="Formulaire après activation du bouton :" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=13;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="752" width="380" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-17" value="Nouvelle note *" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=14;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="258" y="783" width="384" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-18" value="[Saisir une note liée à cet événement]" style="rounded=1;arcSize=7;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="258" y="813" width="384" height="93" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-19" value="Enregistrer la note" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#D5DADF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="258" y="925" width="384" height="49" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-20" value="" style="rounded=1;arcSize=10;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="740" y="178" width="406" height="345" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-21" value="États et droits" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="763" y="200" width="361" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-22" value="• Le bouton Ajouter une note ouvre la saisie.&#10;• Seul l’auteur peut modifier ou supprimer sa note ; l’administratrice gère toutes les notes.&#10;• Les notes sont visibles après enregistrement.&#10;• Le nom du client ouvre M3." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="760" y="268" width="352" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M2-23" value="Une fiche événement contient dates, lieu, statut et client. Les informations structurelles sont en lecture seule sur mobile." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="740" y="605" width="420" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="CO07-M3" name="M3 - Mobile - Fiche client et contact">
+    <mxGraphModel dx="1850" dy="1150" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1140" pageHeight="1010" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CO07-M3-2" value="" style="rounded=1;arcSize=18;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="230" y="65" width="430" height="865" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-3" value="← Séminaire Aster    ·    Client" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#E6E9ED;strokeColor=#8B929A;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="245" y="80" width="400" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-4" value="Accueil    Événements    CGU    CGV" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=12;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="250" y="887" width="390" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-5" value="" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=#8B929A;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="245" y="875" width="400" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-6" value="Société Aster" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=23;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="255" y="171" width="380" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-7" value="Contact : Camille Martin" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="255" y="218" width="380" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-8" value="Téléphone de test&#10;00 00 00 00 00" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="252" y="270" width="386" height="89" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-9" value="Appeler · tel:" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#D5DADF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="252" y="372" width="386" height="57" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-10" value="Adresse e-mail&#10;client@example.org" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="252" y="450" width="386" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-11" value="Envoyer un e-mail · mailto:" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#D5DADF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="252" y="538" width="386" height="57" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-12" value="Adresse postale&#10;12 rue de l’Exemple, 00000 Ville fictive" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="252" y="615" width="386" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-13" value="Ouvrir l’itinéraire · cartographie" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;fillColor=#D5DADF;strokeColor=#3F4650;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="252" y="713" width="386" height="57" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-14" value="Retour à la fiche événement, puis à la liste.&#10;Aucune donnée réelle dans les maquettes." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=13;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="255" y="805" width="380" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-15" value="" style="rounded=1;arcSize=9;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#8B929A;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;" vertex="1" parent="1">
+          <mxGeometry x="720" y="145" width="370" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-16" value="Actions externes" style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=22;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontStyle=1;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="745" y="170" width="323" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-17" value="• Appeler → app téléphone (tel:).&#10;• E-mail → messagerie (mailto:).&#10;• Itinéraire → application de cartographie.&#10;• Les numéros et adresses sont fictifs.&#10;• Aucun accès direct à une fiche sans authentification." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=16;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="745" y="226" width="320" height="225" as="geometry" />
+        </mxCell>
+        <mxCell id="CO07-M3-18" value="La fiche client est consultable par l’employé et l’administratrice. Modification des informations réservée à l’espace web." style="rounded=0;arcSize=0;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=15;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=10;spacingRight=10;strokeWidth=1.4;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="720" y="546" width="375" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

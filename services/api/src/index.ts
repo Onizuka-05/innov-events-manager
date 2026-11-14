@@ -2,6 +2,7 @@ import { MongoClient } from 'mongodb';
 import { Pool } from 'pg';
 import { creerApp } from './app.js';
 import { chargerConfiguration } from './config/config.js';
+import { LogsRepository } from './repositories/logs.repository.js';
 
 async function demarrer(): Promise<void> {
   const configuration = chargerConfiguration();
@@ -17,10 +18,14 @@ async function demarrer(): Promise<void> {
           max: 10,
         },
   );
-  postgres.on('error', (erreur) => {
-    console.error(`Connexion PostgreSQL inactive perdue : ${erreur.message}`);
+  postgres.on('error', () => {
+    console.error(JSON.stringify({ evenement: 'connexion_postgresql_perdue' }));
   });
   const mongodb = new MongoClient(configuration.mongodbUrl, { serverSelectionTimeoutMS: 3_000 });
+  // Sans attendre : une base MongoDB lente ne bloque pas le demarrage ; nouvel essai au suivant.
+  new LogsRepository(mongodb, configuration.mongodbDatabase).preparerIndexExpiration().catch(() => {
+    console.error(JSON.stringify({ evenement: 'index_expiration_journaux_echec' }));
+  });
   const app = creerApp({ postgres, mongodb, configuration });
   const serveur = app.listen(configuration.port, '0.0.0.0', () => {
     console.info(`API disponible sur le port ${configuration.port}`);

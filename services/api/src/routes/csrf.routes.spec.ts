@@ -39,7 +39,8 @@ describe('Protection CSRF', () => {
   it('fournit un jeton et un cookie de session httpOnly', async () => {
     const resultat = await request(application())
       .get('/api/csrf')
-      .set('X-Innov-Proxy-Secret', enteteProxy);
+      .set('X-Innov-Proxy-Secret', enteteProxy)
+      .set('X-Innov-Client-Ip', '192.0.2.1');
     expect(resultat.status).toBe(200);
     expect(typeof resultat.body.jeton_csrf).toBe('string');
     expect(resultat.headers['cache-control']).toBe('no-store');
@@ -51,6 +52,7 @@ describe('Protection CSRF', () => {
     const resultat = await request(application())
       .post('/api/essai')
       .set('X-Innov-Proxy-Secret', enteteProxy)
+      .set('X-Innov-Client-Ip', '192.0.2.1')
       .send({});
     expect(resultat.status).toBe(403);
     expect(resultat.body).toEqual({ erreur: 'Jeton CSRF invalide' });
@@ -58,10 +60,14 @@ describe('Protection CSRF', () => {
 
   it('refuse un jeton qui ne correspond pas a la session', async () => {
     const agent = request.agent(application());
-    await agent.get('/api/csrf').set('X-Innov-Proxy-Secret', enteteProxy);
+    await agent
+      .get('/api/csrf')
+      .set('X-Innov-Proxy-Secret', enteteProxy)
+      .set('X-Innov-Client-Ip', '192.0.2.1');
     const resultat = await agent
       .post('/api/essai')
       .set('X-Innov-Proxy-Secret', enteteProxy)
+      .set('X-Innov-Client-Ip', '192.0.2.1')
       .set('X-CSRF-Token', 'jeton-invente')
       .send({});
     expect(resultat.status).toBe(403);
@@ -69,10 +75,14 @@ describe('Protection CSRF', () => {
 
   it('laisse passer une requete modifiante avec le jeton de sa session', async () => {
     const agent = request.agent(application());
-    const { body } = await agent.get('/api/csrf').set('X-Innov-Proxy-Secret', enteteProxy);
+    const { body } = await agent
+      .get('/api/csrf')
+      .set('X-Innov-Proxy-Secret', enteteProxy)
+      .set('X-Innov-Client-Ip', '192.0.2.1');
     const resultat = await agent
       .post('/api/essai')
       .set('X-Innov-Proxy-Secret', enteteProxy)
+      .set('X-Innov-Client-Ip', '192.0.2.1')
       .set('X-CSRF-Token', body.jeton_csrf)
       .send({});
     // La route n'existe pas : 404 prouve que le controle CSRF a ete franchi.

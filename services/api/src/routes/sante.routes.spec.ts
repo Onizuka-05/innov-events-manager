@@ -64,4 +64,22 @@ describe('GET /api/sante', () => {
     const resultat = await request(application(false, false)).get('/api/sante');
     expect(resultat.status).toBe(503);
   });
+  it('ecrit une ligne JSON neutre sur stdout a chaque 503', async () => {
+    const sortie = vi.spyOn(console, 'info').mockImplementation(() => undefined);
+    try {
+      expect((await request(application(false, false)).get('/api/sante')).status).toBe(503);
+      expect(sortie).toHaveBeenCalledExactlyOnceWith(
+        JSON.stringify({
+          evenement: 'sante_degradee',
+          postgresql: 'indisponible',
+          mongodb: 'indisponible',
+        }),
+      );
+      expect(sortie.mock.calls[0]?.[0]).not.toMatch(
+        /Postgres indisponible|Mongo indisponible|password|secret/u,
+      );
+    } finally {
+      sortie.mockRestore();
+    }
+  });
 });
