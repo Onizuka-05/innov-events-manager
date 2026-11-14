@@ -57,8 +57,12 @@
       }}
     </button>
     @if (mode === 'connexion') {
-      <p><a routerLink="/mot-de-passe-oublie">Mot de passe oublié ?</a></p>
-      <p><a routerLink="/inscription">Créer un compte</a></p>
+      <p>
+        <a routerLink="/mot-de-passe-oublie" [queryParams]="parametresRetour"
+          >Mot de passe oublié ?</a
+        >
+      </p>
+      <p><a routerLink="/inscription" [queryParams]="parametresRetour">Créer un compte</a></p>
     } @else if (mode === 'changement') {
       <p>
         <button type="button" (click)="annuler()" [disabled]="envoi()">
@@ -66,7 +70,7 @@
         </button>
       </p>
     } @else {
-      <p><a routerLink="/connexion">Revenir à la connexion</a></p>
+      <p><a routerLink="/connexion" [queryParams]="parametresRetour">Revenir à la connexion</a></p>
     }
   </form>
 </section>

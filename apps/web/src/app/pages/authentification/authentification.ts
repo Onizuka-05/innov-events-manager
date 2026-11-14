@@ -38,6 +38,12 @@ export class Authentification implements OnInit {
   private readonly auth = inject(AuthentificationService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly retourDemande = this.route.snapshot.queryParamMap.get('retour');
+  /** Destination validee, transmise aux liens et aux detours du parcours de connexion. */
+  protected readonly parametresRetour: Record<string, string> =
+    this.retourDemande !== null && retourInterne(this.retourDemande) === this.retourDemande
+      ? { retour: this.retourDemande }
+      : {};
   protected readonly mode = this.route.snapshot.data['mode'] as Mode;
   protected readonly titre = {
     connexion: 'Connexion',
@@ -105,7 +111,7 @@ export class Authentification implements OnInit {
     this.envoi.set(true);
     try {
       await this.auth.deconnecter();
-      await this.router.navigateByUrl('/mot-de-passe-oublie');
+      await this.router.navigate(['/mot-de-passe-oublie'], { queryParams: this.parametresRetour });
     } catch (erreur) {
       this.erreur.set(messageErreur(erreur));
     } finally {

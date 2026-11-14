@@ -105,4 +105,43 @@ describe('Parcours de connexion', () => {
     expect(restreinte()).toBe(false);
     expect(TestBed.inject(Router).url).toBe('/mot-de-passe-oublie');
   });
+
+  it('conserve la destination pendant le detour par le mot de passe oublie', async () => {
+    temporaire = true;
+    const destination = '?retour=%2Fadministration%2Fremerciement';
+    const router = TestBed.inject(Router);
+    const h = await RouterTestingHarness.create();
+    const lien = (texte: string) =>
+      [...h.routeNativeElement!.querySelectorAll<HTMLAnchorElement>('a')].find((a) =>
+        a.textContent?.includes(texte),
+      )!;
+    await h.navigateByUrl(`/connexion${destination}`);
+    expect(lien('Créer un compte').getAttribute('href')).toBe(`/inscription${destination}`);
+    lien('Mot de passe oublié').click();
+    await h.fixture.whenStable();
+    h.detectChanges();
+    expect(router.url).toBe(`/mot-de-passe-oublie${destination}`);
+    lien('Revenir à la connexion').click();
+    await h.fixture.whenStable();
+    h.detectChanges();
+    expect(router.url).toBe(`/connexion${destination}`);
+    saisir(h, 'email_connexion', admin.email_connexion);
+    saisir(h, 'mot_de_passe', 'Temporaire1!');
+    await envoyer(h);
+    expect(router.url).toBe(`/nouveau-mot-de-passe${destination}`);
+    saisir(h, 'mot_de_passe', 'Nouveau1!');
+    await envoyer(h);
+    expect(router.url).toBe('/administration/remerciement');
+  });
+  it('conserve la destination quand la session temporaire est abandonnee', async () => {
+    restreinte.set(true);
+    const h = await RouterTestingHarness.create();
+    await h.navigateByUrl('/nouveau-mot-de-passe?retour=%2Fadministration%2Fremerciement');
+    h.routeNativeElement!.querySelector<HTMLButtonElement>('button[type=button]')!.click();
+    await h.fixture.whenStable();
+    expect(restreinte()).toBe(false);
+    expect(TestBed.inject(Router).url).toBe(
+      '/mot-de-passe-oublie?retour=%2Fadministration%2Fremerciement',
+    );
+  });
 });
