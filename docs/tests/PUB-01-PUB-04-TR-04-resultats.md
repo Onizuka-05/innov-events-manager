@@ -44,7 +44,7 @@ Chrome, fenêtre de navigation privée (extensions désactivées).
 | Liens du menu et du pied de page, titres, pages d’attente, page introuvable | OK | 14/11/2026 |
 | Réseau : aucune ressource hors de l’origine du site (filtre `-domain:127.0.0.1` vide) | OK | 14/11/2026 |
 | Build servi par Docker (nginx, port 8080) : rechargement de `/cgu`, console sans erreur sous CSP | OK | 14/11/2026 |
-| PR et CI | À renseigner | À renseigner |
+| PR #111 (merge commit `bd29ec5`) et CI sur `dev` | OK, CI verte | 14/11/2026 |
 
 ## Lighthouse (mobile, build de production servi par nginx)
 

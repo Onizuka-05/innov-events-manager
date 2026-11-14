@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="1152" viewBox="0 0 390 1152">
+  <title>CO-10 M3 - Fiche client et contact</title>
+  <rect stroke-width="1" x="0" y="0" width="390" height="1152" rx="0" fill="#F5F8FC" stroke="none" />
+  <rect stroke-width="1" x="0" y="0" width="390" height="72" rx="0" fill="#075E57" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" text-anchor="middle" text-decoration="none" x="30.0" y="47" fill="#FFFFFF">
+    <tspan x="30.0" dy="0">‹</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="start" text-decoration="none" x="52" y="42" fill="#FFFFFF">
+    <tspan x="52" dy="0">Séminaire Aster</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" text-anchor="start" text-decoration="none" x="16" y="132" fill="#192A3F">
+    <tspan x="16" dy="0">Société Aster</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="none" x="16" y="176" fill="#465569">
+    <tspan x="16" dy="0">Contact : Camille Martin</tspan>
+  </text>
+  <rect stroke-width="1" x="16" y="224" width="358" height="192" rx="12" fill="#FFFFFF" stroke="#EDF3F7" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="none" x="32" y="258" fill="#465569">
+    <tspan x="32" dy="0">Téléphone</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" text-anchor="start" text-decoration="none" x="32" y="308" fill="#192A3F">
+    <tspan x="32" dy="0">00 00 00 00 00</tspan>
+  </text>
+  <rect stroke-width="2" x="32" y="344" width="326" height="48" rx="8" fill="#075E57" stroke="#075E57" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" text-decoration="none" x="195.0" y="374.4" fill="#FFFFFF">
+    <tspan x="195.0" dy="0">Appeler</tspan>
+  </text>
+  <rect stroke-width="1" x="16" y="440" width="358" height="192" rx="12" fill="#FFFFFF" stroke="#EDF3F7" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="none" x="32" y="474" fill="#465569">
+    <tspan x="32" dy="0">Adresse e-mail</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" text-anchor="start" text-decoration="none" x="32" y="520" fill="#192A3F">
+    <tspan x="32" dy="0">client@example.org</tspan>
+  </text>
+  <rect stroke-width="2" x="32" y="560" width="326" height="48" rx="8" fill="#075E57" stroke="#075E57" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" text-decoration="none" x="195.0" y="590.4" fill="#FFFFFF">
+    <tspan x="195.0" dy="0">Envoyer un e-mail</tspan>
+  </text>
+  <rect stroke-width="1" x="16" y="656" width="358" height="240" rx="12" fill="#FFFFFF" stroke="#EDF3F7" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" text-decoration="none" x="32" y="690" fill="#465569">
+    <tspan x="32" dy="0">Adresse postale</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" text-anchor="start" text-decoration="none" x="32" y="734" fill="#192A3F">
+    <tspan x="32" dy="0">12 rue de l’Exemple</tspan>
+    <tspan x="32" dy="27.0">00000 Ville fictive</tspan>
+  </text>
+  <rect stroke-width="2" x="32" y="824" width="326" height="48" rx="8" fill="#075E57" stroke="#075E57" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" text-decoration="none" x="195.0" y="854.4" fill="#FFFFFF">
+    <tspan x="195.0" dy="0">Ouvrir l’itinéraire</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" text-decoration="underline" x="16" y="974.4" fill="#135DA0">
+    <tspan x="16" dy="0">‹ Retour à l’événement</tspan>
+  </text>
+  <rect stroke-width="1" x="0" y="1072" width="390" height="80" rx="0" fill="#FFFFFF" stroke="none" />
+  <rect stroke-width="1" x="0" y="1072" width="390" height="1" rx="0" fill="#687B90" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" text-decoration="underline" x="49.0" y="1117.6" fill="#135DA0">
+    <tspan x="49.0" dy="0">Accueil</tspan>
+  </text>
+  <rect stroke-width="1" x="102" y="1072" width="98" height="3" rx="0" fill="#075E57" stroke="none" />
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" text-decoration="none" x="151.0" y="1117.6" fill="#075E57">
+    <tspan x="151.0" dy="0">Événements</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" text-decoration="underline" x="252.0" y="1117.6" fill="#135DA0">
+    <tspan x="252.0" dy="0">CGU</tspan>
+  </text>
+  <text font-family="system-ui, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" text-decoration="underline" x="337.0" y="1117.6" fill="#135DA0">
+    <tspan x="337.0" dy="0">CGV</tspan>
+  </text>
+</svg>

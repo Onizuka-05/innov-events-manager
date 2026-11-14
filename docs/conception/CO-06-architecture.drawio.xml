@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" agent="draw.io" version="24.7.17" type="device">
+  <diagram id="co06_local" name="01 - Architecture locale (Compose)">
+    <mxGraphModel dx="2040" dy="1110" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2040" pageHeight="1110" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="n0001" value="CO-06 — Architecture locale · Docker Compose" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=29;fontColor=#14243A;fillColor=#163859;strokeColor=#163859;strokeWidth=2;shadow=0;fontColor=#FFFFFF;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="55" y="28" width="1930" height="69" as="geometry" />
+        </mxCell>
+        <mxCell id="b0002" value="Docker Compose — six services · réseau interne Docker" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=15;fontStyle=1;fontSize=20;fontColor=#20354F;fillColor=#F3F7FB;strokeColor=#7F9CB8;strokeWidth=2;dashed=1;dashPattern=8 5;" vertex="1" parent="1">
+          <mxGeometry x="300" y="147" width="1650" height="770" as="geometry" />
+        </mxCell>
+        <mxCell id="n0003" value="Navigateur web&lt;br&gt;Angular (SPA)" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E2F2FF;strokeColor=#3589B0;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="35" y="270" width="214" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="n0004" value="Téléphone / navigateur&lt;br&gt;Ionic Angular (PWA)" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E2F2FF;strokeColor=#3589B0;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="35" y="510" width="214" height="113" as="geometry" />
+        </mxCell>
+        <mxCell id="n0005" value="SERVICE web&lt;br&gt;nginx · port local 8080&lt;br&gt;SPA Angular + proxy /api" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#E4F1FF;strokeColor=#2C78A8;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="365" y="270" width="260" height="119" as="geometry" />
+        </mxCell>
+        <mxCell id="n0006" value="SERVICE mobile&lt;br&gt;nginx · port local 8100&lt;br&gt;PWA Ionic + proxy /api" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#E4F1FF;strokeColor=#2C78A8;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="365" y="510" width="260" height="119" as="geometry" />
+        </mxCell>
+        <mxCell id="b0007" value="SERVICE api · Node.js / Express · accès uniquement via nginx" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=15;fontStyle=1;fontSize=18;fontColor=#20354F;fillColor=#FDFDFD;strokeColor=#587596;strokeWidth=2;dashed=1;dashPattern=8 5;" vertex="1" parent="1">
+          <mxGeometry x="720" y="190" width="610" height="584" as="geometry" />
+        </mxCell>
+        <mxCell id="n0008" value="Middleware : en-tête secret, IP de confiance, Helmet, débit, session, CSRF, validation, rôles" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#FFEACD;strokeColor=#C88730;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="765" y="251" width="515" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n0009" value="Routes /api/*  →  contrôleurs HTTP/JSON" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#DDF2E3;strokeColor=#2F9467;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="765" y="348" width="515" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="n0010" value="Services métier · classes TypeScript&lt;br&gt;statuts, Argon2, PDFKit, e-mails, purges" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#DDF2E3;strokeColor=#2F9467;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="765" y="436" width="515" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="n0011" value="Repositories SQL / MongoDB&lt;br&gt;pg paramétré · pilote Mongo officiel" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#DDF2E3;strokeColor=#2F9467;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="765" y="544" width="515" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="n0012" value="SERVICE postgres · PostgreSQL 16&lt;br&gt;schéma innov_events&lt;br&gt;données, utilisateurs, sessions" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E9E4FF;strokeColor=#6754B5;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1410" y="231" width="460" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="n0013" value="SERVICE mongo · MongoDB&#10;collection logs · connexions : 6 mois&#10;autres journaux : 1 an" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E9E4FF;strokeColor=#6754B5;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1410" y="440" width="460" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="n0014" value="SERVICE mailpit&lt;br&gt;SMTP local + boîte de test&lt;br&gt;aucun e-mail réel expédié" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#FFF1DF;strokeColor=#C58B48;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1410" y="652" width="460" height="133" as="geometry" />
+        </mxCell>
+        <mxCell id="e0015" value="/api · secret nginx + IP contrôlée" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#336E93;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.24;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0005" target="n0008">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0016" value="/api · secret nginx + IP contrôlée" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#336E93;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.7;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0006" target="n0008">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0017" value="HTTP localhost:8080" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#526981;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0003" target="n0005">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0018" value="HTTP localhost:8100" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#526981;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0004" target="n0006">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0019" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#526981;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0008" target="n0009">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0020" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#526981;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0009" target="n0010">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0021" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#526981;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0010" target="n0011">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0022" value="SQL sans TLS (réseau Docker) · données + sessions" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=0;strokeColor=#6754B5;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.1;exitDx=0;exitDy=0;entryX=0;entryY=0.65;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0011" target="n0012">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0023" value="écriture logs MongoDB" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6754B5;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.4;exitDx=0;exitDy=0;entryX=0;entryY=0.45;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0011" target="n0013">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0024" value="SMTP local (Nodemailer)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#A56B2E;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.8;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0010" target="n0014">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n0025" value="API : aucun port publié sur le poste. Bases et Mailpit : ports sur 127.0.0.1 seulement (5432, 27017, 8025, 1025). Secret proxy dans .env non versionné." style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#FCECCB;strokeColor=#D2AC60;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="817" width="1510" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="n0026" value="Volumes postgres_data et mongo_data. Cookie de session HttpOnly / SameSite ; secret CSRF dans req.session, persisté en PostgreSQL par connect-pg-simple." style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#F4F7FC;strokeColor=#B8C8D8;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="947" width="1900" height="73" as="geometry" />
+        </mxCell>
+        <mxCell id="n0027" value="Légende : bleu = interfaces / proxy · vert = logique applicative · violet = persistance · orange = sécurité et e-mails" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=15;fontColor=#14243A;fillColor=#FFFFFF;strokeColor=#FFFFFF;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="75" y="1030" width="1900" height="49" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="co06_prod" name="02 - Architecture production (Render)">
+    <mxGraphModel dx="2130" dy="1160" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2130" pageHeight="1160" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="n0028" value="CO-06 — Architecture de production · Render / Neon / Atlas / Brevo" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=28;fontColor=#14243A;fillColor=#163859;strokeColor=#163859;strokeWidth=2;shadow=0;fontColor=#FFFFFF;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="55" y="27" width="2010" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="n0029" value="Navigateur web&lt;br&gt;Angular" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E2F2FF;strokeColor=#3589B0;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="45" y="249" width="208" height="91" as="geometry" />
+        </mxCell>
+        <mxCell id="n0030" value="Téléphone / PWA&lt;br&gt;Ionic Angular" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E2F2FF;strokeColor=#3589B0;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="45" y="478" width="208" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="b0031" value="Render · trois services Docker publics en HTTPS · Francfort" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacing=15;fontStyle=1;fontSize=20;fontColor=#20354F;fillColor=#F3F7FB;strokeColor=#7F9CB8;strokeWidth=2;dashed=1;dashPattern=8 5;" vertex="1" parent="1">
+          <mxGeometry x="320" y="149" width="1090" height="765" as="geometry" />
+        </mxCell>
+        <mxCell id="n0032" value="Web · nginx&lt;br&gt;Angular /api&lt;br&gt;service Render" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#E4F1FF;strokeColor=#2C78A8;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="389" y="250" width="266" height="118" as="geometry" />
+        </mxCell>
+        <mxCell id="n0033" value="Mobile · nginx&lt;br&gt;Ionic /api&lt;br&gt;service Render" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#E4F1FF;strokeColor=#2C78A8;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="389" y="485" width="266" height="118" as="geometry" />
+        </mxCell>
+        <mxCell id="b0034" value="API Express · service Render" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=15;fontStyle=1;fontSize=19;fontColor=#20354F;fillColor=#FFFFFF;strokeColor=#587596;strokeWidth=2;dashed=1;dashPattern=8 5;" vertex="1" parent="1">
+          <mxGeometry x="755" y="211" width="590" height="565" as="geometry" />
+        </mxCell>
+        <mxCell id="n0035" value="Middleware : secret nginx (X-Innov-Proxy-Secret)&lt;br&gt;IP posée par nginx · débit · session · CSRF · rôles" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#FFEACD;strokeColor=#C88730;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="793" y="267" width="512" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="n0036" value="Routes → contrôleurs JSON" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#DDF2E3;strokeColor=#2F9467;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="793" y="402" width="512" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="n0037" value="Services métier · Argon2 · PDFKit&lt;br&gt;e-mails via API HTTPS Brevo · purges" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#DDF2E3;strokeColor=#2F9467;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="793" y="500" width="512" height="91" as="geometry" />
+        </mxCell>
+        <mxCell id="n0038" value="Repositories métier · SQL paramétré / MongoDB&#10;Sessions : store connect-pg-simple (infrastructure)" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#DDF2E3;strokeColor=#2F9467;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="793" y="625" width="512" height="89" as="geometry" />
+        </mxCell>
+        <mxCell id="n0039" value="Neon · PostgreSQL · Francfort&#10;innov_events · données + sessions&#10;TLS · rôle applicatif limité : à vérifier" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E9E4FF;strokeColor=#6754B5;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1535" y="231" width="500" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="n0040" value="MongoDB Atlas · AWS Paris (eu-west-3)&lt;br&gt;innov_events_logs · collection logs&lt;br&gt;allowlist IP sortantes Render" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E9E4FF;strokeColor=#6754B5;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1535" y="465" width="500" height="141" as="geometry" />
+        </mxCell>
+        <mxCell id="n0041" value="Brevo · API HTTPS&lt;br&gt;e-mails transactionnels en production&lt;br&gt;clé côté API uniquement" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#FFF1DF;strokeColor=#C58B48;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1535" y="686" width="500" height="132" as="geometry" />
+        </mxCell>
+        <mxCell id="e0042" value="HTTPS public" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#526981;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0029" target="n0032">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0043" value="HTTPS public" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#526981;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0030" target="n0033">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0044" value="HTTPS public /api · secret injecté serveur" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#336E93;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.2;exitDx=0;exitDy=0;entryX=0;entryY=0.2;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0032" target="n0035">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0045" value="HTTPS public /api · secret injecté serveur" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#336E93;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.7;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0033" target="n0035">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0046" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#526981;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0035" target="n0036">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0047" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#526981;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0036" target="n0037">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0048" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#526981;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0037" target="n0038">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0049" value="PostgreSQL / TLS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6754B5;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.2;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0038" target="n0039">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0050" value="MongoDB / TLS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6754B5;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.65;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0038" target="n0040">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0051" value="API HTTPS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#A56B2E;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.85;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0037" target="n0041">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n0052" value="API publique protégée par le secret nginx ; exception : GET /api/sante.&#10;Déploiement test du 13/11 : accès direct refusé, sessions, cookie Secure et CSRF vérifiés. IP réelle restant à vérifier." style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=8;fontSize=16;fontColor=#14243A;fillColor=#FCECCB;strokeColor=#D2AC60;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="814" width="1015" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="n0053" value="Dépôt GitHub · main" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=19;fontColor=#14243A;fillColor=#EDF3F9;strokeColor=#667F9A;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="155" y="974" width="356" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="n0054" value="GitHub Actions · validation API/web/mobile" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#EDF3F9;strokeColor=#667F9A;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="677" y="974" width="520" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="n0055" value="Render CD · déploiement après CI verte" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#EDF3F9;strokeColor=#667F9A;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="1395" y="974" width="620" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="e0056" value="push / PR" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#526981;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0053" target="n0054">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0057" value="After CI Checks Pass" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#526981;strokeWidth=2;fontColor=#20354F;fontSize=14;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="n0054" target="n0055">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n0058" value="Secrets hors Git. Offres gratuites avec veille possible. Restent : IP réelle, droits Neon, envoi Brevo et preuve du déploiement automatique après CI." style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#FFFFFF;strokeColor=#FFFFFF;strokeWidth=2;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="124" y="1080" width="1900" height="52" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
