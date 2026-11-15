@@ -104,13 +104,13 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)('J8 avec PostgreSQL reel', () =>
     });
   });
 
-  async function prospect(): Promise<string> {
+  async function prospect(email = 'ada@example.org'): Promise<string> {
     return (
       await admin.query<{ id_prospect: string }>(
         `INSERT INTO innov_events.prospects
       (id_type_evenement,entreprise,nom,prenom,email,telephone,lieu_souhaite,date_souhaitee,nb_participants,description_besoin)
-      VALUES ($1,'Entreprise','Durand','Ada','ada@example.org','0600000000','Paris','2027-01-20',12,'Evenement test') RETURNING id_prospect::text`,
-        [idType],
+      VALUES ($1,'Entreprise','Durand','Ada',$2,'0600000000','Paris','2027-01-20',12,'Evenement test') RETURNING id_prospect::text`,
+        [idType, email],
       )
     ).rows[0]!.id_prospect;
   }
@@ -265,7 +265,7 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)('J8 avec PostgreSQL reel', () =>
   });
   it('interdit la conversion d un prospect echoue', async () => {
     const id = await prospect();
-    await repository.echouer(id);
+    await repository.echouer(id, async () => {});
     await expect(repository.convertir(id, '1 rue du Test')).rejects.toMatchObject({ statut: 409 });
   });
   it('ne duplique pas une conversion simultanee', async () => {
@@ -295,7 +295,7 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)('J8 avec PostgreSQL reel', () =>
     expect((await repository.detail(autre)).statut_devis).toBe('refuse');
     expect((await repository.detail(f.devis)).statut_devis).toBe('accepte');
   });
-  it('refuse aussi un brouillon jamais envoye quand un autre devis est accepte', async () => {
+  it('refuse un brouillon jamais envoye a l acceptation et le masque au client', async () => {
     const f = await fixture();
     const brouillon = await repository.creerDevis(f.evenement, 'Formule brouillon');
     const id = await compte(f.idClient, 'ada@example.org');
@@ -307,6 +307,91 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)('J8 avec PostgreSQL reel', () =>
     const refuse = await repository.detail(brouillon);
     expect(refuse.statut_devis).toBe('refuse');
     expect(refuse.date_envoi).toBeNull();
+    expect(await repository.possede(brouillon, id)).toBe(false);
+    expect(await repository.possede(f.devis, id)).toBe(true);
+    const visibles = (await repository.liste(id, 'client')).map((d) => d.id_devis);
+    expect(visibles).toEqual([f.devis]);
+  });
+  it('rattache une seconde demande du meme e-mail a la fiche existante, puis envoie le devis', async () => {
+    const f = await fixture();
+    await compte(f.idClient, 'ada@example.org');
+    const id = await prospect('ADA@example.org');
+    const conversion = await repository.convertir(id, '9 autre adresse');
+    expect(conversion).toMatchObject({ id_client: f.idClient, cree: false });
+    const fiches = await admin.query<{ n: string; adresse: string }>(
+      'SELECT count(*)::text AS n, max(adresse_postale) AS adresse FROM innov_events.clients',
+    );
+    expect(fiches.rows[0]).toEqual({ n: '1', adresse: '1 rue du Test, Paris' });
+    const evenement = await repository.creerEvenement({
+      id_client: f.idClient,
+      id_prospect: id,
+      id_type_evenement: idType,
+      id_theme: null,
+      nom: 'Seconde session',
+      date_debut: '2027-02-20T09:00:00Z',
+      date_fin: '2027-02-20T17:00:00Z',
+      lieu: 'Paris',
+      statut_evenement: 'brouillon',
+      image_url: null,
+      visible_public: false,
+    });
+    const devis = await repository.creerDevis(evenement, 'Formule B');
+    await repository.remplacerLignes(devis, [{ libelle_prestation: 'Salle', montant_ht: 300 }]);
+    const { agent } = await connecte('admin@example.org', 'admin');
+    const envoi = await agent
+      .post(`/api/devis/${devis}/envoi`)
+      .set(proxy)
+      .set('X-CSRF-Token', await csrf(agent))
+      .send({});
+    expect(envoi.status).toBe(200);
+    expect(courriels.at(-1)?.destinataire).toBe('ada@example.org');
+    expect(courriels.at(-1)?.texte).not.toContain('Mot de passe temporaire');
+  });
+  it('laisse la demande a contacter si le message de classement echoue, puis accepte un nouvel essai', async () => {
+    const id = await prospect();
+    const { agent } = await connecte('admin@example.org', 'admin');
+    const classer = async () =>
+      agent
+        .post(`/api/prospects/${id}/echec`)
+        .set(proxy)
+        .set('X-CSRF-Token', await csrf(agent))
+        .send({ message: 'Nous ne pouvons pas donner suite.' });
+    simulerEchecEnvoi = true;
+    expect((await classer()).status).toBe(503);
+    const statut = async () =>
+      (
+        await admin.query<{ statut_prospect: string }>(
+          'SELECT statut_prospect FROM innov_events.prospects WHERE id_prospect=$1',
+          [id],
+        )
+      ).rows[0]!.statut_prospect;
+    expect(await statut()).toBe('a_contacter');
+    expect(journaux.some((j) => j.type_action === 'ECHEC_PROSPECT')).toBe(false);
+    simulerEchecEnvoi = false;
+    expect((await classer()).status).toBe(200);
+    expect(await statut()).toBe('echoue');
+    expect(courriels).toHaveLength(1);
+    expect(journaux.some((j) => j.type_action === 'ECHEC_PROSPECT')).toBe(true);
+  });
+  it('garde l acceptation et trace l echec de la notification a Innov Events', async () => {
+    const f = await fixture();
+    await repository.remplacerLignes(f.devis, [{ libelle_prestation: 'Accueil', montant_ht: 100 }]);
+    await repository.preparerEnvoi(f.devis, async () => {});
+    const { agent } = await connecte('ada@example.org', 'client', f.idClient);
+    const trace = vi.spyOn(console, 'info').mockImplementation(() => {});
+    simulerEchecEnvoi = true;
+    const reponse = await agent
+      .post(`/api/devis/${f.devis}/reponse`)
+      .set(proxy)
+      .set('X-CSRF-Token', await csrf(agent))
+      .send({ choix: 'accepte' });
+    simulerEchecEnvoi = false;
+    expect(reponse.status).toBe(200);
+    expect((await repository.detail(f.devis)).statut_devis).toBe('accepte');
+    expect(trace).toHaveBeenCalledWith(
+      JSON.stringify({ evenement: 'notification_acceptation_echouee', id_devis: f.devis }),
+    );
+    trace.mockRestore();
   });
   it('envoie le PDF, cree le compte temporaire et journalise le devis', async () => {
     const f = await fixture();

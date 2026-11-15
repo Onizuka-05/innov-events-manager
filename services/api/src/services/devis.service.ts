@@ -29,18 +29,23 @@ export class DevisService {
   ) {
     await this.logs.action(type_action, id_utilisateur, details);
   }
+  /** Le classement n'est enregistre que si le message au prospect est parti. */
   async echouer(id: string, message: string, acteur: string) {
-    const p = await this.repository.echouer(id);
+    await this.repository.echouer(id, async (p) => {
+      try {
+        await this.courriels.envoyer({
+          destinataire: p.email,
+          titre: 'Suite à votre demande Innov’Events',
+          texte: `Bonjour ${p.prenom} ${p.nom},\n${message}\nCordialement, Innov’Events`,
+        });
+      } catch {
+        throw new ErreurHttp(
+          503,
+          'Le message n’a pas pu être envoyé : la demande reste à contacter. Réessayez plus tard.',
+        );
+      }
+    });
     await this.journal('ECHEC_PROSPECT', acteur, { id_prospect: id });
-    try {
-      await this.courriels.envoyer({
-        destinataire: p.email,
-        titre: 'Suite à votre demande Innov’Events',
-        texte: `Bonjour ${p.prenom} ${p.nom},\n${message}\nCordialement, Innov’Events`,
-      });
-    } catch {
-      throw new ErreurHttp(503, 'Demande classée, mais la notification a échoué.');
-    }
   }
   async creerEvenement(d: Parameters<DevisRepository['creerEvenement']>[0], acteur: string) {
     const id = await this.repository.creerEvenement(d);
@@ -190,7 +195,10 @@ export class DevisService {
           texte: `Devis n° ${id} accepté par un client.`,
         });
       } catch {
-        /* La décision client reste acquise ; notification à rejouer manuellement. */
+        // La decision du client reste acquise ; ligne identifiable dans les logs pour la relance.
+        console.info(
+          JSON.stringify({ evenement: 'notification_acceptation_echouee', id_devis: id }),
+        );
       }
     }
   }

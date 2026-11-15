@@ -39,6 +39,8 @@ interface Client {
   id_client: string;
   entreprise: string;
   nom_contact: string;
+  email_contact: string | null;
+  adresse_postale: string | null;
 }
 interface Evenement {
   id_evenement: string;
@@ -230,23 +232,40 @@ export class Devis {
       this.annulerEchec();
     }, 'Demande classée sans suite : le message a été envoyé par e-mail.');
   }
-  protected choisirConversion(id: string) {
+  /** Fiche client existante du meme e-mail : la conversion y rattachera la demande. */
+  protected clientExistant(p: Prospect): Client | null {
+    const email = p.email.toLocaleLowerCase();
+    return this.clients().find((c) => c.email_contact?.toLocaleLowerCase() === email) ?? null;
+  }
+  protected preparerConversion(id: string) {
     this.id_prospect = id;
-    this.adresse_postale = '';
+    const p = this.prospectConversion();
+    this.adresse_postale = (p && this.clientExistant(p)?.adresse_postale) || '';
+  }
+  protected choisirConversion(id: string) {
+    this.preparerConversion(id);
     document.getElementById('adresse')?.focus();
   }
   protected convertir() {
     const id = this.id_prospect;
+    let cree = true;
     return this.operation(
       async () => {
-        await this.api.modifier('POST', `/prospects/${id}/conversion`, {
-          adresse_postale: this.adresse_postale,
-        });
+        const resultat = await this.api.modifier<{ cree?: boolean }>(
+          'POST',
+          `/prospects/${id}/conversion`,
+          { adresse_postale: this.adresse_postale },
+        );
+        cree = resultat.cree !== false;
         this.id_prospect = '';
         this.adresse_postale = '';
       },
       'Client créé : l’événement est pré-rempli à l’étape 2.',
       () => {
+        if (!cree)
+          this.information.set(
+            'Demande rattachée au client existant : l’événement est pré-rempli à l’étape 2.',
+          );
         this.id_prospect_evenement = id;
         this.preRemplirEvenement();
         this.focaliser('titre-evenement');

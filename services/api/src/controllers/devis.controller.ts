@@ -50,11 +50,12 @@ export class DevisController {
       identifiant(r.params['id']),
       texte(d, 'adresse_postale', 2000),
     );
-    await this.service.journal('CREATION_CLIENT', this.acteur(r), {
-      id_client: resultat.id_client,
-      nom_client: resultat.nom_client,
-    });
-    s.status(201).json(resultat);
+    if (resultat.cree)
+      await this.service.journal('CREATION_CLIENT', this.acteur(r), {
+        id_client: resultat.id_client,
+        nom_client: resultat.nom_client,
+      });
+    s.status(resultat.cree ? 201 : 200).json(resultat);
   };
   creerEvenement = async (r: Request, s: Response) => {
     const d = objet(r.body, [

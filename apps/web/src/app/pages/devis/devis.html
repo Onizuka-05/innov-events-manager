@@ -137,7 +137,13 @@
         <div class="grille">
           <div class="champ">
             <label for="prospect">Demande à convertir</label>
-            <select id="prospect" name="prospect" [(ngModel)]="id_prospect" required>
+            <select
+              id="prospect"
+              name="prospect"
+              required
+              [(ngModel)]="id_prospect"
+              (ngModelChange)="preparerConversion($event)"
+            >
               <option value="">Choisir une demande</option>
               @for (p of prospects(); track p.id_prospect) {
                 @if (p.statut_prospect === 'a_contacter') {
@@ -162,6 +168,12 @@
         </div>
         @if (prospectConversion(); as p) {
           <h3 class="titre-infos">Informations de la demande</h3>
+          @if (clientExistant(p); as c) {
+            <p class="aide">
+              Client existant avec cet e-mail : {{ c.entreprise }}. La demande lui sera rattachée ;
+              sa fiche, son adresse et son compte sont conservés.
+            </p>
+          }
           <dl class="infos-demande">
             <dt>Entreprise</dt>
             <dd>{{ p.entreprise }}</dd>

@@ -56,8 +56,14 @@ export class DevisRepository {
     }
   }
 
-  /** Conversion atomique : verrouille le prospect avant de creer la fiche. */
-  async convertir(id: string, adresse: string): Promise<{ id_client: string; nom_client: string }> {
+  /**
+   * Conversion atomique : verrouille le prospect, puis rattache la demande a la fiche existante
+   * du meme e-mail (client qui revient) ou cree une nouvelle fiche.
+   */
+  async convertir(
+    id: string,
+    adresse: string,
+  ): Promise<{ id_client: string; nom_client: string; cree: boolean }> {
     return this.transaction(async (db) => {
       const resultat = await db.query<{
         id_client: string | null;
@@ -79,23 +85,40 @@ export class DevisRepository {
       const p = resultat.rows[0];
       if (!p || p.id_client || p.statut_prospect !== 'a_contacter')
         throw new ErreurHttp(409, 'La demande est absente ou déjà convertie.');
-      const fiche = await db.query<{ id_client: string }>(
-        `INSERT INTO innov_events.clients
-        (entreprise, nom_contact, prenom_contact, email_contact, telephone, adresse_postale)
-        VALUES ($1,$2,$3,$4,$5,$6) RETURNING id_client::text`,
-        [p.entreprise, p.nom, p.prenom, p.email, p.telephone, adresse],
+      // Deux demandes du meme e-mail converties en meme temps ne creent pas deux fiches.
+      await db.query('SELECT pg_advisory_xact_lock(hashtext(LOWER($1)))', [p.email]);
+      const existante = await db.query<{ id_client: string; nom_client: string }>(
+        `SELECT id_client::text, prenom_contact || ' ' || nom_contact AS nom_client
+        FROM innov_events.clients
+        WHERE LOWER(email_contact)=LOWER($1) AND date_anonymisation IS NULL
+        ORDER BY (id_utilisateur IS NULL), id_client DESC LIMIT 1 FOR UPDATE`,
+        [p.email],
       );
-      const id_client = fiche.rows[0]!.id_client;
+      let fiche = existante.rows[0];
+      const cree = !fiche;
+      if (!fiche) {
+        const insertion = await db.query<{ id_client: string }>(
+          `INSERT INTO innov_events.clients
+          (entreprise, nom_contact, prenom_contact, email_contact, telephone, adresse_postale)
+          VALUES ($1,$2,$3,$4,$5,$6) RETURNING id_client::text`,
+          [p.entreprise, p.nom, p.prenom, p.email, p.telephone, adresse],
+        );
+        fiche = { id_client: insertion.rows[0]!.id_client, nom_client: `${p.prenom} ${p.nom}` };
+      }
       await db.query(
         `UPDATE innov_events.prospects SET id_client=$2, statut_prospect='converti', date_dernier_contact=NOW()
         WHERE id_prospect=$1`,
-        [id, id_client],
+        [id, fiche.id_client],
       );
-      return { id_client, nom_client: `${p.prenom} ${p.nom}` };
+      return { ...fiche, cree };
     });
   }
 
-  async echouer(id: string): Promise<{ email: string; nom: string; prenom: string }> {
+  /** Classement sans suite : le message part avant le COMMIT ; un echec d'envoi annule tout. */
+  async echouer(
+    id: string,
+    notifier: (p: { email: string; nom: string; prenom: string }) => Promise<void>,
+  ): Promise<{ email: string; nom: string; prenom: string }> {
     return this.transaction(async (db) => {
       const r = await db.query<{ email: string; nom: string; prenom: string }>(
         `UPDATE innov_events.prospects
@@ -104,6 +127,7 @@ export class DevisRepository {
         [id],
       );
       if (!r.rows[0]) throw new ErreurHttp(409, 'Demande non modifiable.');
+      await notifier(r.rows[0]);
       return r.rows[0];
     });
   }
@@ -183,7 +207,7 @@ export class DevisRepository {
        e.nom AS evenement, c.entreprise, d.date_envoi
        FROM innov_events.devis d JOIN innov_events.evenements e ON e.id_evenement=d.id_evenement
        JOIN innov_events.clients c ON c.id_client=e.id_client
-       WHERE ($1::boolean = FALSE OR (c.id_utilisateur=$2 AND d.statut_devis <> 'en_preparation'))
+       WHERE ($1::boolean = FALSE OR (c.id_utilisateur=$2 AND d.date_envoi IS NOT NULL))
        ORDER BY d.date_creation DESC LIMIT 200`,
         [client, idUtilisateur],
       )
@@ -212,7 +236,7 @@ export class DevisRepository {
   async possede(id: string, utilisateur: string): Promise<boolean> {
     const r = await this.pool.query(
       `SELECT 1 FROM innov_events.devis d JOIN innov_events.evenements e USING (id_evenement)
-       JOIN innov_events.clients c USING (id_client) WHERE d.id_devis=$1 AND c.id_utilisateur=$2 AND d.statut_devis <> 'en_preparation'`,
+       JOIN innov_events.clients c USING (id_client) WHERE d.id_devis=$1 AND c.id_utilisateur=$2 AND d.date_envoi IS NOT NULL`,
       [id, utilisateur],
     );
     return r.rowCount === 1;
