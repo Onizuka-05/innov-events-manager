@@ -28,6 +28,11 @@ import { AuthentificationController } from './controllers/authentification.contr
 import { FormulairesController } from './controllers/formulaires.controller.js';
 import { creerRoutesAuthentification } from './routes/authentification.routes.js';
 import { creerRoutesFormulaires } from './routes/formulaires.routes.js';
+import { DevisRepository } from './repositories/devis.repository.js';
+import { DevisService } from './services/devis.service.js';
+import { DevisPdfService } from './services/devis-pdf.service.js';
+import { DevisController } from './controllers/devis.controller.js';
+import { creerRoutesDevis } from './routes/devis.routes.js';
 
 export interface Dependances {
   postgres: Pool;
@@ -126,6 +131,16 @@ export function creerApp({
       auth,
     ),
   );
+  const devisRepository = new DevisRepository(postgres);
+  const devisService = new DevisService(
+    devisRepository,
+    envoi,
+    new MotsDePasseService(),
+    new LogsService(new LogsRepository(mongodb, configuration.mongodbDatabase)),
+    configuration.mailContact ?? 'contact@innov-events.invalid',
+    new DevisPdfService(),
+  );
+  app.use('/api', creerRoutesDevis(new DevisController(devisService), auth));
   app.use(routeAbsente);
   app.use(gererErreurs);
   return app;

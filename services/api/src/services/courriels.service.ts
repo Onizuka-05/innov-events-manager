@@ -7,6 +7,7 @@ export interface Courriel {
   titre: string;
   texte: string;
   repondreA?: string;
+  piecesJointes?: { nom: string; contenu: Buffer }[];
 }
 export interface EnvoiCourriels {
   envoyer(courriel: Courriel): Promise<void>;
@@ -30,6 +31,14 @@ export class CourrielsService implements EnvoiCourriels {
             to: [{ email: courriel.destinataire }],
             subject: courriel.titre,
             textContent: courriel.texte,
+            ...(courriel.piecesJointes?.length
+              ? {
+                  attachment: courriel.piecesJointes.map((p) => ({
+                    name: p.nom,
+                    content: p.contenu.toString('base64'),
+                  })),
+                }
+              : {}),
             ...(courriel.repondreA ? { replyTo: { email: courriel.repondreA } } : {}),
           }),
         });
@@ -49,6 +58,10 @@ export class CourrielsService implements EnvoiCourriels {
           to: courriel.destinataire,
           subject: courriel.titre,
           text: courriel.texte,
+          attachments: courriel.piecesJointes?.map((p) => ({
+            filename: p.nom,
+            content: p.contenu,
+          })),
           replyTo: courriel.repondreA,
         });
       }
