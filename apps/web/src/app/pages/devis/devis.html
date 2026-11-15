@@ -1,0 +1,552 @@
+<section class="conteneur page devis">
+  <header class="en-tete">
+    <a class="retour" routerLink="/espace">← Retour à mon espace</a>
+    <h1>{{ admin() ? 'Administration des devis' : 'Mes devis' }}</h1>
+    <p class="texte-secondaire">
+      {{
+        admin()
+          ? 'Suivez les demandes, convertissez les prospects et préparez les propositions.'
+          : 'Consultez les propositions reçues et donnez votre réponse.'
+      }}
+    </p>
+  </header>
+  @if (erreur()) {
+    <p class="erreur message" role="alert">{{ erreur() }}</p>
+  }
+  @if (information()) {
+    <p class="succes message" role="status">{{ information() }}</p>
+  }
+
+  @if (admin()) {
+    <section class="carte bloc" aria-labelledby="titre-prospects">
+      <h2 id="titre-prospects">Prospects</h2>
+      <div class="formulaire barre-filtres">
+        <div class="champ">
+          <label for="recherche">Rechercher un prospect</label>
+          <input
+            id="recherche"
+            name="recherche"
+            type="search"
+            placeholder="Entreprise, nom ou e-mail"
+            [(ngModel)]="recherche"
+          />
+        </div>
+        <div class="champ">
+          <label for="filtre">Statut</label>
+          <select id="filtre" name="filtre" [(ngModel)]="filtreStatut">
+            <option value="">Tous</option>
+            <option value="a_contacter">À contacter</option>
+            <option value="converti">Converti</option>
+            <option value="echoue">Échoué</option>
+          </select>
+        </div>
+      </div>
+      @if (prospectsFiltres().length === 0) {
+        <p class="vide">Aucune demande ne correspond.</p>
+      } @else {
+        <div class="tableau-defilant" tabindex="0" role="region" aria-label="Liste des prospects">
+          <table>
+            <caption class="masque">
+              Demandes de devis reçues
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Entreprise</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Date souhaitée</th>
+                <th scope="col">Statut</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (p of prospectsFiltres(); track p.id_prospect) {
+                <tr>
+                  <td>{{ p.entreprise }}</td>
+                  <td>
+                    {{ p.prenom }} {{ p.nom }}<br /><span class="texte-secondaire">{{
+                      p.email
+                    }}</span>
+                  </td>
+                  <td>{{ dateCourte(p.date_souhaitee) }}</td>
+                  <td>
+                    <span [class]="'statut ' + classeStatut(p.statut_prospect)">{{
+                      libelleStatut(p.statut_prospect)
+                    }}</span>
+                  </td>
+                  <td>
+                    @if (p.statut_prospect === 'a_contacter') {
+                      <div class="actions">
+                        <button
+                          type="button"
+                          class="bouton-secondaire"
+                          [attr.aria-label]="'Convertir en client : ' + p.entreprise"
+                          (click)="choisirConversion(p.id_prospect)"
+                        >
+                          Convertir
+                        </button>
+                        <button
+                          type="button"
+                          [attr.aria-label]="'Classer sans suite : ' + p.entreprise"
+                          (click)="choisirEchec(p)"
+                        >
+                          Classer sans suite
+                        </button>
+                      </div>
+                    } @else {
+                      <span class="texte-secondaire">—</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+      @if (prospectEchec(); as p) {
+        <form class="formulaire panneau" (ngSubmit)="echouer()">
+          <h3>Classer sans suite : {{ p.entreprise }}</h3>
+          <p class="aide">Le message est envoyé par e-mail à {{ p.email }}.</p>
+          <div class="champ">
+            <label for="message-echec">Message au prospect</label>
+            <textarea
+              id="message-echec"
+              name="messageEchec"
+              rows="3"
+              maxlength="3000"
+              required
+              [(ngModel)]="messageEchec"
+            ></textarea>
+          </div>
+          <div class="actions">
+            <button
+              type="submit"
+              class="bouton-primaire"
+              [disabled]="chargement() || !messageEchec.trim()"
+            >
+              Envoyer et classer
+            </button>
+            <button type="button" (click)="annulerEchec()">Annuler</button>
+          </div>
+        </form>
+      }
+    </section>
+
+    <section class="carte bloc" aria-labelledby="titre-conversion">
+      <h2 id="titre-conversion"><span class="etape">1</span>Convertir un prospect</h2>
+      <form class="formulaire" (ngSubmit)="convertir()">
+        <div class="grille">
+          <div class="champ">
+            <label for="prospect">Demande à convertir</label>
+            <select
+              id="prospect"
+              name="prospect"
+              required
+              [(ngModel)]="id_prospect"
+              (ngModelChange)="preparerConversion($event)"
+            >
+              <option value="">Choisir une demande</option>
+              @for (p of prospects(); track p.id_prospect) {
+                @if (p.statut_prospect === 'a_contacter') {
+                  <option [value]="p.id_prospect">
+                    {{ p.entreprise }} — {{ p.prenom }} {{ p.nom }}
+                  </option>
+                }
+              }
+            </select>
+          </div>
+          <div class="champ">
+            <label for="adresse">Adresse postale du client</label>
+            <input
+              id="adresse"
+              name="adresse"
+              autocomplete="street-address"
+              maxlength="2000"
+              required
+              [(ngModel)]="adresse_postale"
+            />
+          </div>
+        </div>
+        @if (prospectConversion(); as p) {
+          <h3 class="titre-infos">Informations de la demande</h3>
+          @if (clientExistant(p); as c) {
+            <p class="aide">
+              Client existant avec cet e-mail : {{ c.entreprise }}. La demande lui sera rattachée ;
+              sa fiche, son adresse et son compte sont conservés.
+            </p>
+          }
+          <dl class="infos-demande">
+            <dt>Entreprise</dt>
+            <dd>{{ p.entreprise }}</dd>
+            <dt>Nom</dt>
+            <dd>{{ p.nom }}</dd>
+            <dt>Prénom</dt>
+            <dd>{{ p.prenom }}</dd>
+            <dt>E-mail</dt>
+            <dd>{{ p.email }}</dd>
+            <dt>Téléphone</dt>
+            <dd>{{ p.telephone }}</dd>
+          </dl>
+        }
+        <div class="actions">
+          <button type="submit" class="bouton-primaire" [disabled]="chargement()">Convertir</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="carte bloc" aria-labelledby="titre-evenement">
+      <h2 id="titre-evenement" tabindex="-1"><span class="etape">2</span>Créer un événement</h2>
+      <form class="formulaire" (ngSubmit)="creerEvenement()">
+        <div class="grille">
+          <div class="champ">
+            <label for="prospect-evenement">Demande associée</label>
+            <select
+              id="prospect-evenement"
+              name="prospect-evenement"
+              [(ngModel)]="id_prospect_evenement"
+              (ngModelChange)="preRemplirEvenement()"
+            >
+              <option value="">Sans demande</option>
+              @for (p of prospects(); track p.id_prospect) {
+                @if (p.statut_prospect === 'converti') {
+                  <option [value]="p.id_prospect">{{ p.entreprise }} — {{ p.nom }}</option>
+                }
+              }
+            </select>
+            <p class="aide">Choisir une demande pré-remplit le formulaire.</p>
+          </div>
+          <div class="champ">
+            <label for="client">Client</label>
+            <select id="client" name="client" [(ngModel)]="id_client" required>
+              <option value="">Choisir un client</option>
+              @for (c of clients(); track c.id_client) {
+                <option [value]="c.id_client">{{ c.entreprise }} — {{ c.nom_contact }}</option>
+              }
+            </select>
+          </div>
+          <div class="champ pleine-largeur">
+            <label for="nom">Nom de l'événement</label>
+            <input id="nom" name="nom" maxlength="255" required [(ngModel)]="nom" />
+          </div>
+          <div class="champ">
+            <label for="type">Type d'événement</label>
+            <select id="type" name="type" [(ngModel)]="id_type_evenement" required>
+              @for (t of types(); track t.id_type_evenement) {
+                <option [ngValue]="t.id_type_evenement">{{ t.libelle }}</option>
+              }
+            </select>
+          </div>
+          <div class="champ">
+            <label for="theme">Thème (facultatif)</label>
+            <select id="theme" name="theme" [(ngModel)]="id_theme">
+              <option [ngValue]="null">Sans thème</option>
+              @for (t of themes(); track t.id_theme) {
+                <option [ngValue]="t.id_theme">{{ t.libelle }}</option>
+              }
+            </select>
+          </div>
+          <div class="champ">
+            <label for="debut">Date et heure de début</label>
+            <input
+              id="debut"
+              type="datetime-local"
+              name="debut"
+              required
+              [(ngModel)]="date_debut"
+            />
+          </div>
+          <div class="champ">
+            <label for="fin">Date et heure de fin</label>
+            <input id="fin" type="datetime-local" name="fin" required [(ngModel)]="date_fin" />
+          </div>
+          <div class="champ">
+            <label for="lieu">Lieu</label>
+            <input id="lieu" name="lieu" required [(ngModel)]="lieu" />
+          </div>
+          <div class="champ">
+            <label for="statut">Statut</label>
+            <select id="statut" name="statut" [(ngModel)]="statut_evenement">
+              <option value="brouillon">Brouillon</option>
+              <option value="accepte">Accepté</option>
+            </select>
+          </div>
+          <div class="champ pleine-largeur">
+            <label for="image">Image HTTPS (facultative)</label>
+            <input
+              id="image"
+              type="url"
+              name="image"
+              placeholder="https://"
+              [(ngModel)]="image_url"
+            />
+          </div>
+          <div class="champ pleine-largeur">
+            <label class="case" for="visible"
+              ><input id="visible" type="checkbox" name="visible" [(ngModel)]="visible_public" />
+              Visible sur la page publique (avec accord du client)</label
+            >
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit" class="bouton-primaire" [disabled]="chargement()">
+            Créer l'événement
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section class="carte bloc" aria-labelledby="titre-creation-devis">
+      <h2 id="titre-creation-devis" tabindex="-1"><span class="etape">3</span>Créer un devis</h2>
+      <form class="formulaire" (ngSubmit)="creerDevis()">
+        <div class="grille">
+          <div class="champ">
+            <label for="evenement">Événement</label>
+            <select id="evenement" name="evenement" [(ngModel)]="id_evenement" required>
+              <option value="">Choisir un événement</option>
+              @for (e of evenements(); track e.id_evenement) {
+                <option [value]="e.id_evenement">{{ e.nom }}</option>
+              }
+            </select>
+          </div>
+          <div class="champ">
+            <label for="intitule">Intitulé de la proposition</label>
+            <input id="intitule" name="intitule" maxlength="255" required [(ngModel)]="intitule" />
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit" class="bouton-primaire" [disabled]="chargement()">
+            Créer le devis
+          </button>
+        </div>
+      </form>
+    </section>
+  }
+
+  <section class="carte bloc" aria-labelledby="titre-liste-devis">
+    <h2 id="titre-liste-devis">{{ admin() ? 'Liste des devis' : 'Mes propositions' }}</h2>
+    @if (devis().length === 0) {
+      <p class="vide">Aucun devis disponible.</p>
+    } @else {
+      <div class="tableau-defilant" tabindex="0" role="region" aria-label="Liste des devis">
+        <table>
+          <caption class="masque">
+            Devis
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Intitulé</th>
+              <th scope="col">Événement</th>
+              @if (admin()) {
+                <th scope="col">Client</th>
+              }
+              <th scope="col">Statut</th>
+              <th scope="col"><span class="masque">Action</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (d of devis(); track d.id_devis) {
+              <tr [attr.aria-current]="selection()?.id_devis === d.id_devis ? 'true' : null">
+                <td>{{ d.intitule }}</td>
+                <td>{{ d.evenement }}</td>
+                @if (admin()) {
+                  <td>{{ d.entreprise }}</td>
+                }
+                <td>
+                  <span [class]="'statut ' + classeStatut(d.statut_devis)">{{
+                    libelleStatut(d.statut_devis)
+                  }}</span>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="bouton-secondaire"
+                    [attr.aria-label]="'Ouvrir le devis ' + d.intitule"
+                    (click)="afficher(d.id_devis)"
+                  >
+                    Ouvrir
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+
+  @if (selection(); as d) {
+    <section class="carte bloc" aria-labelledby="detail-devis">
+      <div class="detail-en-tete">
+        <div>
+          <h2 id="detail-devis" tabindex="-1">{{ d.intitule }}</h2>
+          <p class="texte-secondaire">
+            {{ nomEvenement(d.id_devis) }}
+            <span [class]="'statut ' + classeStatut(d.statut_devis)">{{
+              libelleStatut(d.statut_devis)
+            }}</span>
+          </p>
+        </div>
+        <button type="button" class="bouton-secondaire" (click)="telecharger()">
+          Télécharger le PDF
+        </button>
+      </div>
+
+      @if (d.motif_modification) {
+        <p class="motif">
+          <strong>Dernière demande de modification :</strong> {{ d.motif_modification }}
+        </p>
+      }
+
+      @if (d.lignes.length === 0) {
+        <p class="vide">Aucune prestation pour le moment.</p>
+      } @else {
+        <div class="tableau-defilant" tabindex="0" role="region" aria-label="Prestations du devis">
+          <table>
+            <caption class="masque">
+              Prestations
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Prestation</th>
+                <th scope="col" class="montant">Montant HT</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (l of d.lignes; track l.id_ligne_devis) {
+                <tr>
+                  <td>{{ l.libelle_prestation }}</td>
+                  <td class="montant">{{ euros(l.montant_ht) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+      <table class="totaux">
+        <caption class="masque">
+          Totaux du devis
+        </caption>
+        <tbody>
+          <tr>
+            <th scope="row">Total HT</th>
+            <td class="montant">{{ euros(d.totaux.total_ht) }}</td>
+          </tr>
+          <tr>
+            <th scope="row">TVA ({{ pourcentage(d.taux_tva_applique) }})</th>
+            <td class="montant">{{ euros(d.totaux.total_tva) }}</td>
+          </tr>
+          <tr class="total">
+            <th scope="row">Total TTC</th>
+            <td class="montant">{{ euros(d.totaux.total_ttc) }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      @if (admin() && (d.statut_devis === 'en_preparation' || d.statut_devis === 'modification')) {
+        <div class="sous-bloc">
+          <h3>Modifier la proposition</h3>
+          <form class="formulaire ligne-formulaire" (ngSubmit)="modifierIntitule()">
+            <div class="champ">
+              <label for="intitule-devis">Intitulé du devis</label>
+              <input
+                id="intitule-devis"
+                name="nouvel-intitule"
+                maxlength="255"
+                required
+                [(ngModel)]="nouvelIntitule"
+              />
+            </div>
+            <button type="submit" [disabled]="chargement()">Modifier l'intitulé</button>
+          </form>
+        </div>
+
+        <div class="sous-bloc">
+          <h3>Prestations</h3>
+          <form class="formulaire" (ngSubmit)="enregistrerLignes()">
+            @for (l of lignes; track $index; let i = $index) {
+              <div class="ligne-prestation">
+                <div class="champ">
+                  <label [for]="'libelle-' + i">Prestation {{ i + 1 }}</label>
+                  <input
+                    [id]="'libelle-' + i"
+                    [name]="'libelle-' + i"
+                    required
+                    [(ngModel)]="l.libelle_prestation"
+                  />
+                </div>
+                <div class="champ">
+                  <label [for]="'montant-' + i">Montant HT (€)</label>
+                  <input
+                    [id]="'montant-' + i"
+                    [name]="'montant-' + i"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    required
+                    [(ngModel)]="l.montant_ht"
+                  />
+                </div>
+                <button type="button" (click)="retirerLigne(i)">
+                  Retirer <span class="masque">la prestation {{ i + 1 }}</span>
+                </button>
+              </div>
+            }
+            <div class="actions">
+              <button type="button" (click)="ajouterLigne()">Ajouter une prestation</button>
+              <button type="submit" class="bouton-secondaire" [disabled]="chargement()">
+                Enregistrer les prestations
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="sous-bloc actions">
+          <button
+            type="button"
+            class="bouton-primaire"
+            [disabled]="chargement() || d.lignes.length === 0"
+            (click)="envoyer()"
+          >
+            Envoyer au client
+          </button>
+          @if (d.lignes.length === 0) {
+            <p class="aide">Enregistrez au moins une prestation avant l'envoi.</p>
+          }
+        </div>
+      }
+
+      @if (!admin() && d.statut_devis === 'etude_client') {
+        <div class="sous-bloc">
+          <h3>Votre réponse</h3>
+          <form class="formulaire" (ngSubmit)="repondre()">
+            <div class="champ">
+              <label for="choix">Décision</label>
+              <select id="choix" name="choix" [(ngModel)]="choix">
+                <option value="accepte">Accepter</option>
+                <option value="modification">Demander une modification</option>
+                <option value="refuse">Refuser</option>
+              </select>
+            </div>
+            @if (choix === 'modification') {
+              <div class="champ">
+                <label for="motif">Motif de la modification</label>
+                <textarea
+                  id="motif"
+                  name="motif"
+                  rows="4"
+                  maxlength="3000"
+                  required
+                  [(ngModel)]="motif"
+                ></textarea>
+              </div>
+            }
+            <div class="actions">
+              <button type="submit" class="bouton-primaire" [disabled]="chargement()">
+                Valider ma réponse
+              </button>
+            </div>
+          </form>
+        </div>
+      }
+    </section>
+  }
+</section>

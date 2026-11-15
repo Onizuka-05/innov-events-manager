@@ -4,6 +4,20 @@ import { LogsRepository } from '../repositories/logs.repository.js';
 export class LogsService {
   constructor(private readonly repository: LogsRepository) {}
 
+  /** Conserve la structure commune des journaux applicatifs. */
+  action(
+    type_action: string,
+    id_utilisateur: string,
+    details: Record<string, string | number | null>,
+  ): Promise<void> {
+    return this.repository.ajouter({
+      horodatage: new Date(),
+      type_action,
+      id_utilisateur: String(id_utilisateur),
+      details,
+    });
+  }
+
   /** Enregistre l'IP validee par le middleware de confiance. */
   connexion(id: string, ip: string): Promise<void> {
     return this.repository.ajouter({

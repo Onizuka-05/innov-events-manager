@@ -54,6 +54,12 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/remerciement/remerciement').then((m) => m.Remerciement),
   },
   {
+    path: 'devis',
+    title: 'Devis | Innov’Events',
+    canActivate: [authentificationGuard],
+    loadComponent: () => import('./pages/devis/devis').then((m) => m.Devis),
+  },
+  {
     path: 'espace',
     title: 'Mon espace | Innov’Events',
     canActivate: [authentificationGuard],
