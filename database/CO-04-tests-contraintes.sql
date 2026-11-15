@@ -82,6 +82,9 @@ CALL pg_temp.ok('demande de modification', $q$UPDATE devis SET statut_devis='mod
 CALL pg_temp.ok('contre-proposition sur place, dernier motif conserve', $q$UPDATE devis SET statut_devis='etude_client', date_envoi=now() WHERE intitule='Formule premium'$q$);
 CALL pg_temp.ok('acceptation et refus automatique des autres devis ouverts', $q$UPDATE devis SET statut_devis = CASE WHEN intitule='Formule premium' THEN 'accepte' ELSE 'refuse' END$q$);
 CALL pg_temp.ko('deux devis acceptes refuses', $q$UPDATE devis SET statut_devis='accepte' WHERE intitule='Formule economique'$q$, '23505');
+INSERT INTO devis(id_evenement,intitule,taux_tva_applique) SELECT id_evenement,'Formule jamais envoyee',20 FROM evenements;
+CALL pg_temp.ok('brouillon jamais envoye refuse automatiquement, sans date_envoi', $q$UPDATE devis SET statut_devis='refuse' WHERE intitule='Formule jamais envoyee'$q$);
+DELETE FROM devis WHERE intitule='Formule jamais envoyee';
 
 -- 7. Lignes : permutation de l'ordre dans une transaction
 INSERT INTO devis(id_evenement,intitule,taux_tva_applique) SELECT id_evenement,'Brouillon interne',20 FROM evenements;

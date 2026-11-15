@@ -13,6 +13,11 @@ import { messageErreur } from '../../core/api.service';
     @if (auth.utilisateur()?.role === 'admin') {
       <p><a routerLink="/administration/remerciement">Modifier le message de remerciement</a></p>
     }
+    <p>
+      <a routerLink="/devis">{{
+        auth.utilisateur()?.role === 'admin' ? 'Gérer les devis' : 'Mes devis'
+      }}</a>
+    </p>
     <button type="button" [disabled]="envoi()" (click)="deconnecter()">Se déconnecter</button>
     @if (erreur()) {
       <p role="alert">{{ erreur() }}</p>

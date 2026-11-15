@@ -1,5 +1,5 @@
 CO-04 — Journal d'execution des tests des contraintes
-Date : 2026-11-11 16:12 UTC
+Date : 2026-11-15 15:19 UTC (rejoue apres la correction de ck_devis_envoi)
 Serveur : PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
 Base : neuve ; compte d'execution : proprietaire de la base (superutilisateur)
 
@@ -38,6 +38,7 @@ Base : neuve ; compte d'execution : proprietaire de la base (superutilisateur)
    OK  contre-proposition sur place, dernier motif conserve
    OK  acceptation et refus automatique des autres devis ouverts
    OK  (refus attendu) deux devis acceptes refuses
+   OK  brouillon jamais envoye refuse automatiquement, sans date_envoi
    OK  permutation de deux lignes
    OK  (refus attendu) ordre en double refuse a la verification
    OK  ordre permute
@@ -69,5 +70,5 @@ Base : neuve ; compte d'execution : proprietaire de la base (superutilisateur)
    OK  session ecrite
    TOUS LES TESTS PASSENT
 
-Bilan : 60 tests reussis, 0 echec.
+Bilan : 61 tests reussis, 0 echec.
 Base apres les tests (transaction annulee) : 0 utilisateur, 0 type d'evenement : base inchangee.

@@ -1,0 +1,316 @@
+import type { Pool, PoolClient } from 'pg';
+import { ErreurHttp } from '../http/erreur-http.js';
+
+export interface LigneDevis {
+  libelle_prestation: string;
+  montant_ht: number;
+}
+export interface EvenementSaisie {
+  id_client: string;
+  id_prospect: string | null;
+  id_type_evenement: number;
+  id_theme: number | null;
+  nom: string;
+  date_debut: string;
+  date_fin: string;
+  lieu: string;
+  statut_evenement: 'brouillon' | 'accepte';
+  image_url: string | null;
+  visible_public: boolean;
+}
+export interface DevisDetail {
+  id_devis: string;
+  id_evenement: string;
+  intitule: string;
+  statut_devis: string;
+  taux_tva_applique: string;
+  date_envoi: string | null;
+  motif_modification: string | null;
+  id_client: string;
+  email_contact: string | null;
+  nom_contact: string | null;
+  lignes: {
+    id_ligne_devis: string;
+    libelle_prestation: string;
+    montant_ht: string;
+    ordre_affichage: number;
+  }[];
+}
+
+/** Regroupe les transactions du parcours devis, avec verrouillage concurrent. */
+export class DevisRepository {
+  constructor(private readonly pool: Pool) {}
+
+  async transaction<T>(operation: (client: PoolClient) => Promise<T>): Promise<T> {
+    const client = await this.pool.connect();
+    try {
+      await client.query('BEGIN');
+      const resultat = await operation(client);
+      await client.query('COMMIT');
+      return resultat;
+    } catch (erreur) {
+      await client.query('ROLLBACK');
+      throw erreur;
+    } finally {
+      client.release();
+    }
+  }
+
+  /** Conversion atomique : verrouille le prospect avant de creer la fiche. */
+  async convertir(id: string, adresse: string): Promise<{ id_client: string; nom_client: string }> {
+    return this.transaction(async (db) => {
+      const resultat = await db.query<{
+        id_client: string | null;
+        statut_prospect: string;
+        entreprise: string;
+        nom: string;
+        prenom: string;
+        email: string;
+        telephone: string;
+        id_type_evenement: number;
+        lieu_souhaite: string;
+        date_souhaitee: string;
+      }>(
+        `SELECT id_client::text, statut_prospect, entreprise, nom, prenom, email, telephone,
+         id_type_evenement, lieu_souhaite, date_souhaitee::text
+         FROM innov_events.prospects WHERE id_prospect = $1 FOR UPDATE`,
+        [id],
+      );
+      const p = resultat.rows[0];
+      if (!p || p.id_client || p.statut_prospect !== 'a_contacter')
+        throw new ErreurHttp(409, 'La demande est absente ou déjà convertie.');
+      const fiche = await db.query<{ id_client: string }>(
+        `INSERT INTO innov_events.clients
+        (entreprise, nom_contact, prenom_contact, email_contact, telephone, adresse_postale)
+        VALUES ($1,$2,$3,$4,$5,$6) RETURNING id_client::text`,
+        [p.entreprise, p.nom, p.prenom, p.email, p.telephone, adresse],
+      );
+      const id_client = fiche.rows[0]!.id_client;
+      await db.query(
+        `UPDATE innov_events.prospects SET id_client=$2, statut_prospect='converti', date_dernier_contact=NOW()
+        WHERE id_prospect=$1`,
+        [id, id_client],
+      );
+      return { id_client, nom_client: `${p.prenom} ${p.nom}` };
+    });
+  }
+
+  async echouer(id: string): Promise<{ email: string; nom: string; prenom: string }> {
+    return this.transaction(async (db) => {
+      const r = await db.query<{ email: string; nom: string; prenom: string }>(
+        `UPDATE innov_events.prospects
+        SET statut_prospect='echoue', date_dernier_contact=NOW()
+        WHERE id_prospect=$1 AND statut_prospect='a_contacter' RETURNING email,nom,prenom`,
+        [id],
+      );
+      if (!r.rows[0]) throw new ErreurHttp(409, 'Demande non modifiable.');
+      return r.rows[0];
+    });
+  }
+  async clients() {
+    return (
+      await this.pool.query(`SELECT id_client::text, entreprise, nom_contact, prenom_contact,
+      email_contact, adresse_postale FROM innov_events.clients WHERE date_anonymisation IS NULL ORDER BY id_client DESC LIMIT 100`)
+    ).rows;
+  }
+  async prospects() {
+    return (
+      await this.pool
+        .query(`SELECT id_prospect::text, entreprise, nom, prenom, email, telephone, statut_prospect,
+      date_souhaitee::text, id_type_evenement, lieu_souhaite, id_client::text FROM innov_events.prospects ORDER BY date_demande DESC LIMIT 100`)
+    ).rows;
+  }
+  async themes() {
+    return (
+      await this.pool.query('SELECT id_theme, libelle FROM innov_events.themes ORDER BY libelle')
+    ).rows;
+  }
+  async evenements() {
+    return (
+      await this.pool.query(`SELECT id_evenement::text, id_client::text, nom, statut_evenement
+    FROM innov_events.evenements ORDER BY date_debut DESC LIMIT 100`)
+    ).rows;
+  }
+
+  async creerEvenement(d: EvenementSaisie): Promise<string> {
+    return this.transaction(async (db) => {
+      if (d.id_prospect) {
+        const r = await db.query<{ id_client: string }>(
+          `SELECT id_client::text FROM innov_events.prospects
+          WHERE id_prospect=$1 AND statut_prospect='converti' FOR UPDATE`,
+          [d.id_prospect],
+        );
+        if (!r.rows[0] || r.rows[0].id_client !== d.id_client)
+          throw new ErreurHttp(409, 'La demande et le client ne correspondent pas.');
+      }
+      const r = await db.query<{ id_evenement: string }>(
+        `INSERT INTO innov_events.evenements
+        (id_client,id_prospect,id_type_evenement,id_theme,nom,date_debut,date_fin,lieu,statut_evenement,image_url,visible_public)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING id_evenement::text`,
+        [
+          d.id_client,
+          d.id_prospect,
+          d.id_type_evenement,
+          d.id_theme,
+          d.nom,
+          d.date_debut,
+          d.date_fin,
+          d.lieu,
+          d.statut_evenement,
+          d.image_url,
+          d.visible_public,
+        ],
+      );
+      return r.rows[0]!.id_evenement;
+    });
+  }
+  async creerDevis(idEvenement: string, intitule: string): Promise<string> {
+    const r = await this.pool.query<{ id_devis: string }>(
+      `INSERT INTO innov_events.devis
+      (id_evenement,intitule,taux_tva_applique)
+      SELECT $1,$2,taux_tva_defaut FROM innov_events.parametres WHERE id_parametres=1
+      RETURNING id_devis::text`,
+      [idEvenement, intitule],
+    );
+    if (!r.rows[0]) throw new ErreurHttp(503, 'Paramètres de TVA indisponibles.');
+    return r.rows[0].id_devis;
+  }
+  async liste(idUtilisateur: string, role: string) {
+    const client = role === 'client';
+    return (
+      await this.pool.query(
+        `SELECT d.id_devis::text,d.id_evenement::text,d.intitule,d.statut_devis,
+       e.nom AS evenement, c.entreprise, d.date_envoi
+       FROM innov_events.devis d JOIN innov_events.evenements e ON e.id_evenement=d.id_evenement
+       JOIN innov_events.clients c ON c.id_client=e.id_client
+       WHERE ($1::boolean = FALSE OR (c.id_utilisateur=$2 AND d.statut_devis <> 'en_preparation'))
+       ORDER BY d.date_creation DESC LIMIT 200`,
+        [client, idUtilisateur],
+      )
+    ).rows;
+  }
+  async detail(
+    id: string,
+    db: PoolClient = this.pool as unknown as PoolClient,
+    verrou = false,
+  ): Promise<DevisDetail> {
+    const r = await db.query<Omit<DevisDetail, 'lignes'>>(
+      `SELECT d.id_devis::text,d.id_evenement::text,d.intitule,d.statut_devis,
+      d.taux_tva_applique::text,d.date_envoi::text,d.motif_modification,c.id_client::text,c.email_contact,c.nom_contact
+      FROM innov_events.devis d JOIN innov_events.evenements e ON e.id_evenement=d.id_evenement
+      JOIN innov_events.clients c ON c.id_client=e.id_client WHERE d.id_devis=$1 ${verrou ? 'FOR UPDATE OF d' : ''}`,
+      [id],
+    );
+    if (!r.rows[0]) throw new ErreurHttp(404, 'Devis introuvable.');
+    const lignes = await db.query<DevisDetail['lignes'][number]>(
+      `SELECT id_ligne_devis::text,libelle_prestation,montant_ht::text,ordre_affichage
+      FROM innov_events.lignes_devis WHERE id_devis=$1 ORDER BY ordre_affichage`,
+      [id],
+    );
+    return { ...r.rows[0], lignes: lignes.rows };
+  }
+  async possede(id: string, utilisateur: string): Promise<boolean> {
+    const r = await this.pool.query(
+      `SELECT 1 FROM innov_events.devis d JOIN innov_events.evenements e USING (id_evenement)
+       JOIN innov_events.clients c USING (id_client) WHERE d.id_devis=$1 AND c.id_utilisateur=$2 AND d.statut_devis <> 'en_preparation'`,
+      [id, utilisateur],
+    );
+    return r.rowCount === 1;
+  }
+  async remplacerLignes(id: string, lignes: LigneDevis[]): Promise<void> {
+    await this.transaction(async (db) => {
+      const d = await this.detail(id, db, true);
+      if (!['en_preparation', 'modification'].includes(d.statut_devis))
+        throw new ErreurHttp(409, 'Ce devis ne peut plus être modifié.');
+      await db.query('DELETE FROM innov_events.lignes_devis WHERE id_devis=$1', [id]);
+      for (const [index, l] of lignes.entries())
+        await db.query(
+          `INSERT INTO innov_events.lignes_devis
+        (id_devis,libelle_prestation,montant_ht,ordre_affichage) VALUES ($1,$2,$3,$4)`,
+          [id, l.libelle_prestation, l.montant_ht, index + 1],
+        );
+    });
+  }
+  async modifierDevis(id: string, intitule: string): Promise<void> {
+    const r = await this.pool.query(
+      `UPDATE innov_events.devis SET intitule=$2 WHERE id_devis=$1
+      AND statut_devis IN ('en_preparation','modification')`,
+      [id, intitule],
+    );
+    if (!r.rowCount) throw new ErreurHttp(409, 'Devis non modifiable.');
+  }
+  /** Envoi reserve aux statuts attendus, transaction sous verrou, jamais sans lignes. */
+  async preparerEnvoi(
+    id: string,
+    operation: (db: PoolClient, d: DevisDetail) => Promise<void>,
+  ): Promise<DevisDetail> {
+    return this.transaction(async (db) => {
+      const d = await this.detail(id, db, true);
+      if (!['en_preparation', 'modification'].includes(d.statut_devis) || d.lignes.length === 0)
+        throw new ErreurHttp(409, 'Le devis doit contenir une prestation et être prêt pour envoi.');
+      await operation(db, d);
+      await db.query(
+        `UPDATE innov_events.devis SET statut_devis='etude_client',date_envoi=NOW()
+        WHERE id_devis=$1`,
+        [id],
+      );
+      return { ...d, statut_devis: 'etude_client' };
+    });
+  }
+  async repondre(
+    id: string,
+    idUtilisateur: string,
+    choix: 'accepte' | 'refuse' | 'modification',
+    motif: string,
+  ): Promise<boolean> {
+    return this.transaction(async (db) => {
+      if (choix === 'accepte') {
+        const evenement = await db.query<{ id_evenement: string }>(
+          `SELECT id_evenement::text FROM innov_events.devis WHERE id_devis=$1`,
+          [id],
+        );
+        if (!evenement.rows[0]) throw new ErreurHttp(404, 'Devis introuvable.');
+        await db.query(
+          'SELECT id_evenement FROM innov_events.evenements WHERE id_evenement=$1 FOR UPDATE',
+          [evenement.rows[0].id_evenement],
+        );
+      }
+      const d = await this.detail(id, db, true);
+      const proprietaire = await db.query(
+        `SELECT 1 FROM innov_events.evenements e JOIN innov_events.clients c USING(id_client)
+        WHERE e.id_evenement=$1 AND c.id_utilisateur=$2`,
+        [d.id_evenement, idUtilisateur],
+      );
+      if (!proprietaire.rowCount) throw new ErreurHttp(404, 'Devis introuvable.');
+      if (d.statut_devis !== 'etude_client')
+        throw new ErreurHttp(409, 'Ce devis ne peut pas recevoir de réponse.');
+      let evenementChange = false;
+      if (choix === 'accepte') {
+        // Serialise les acceptations simultanees de devis d'un même événement.
+        const autre = await db.query(
+          `SELECT 1 FROM innov_events.devis WHERE id_evenement=$1 AND statut_devis='accepte'`,
+          [d.id_evenement],
+        );
+        if (autre.rowCount)
+          throw new ErreurHttp(409, 'Un devis est déjà accepté pour cet événement.');
+        await db.query(
+          `UPDATE innov_events.devis SET statut_devis='refuse' WHERE id_evenement=$1 AND id_devis<>$2
+          AND statut_devis IN ('en_preparation','etude_client','modification')`,
+          [d.id_evenement, id],
+        );
+        const modif = await db.query(
+          `UPDATE innov_events.evenements SET statut_evenement='accepte' WHERE id_evenement=$1 AND statut_evenement='brouillon'`,
+          [d.id_evenement],
+        );
+        evenementChange = modif.rowCount === 1;
+      }
+      await db.query(
+        `UPDATE innov_events.devis SET statut_devis=$2::text,
+        motif_modification=CASE WHEN $2::text='modification' THEN $3 ELSE motif_modification END,
+        date_modification=CASE WHEN $2::text='modification' THEN NOW() ELSE date_modification END WHERE id_devis=$1`,
+        [id, choix, motif],
+      );
+      return evenementChange;
+    });
+  }
+}

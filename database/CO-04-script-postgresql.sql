@@ -169,8 +169,10 @@ CREATE TABLE innov_events.devis (
     date_envoi TIMESTAMPTZ,
     motif_modification TEXT,
     date_modification TIMESTAMPTZ,
+    -- Un brouillon jamais envoye peut etre refuse automatiquement quand un autre devis
+    -- du meme evenement est accepte : 'refuse' n'exige donc pas de date d'envoi.
     CONSTRAINT ck_devis_envoi CHECK (
-        statut_devis = 'en_preparation' OR date_envoi IS NOT NULL
+        statut_devis IN ('en_preparation', 'refuse') OR date_envoi IS NOT NULL
     ),
     CONSTRAINT ck_devis_motif CHECK (
         statut_devis <> 'modification' OR motif_modification IS NOT NULL
