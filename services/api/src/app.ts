@@ -81,7 +81,7 @@ export function creerApp({
   app.use('/api/sante', creerRoutesSante(controller));
   app.use(express.json({ limit: '32kb' }));
   app.use(lireIpClient);
-  app.use(limiterDebit(120));
+  app.use(limiterDebit(1000));
   app.use((_requete, reponse, suivant) => {
     reponse.setHeader('Cache-Control', 'no-store');
     suivant();
