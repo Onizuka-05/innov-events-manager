@@ -1,11 +1,13 @@
 <section class="conteneur page devis">
   <header class="en-tete">
-    <a class="retour" routerLink="/espace">← Retour à mon espace</a>
-    <h1>{{ admin() ? 'Administration des devis' : 'Mes devis' }}</h1>
+    @if (!admin()) {
+      <a class="retour" routerLink="/espace">← Retour à mon espace</a>
+    }
+    <h1>{{ admin() ? 'Devis' : 'Mes devis' }}</h1>
     <p class="texte-secondaire">
       {{
         admin()
-          ? 'Convertissez une demande et préparez les propositions.'
+          ? 'Créez un événement et préparez les propositions.'
           : 'Consultez les propositions reçues et donnez votre réponse.'
       }}
     </p>
@@ -18,72 +20,8 @@
   }
 
   @if (admin()) {
-    <p><a routerLink="/administration">Voir les prospects et le tableau de bord</a></p>
-
-    <section class="carte bloc" aria-labelledby="titre-conversion">
-      <h2 id="titre-conversion"><span class="etape">1</span>Convertir un prospect</h2>
-      <form class="formulaire" (ngSubmit)="convertir()">
-        <div class="grille">
-          <div class="champ">
-            <label for="prospect">Demande à convertir</label>
-            <select
-              id="prospect"
-              name="prospect"
-              required
-              [(ngModel)]="id_prospect"
-              (ngModelChange)="preparerConversion($event)"
-            >
-              <option value="">Choisir une demande</option>
-              @for (p of prospects(); track p.id_prospect) {
-                @if (p.statut_prospect === 'a_contacter') {
-                  <option [value]="p.id_prospect">
-                    {{ p.entreprise }} — {{ p.prenom }} {{ p.nom }}
-                  </option>
-                }
-              }
-            </select>
-          </div>
-          <div class="champ">
-            <label for="adresse">Adresse postale du client</label>
-            <input
-              id="adresse"
-              name="adresse"
-              autocomplete="street-address"
-              maxlength="2000"
-              required
-              [(ngModel)]="adresse_postale"
-            />
-          </div>
-        </div>
-        @if (prospectConversion(); as p) {
-          <h3 class="titre-infos">Informations de la demande</h3>
-          @if (clientExistant(p); as c) {
-            <p class="aide">
-              Client existant avec cet e-mail : {{ c.entreprise }}. La demande lui sera rattachée ;
-              sa fiche, son adresse et son compte sont conservés.
-            </p>
-          }
-          <dl class="infos-demande">
-            <dt>Entreprise</dt>
-            <dd>{{ p.entreprise }}</dd>
-            <dt>Nom</dt>
-            <dd>{{ p.nom }}</dd>
-            <dt>Prénom</dt>
-            <dd>{{ p.prenom }}</dd>
-            <dt>E-mail</dt>
-            <dd>{{ p.email }}</dd>
-            <dt>Téléphone</dt>
-            <dd>{{ p.telephone }}</dd>
-          </dl>
-        }
-        <div class="actions">
-          <button type="submit" class="bouton-primaire" [disabled]="chargement()">Convertir</button>
-        </div>
-      </form>
-    </section>
-
     <section class="carte bloc" aria-labelledby="titre-evenement">
-      <h2 id="titre-evenement" tabindex="-1"><span class="etape">2</span>Créer un événement</h2>
+      <h2 id="titre-evenement" tabindex="-1"><span class="etape">1</span>Créer un événement</h2>
       <form class="formulaire" (ngSubmit)="creerEvenement()">
         <div class="grille">
           <div class="champ">
@@ -184,7 +122,7 @@
     </section>
 
     <section class="carte bloc" aria-labelledby="titre-creation-devis">
-      <h2 id="titre-creation-devis" tabindex="-1"><span class="etape">3</span>Créer un devis</h2>
+      <h2 id="titre-creation-devis" tabindex="-1"><span class="etape">2</span>Créer un devis</h2>
       <form class="formulaire" (ngSubmit)="creerDevis()">
         <div class="grille">
           <div class="champ">
@@ -215,11 +153,15 @@
       <label for="filtre-devis">Afficher</label
       ><select id="filtre-devis" name="filtre_devis" [(ngModel)]="filtre_devis">
         <option value="">Tous les devis</option>
-        <option value="accepte">Devis acceptés</option>
+        <option value="en_preparation">En préparation</option>
+        <option value="etude_client">Étude client</option>
+        <option value="modification">Modification demandée</option>
+        <option value="accepte">Acceptés</option>
+        <option value="refuse">Refusés</option>
       </select>
     }
     <h2 id="titre-liste-devis">{{ admin() ? 'Liste des devis' : 'Mes propositions' }}</h2>
-    @if (devis().length === 0) {
+    @if (devisFiltres().length === 0) {
       <p class="vide">Aucun devis disponible.</p>
     } @else {
       <div class="tableau-defilant" tabindex="0" role="region" aria-label="Liste des devis">

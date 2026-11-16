@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService, messageErreur } from '../../core/api.service';
 import { AuthentificationService } from '../../core/authentification.service';
 import { LIBELLES, type Evenement, type Compte, type Client } from '../../core/gestion.models';
@@ -10,10 +10,9 @@ import { NotesTaches } from './notes-taches';
 /** Fiches evenement : lecture en equipe, structure et cycle pilotes par l'administrateur. */
 @Component({
   selector: 'app-evenements-gestion',
-  imports: [FormsModule, RouterLink, DatePipe, NotesTaches],
+  imports: [FormsModule, DatePipe, NotesTaches],
   styleUrl: './gestion.css',
   template: ` <section class="conteneur page gestion">
-    <a routerLink="/espace">Mon espace</a>
     <h1>Événements</h1>
     @if (erreur()) {
       <p role="alert" class="erreur">{{ erreur() }}</p>

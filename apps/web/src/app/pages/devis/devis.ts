@@ -2,6 +2,7 @@ import { Component, Injector, afterNextRender, computed, inject, signal } from '
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ApiService, messageErreur } from '../../core/api.service';
+import type { Prospect } from '../../core/prospects.models';
 import { AuthentificationService } from '../../core/authentification.service';
 
 interface Ligne {
@@ -21,19 +22,6 @@ interface Detail extends DevisItem {
   motif_modification: string | null;
   lignes: (Ligne & { id_ligne_devis: string })[];
   totaux: { total_ht: string; total_tva: string; total_ttc: string };
-}
-interface Prospect {
-  id_prospect: string;
-  entreprise: string;
-  nom: string;
-  prenom: string;
-  email: string;
-  telephone: string;
-  statut_prospect: string;
-  id_client: string | null;
-  id_type_evenement: number;
-  lieu_souhaite: string;
-  date_souhaitee: string;
 }
 interface Client {
   id_client: string;
@@ -83,6 +71,7 @@ export class Devis {
   private readonly api = inject(ApiService);
   private readonly route = inject(ActivatedRoute);
   protected filtre_devis = '';
+  private prospectPrepare = '';
   private readonly injector = inject(Injector);
   protected readonly auth = inject(AuthentificationService);
   protected readonly admin = computed(() => this.auth.utilisateur()?.role === 'admin');
@@ -99,8 +88,6 @@ export class Devis {
   protected motif = '';
   protected choix = 'modification';
   protected nouvelIntitule = '';
-  protected adresse_postale = '';
-  protected id_prospect = '';
   protected id_client = '';
   protected id_prospect_evenement = '';
   protected visible_public = false;
@@ -117,10 +104,6 @@ export class Devis {
   protected lignes: Ligne[] = [];
   constructor() {
     void this.charger();
-  }
-  /** Methode et non computed : id_prospect est un champ ngModel, pas un signal. */
-  protected prospectConversion(): Prospect | null {
-    return this.prospects().find((p) => p.id_prospect === this.id_prospect) ?? null;
   }
   protected libelleStatut(statut: string): string {
     return LIBELLES_STATUT[statut] ?? statut;
@@ -158,7 +141,21 @@ export class Devis {
         this.types.set(types);
         this.themes.set(themes);
         const id = this.route.snapshot.queryParamMap.get('prospect');
-        if (id && !this.id_prospect && !this.id_prospect_evenement) this.preparerConversion(id);
+        if (id && id !== this.prospectPrepare) {
+          const p = prospects.find(
+            (p) => p.id_prospect === id && p.statut_prospect === 'converti' && p.id_client,
+          );
+          if (!p) {
+            this.erreur.set(
+              'La demande convertie est introuvable. Choisissez une demande ou un client.',
+            );
+            return;
+          }
+          this.prospectPrepare = id;
+          this.id_prospect_evenement = id;
+          this.preRemplirEvenement();
+          this.focaliser('titre-evenement');
+        }
       }
     } catch (e) {
       this.erreur.set(messageErreur(e));
@@ -236,46 +233,6 @@ export class Devis {
       this.chargement.set(false);
     }
   }
-  /** Fiche client existante du meme e-mail : la conversion y rattachera la demande. */
-  protected clientExistant(p: Prospect): Client | null {
-    const email = p.email.toLocaleLowerCase();
-    return this.clients().find((c) => c.email_contact?.toLocaleLowerCase() === email) ?? null;
-  }
-  protected preparerConversion(id: string) {
-    this.id_prospect = id;
-    const p = this.prospectConversion();
-    this.adresse_postale = (p && this.clientExistant(p)?.adresse_postale) || '';
-  }
-  protected choisirConversion(id: string) {
-    this.preparerConversion(id);
-    document.getElementById('adresse')?.focus();
-  }
-  protected convertir() {
-    const id = this.id_prospect;
-    let cree = true;
-    return this.operation(
-      async () => {
-        const resultat = await this.api.modifier<{ cree?: boolean }>(
-          'POST',
-          `/prospects/${id}/conversion`,
-          { adresse_postale: this.adresse_postale },
-        );
-        cree = resultat.cree !== false;
-        this.id_prospect = '';
-        this.adresse_postale = '';
-      },
-      'Client créé : l’événement est pré-rempli à l’étape 2.',
-      () => {
-        if (!cree)
-          this.information.set(
-            'Demande rattachée au client existant : l’événement est pré-rempli à l’étape 2.',
-          );
-        this.id_prospect_evenement = id;
-        this.preRemplirEvenement();
-        this.focaliser('titre-evenement');
-      },
-    );
-  }
   protected preRemplirEvenement() {
     const p = this.prospects().find((p) => p.id_prospect === this.id_prospect_evenement);
     if (!p) return;
@@ -307,7 +264,7 @@ export class Devis {
         idEvenement = cree.id_evenement;
         this.viderEvenement();
       },
-      'Événement créé : il est présélectionné à l’étape 3.',
+      'Événement créé : il est présélectionné à l’étape 2.',
       () => {
         this.id_evenement = idEvenement;
         this.focaliser('titre-creation-devis');

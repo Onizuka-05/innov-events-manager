@@ -2,7 +2,11 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService, messageErreur } from '../../core/api.service';
-import { AuthentificationService, retourInterne } from '../../core/authentification.service';
+import {
+  AuthentificationService,
+  retourInterne,
+  accueilRole,
+} from '../../core/authentification.service';
 
 type Mode = 'connexion' | 'inscription' | 'oubli' | 'changement';
 interface Champ {
@@ -94,7 +98,10 @@ export class Authentification implements OnInit {
   async ngOnInit(): Promise<void> {
     try {
       await this.auth.charger();
-      const retour = retourInterne(this.route.snapshot.queryParamMap.get('retour'));
+      const retour = retourInterne(
+        this.route.snapshot.queryParamMap.get('retour'),
+        accueilRole(this.auth.utilisateur()?.role),
+      );
       if (this.auth.restreinte() && this.mode !== 'changement') {
         await this.router.navigate(['/nouveau-mot-de-passe'], { queryParams: { retour } });
       } else if (this.auth.utilisateur() && ['connexion', 'changement'].includes(this.mode)) {
@@ -132,18 +139,23 @@ export class Authentification implements OnInit {
     this.envoi.set(true);
     try {
       const donnees = this.formulaire.getRawValue();
-      const retour = retourInterne(this.route.snapshot.queryParamMap.get('retour'));
+      const retour = retourInterne(
+        this.route.snapshot.queryParamMap.get('retour'),
+        accueilRole(this.auth.utilisateur()?.role),
+      );
       if (this.mode === 'connexion') {
         await this.auth.connecter(donnees);
         await this.router.navigateByUrl(
           this.auth.restreinte()
             ? this.router.createUrlTree(['/nouveau-mot-de-passe'], { queryParams: { retour } })
-            : retour,
+            : retourInterne(this.retourDemande, accueilRole(this.auth.utilisateur()?.role)),
         );
       } else if (this.mode === 'changement') {
         await this.api.modifier('PATCH', '/mot-de-passe', donnees);
         await this.auth.charger();
-        await this.router.navigateByUrl(retour);
+        await this.router.navigateByUrl(
+          retourInterne(this.retourDemande, accueilRole(this.auth.utilisateur()?.role)),
+        );
       } else {
         const resultat = await this.api.modifier<{ message: string }>(
           'POST',
