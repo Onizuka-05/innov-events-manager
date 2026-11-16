@@ -1,17 +1,37 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Innov'Events Manager</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Innov'Events Manager</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Application mobile en cours de construction</strong>
-  </div>
-</ion-content>
+<ion-header
+  ><ion-toolbar><ion-title>Innov’Events · Équipe</ion-title></ion-toolbar></ion-header
+>
+<ion-content
+  ><main class="page-mobile">
+    <h1>Événements à venir</h1>
+    <p>Classés par date de début.</p>
+    <div class="actions">
+      <button type="button" [disabled]="chargement()" (click)="charger()">Actualiser</button
+      ><button type="button" (click)="deconnecter()">Se déconnecter</button>
+    </div>
+    @if(erreur()){
+    <p role="alert" class="erreur">{{erreur()}}</p>
+    } @if(chargement()){
+    <p role="status">Chargement des événements…</p>
+    }@else{
+    <ul class="evenements">
+      @for(e of evenements();track e.id_evenement){
+      <li>
+        <article>
+          <h2>{{e.nom}}</h2>
+          <p>{{e.entreprise||'Client anonymisé'}}</p>
+          <p>
+            <time [attr.datetime]="e.date_debut">{{e.date_debut|date:'short'}}</time> —
+            {{e.date_fin|date:'short'}}
+          </p>
+          <p>{{e.lieu}}</p>
+          <p class="statut">{{libelles[e.statut_evenement]||e.statut_evenement}}</p>
+        </article>
+      </li>
+      }@empty{
+      <li>Aucun événement à venir.</li>
+      }
+    </ul>
+    }
+  </main></ion-content
+>

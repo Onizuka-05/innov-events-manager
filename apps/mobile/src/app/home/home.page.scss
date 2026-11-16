@@ -1,27 +1,25 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.evenements {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 16px;
 }
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.evenements article {
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #687b90;
+  border-radius: 12px;
 }
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
+.evenements h2 {
+  font-size: 1.25rem;
+  margin-top: 0;
 }
-
-#container a {
-  text-decoration: none;
+.statut {
+  font-weight: 700;
+  color: #075e57;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
