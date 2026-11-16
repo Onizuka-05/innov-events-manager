@@ -4,7 +4,6 @@ import { RouterLink } from '@angular/router';
 import { ApiService, messageErreur } from '../../core/api.service';
 import { type Note, type Client } from '../../core/gestion.models';
 import { NotesTaches } from './notes-taches';
-import { Prospects } from './prospects';
 interface Tableau {
   prochains_evenements: {
     id_evenement: string;
@@ -18,20 +17,13 @@ interface Tableau {
   clients_actifs: Client[];
   brouillons: { id_evenement: string; nom: string; entreprise: string | null }[];
 }
-/** Tableau de bord d'entree administrateur et demandes de prospects. */
+/** Tableau de bord administrateur et gestion des notes globales. */
 @Component({
   selector: 'app-tableau-de-bord',
-  imports: [RouterLink, DatePipe, NotesTaches, Prospects],
+  imports: [RouterLink, DatePipe, NotesTaches],
   styleUrl: './gestion.css',
   template: `<section class="conteneur page gestion">
     <h1>Tableau de bord</h1>
-    <nav aria-label="Administration" class="navigation">
-      <a routerLink="/equipe/clients">Clients</a><a routerLink="/equipe/evenements">Événements</a
-      ><a routerLink="/devis">Devis</a><a routerLink="/administration/comptes">Comptes</a
-      ><a routerLink="/equipe/avis">Modérer les avis</a
-      ><a routerLink="/administration/journaux">Journaux</a
-      ><a routerLink="/administration/remerciement">Message de remerciement</a>
-    </nav>
     @if (erreur()) {
       <p role="alert" class="erreur">{{ erreur() }}</p>
     }
@@ -42,7 +34,7 @@ interface Tableau {
           <ul>
             @for (e of t.prochains_evenements; track e.id_evenement) {
               <li>
-                <a routerLink="/equipe/evenements" [queryParams]="{ id: e.id_evenement }">{{
+                <a routerLink="/administration/evenements" [queryParams]="{ id: e.id_evenement }">{{
                   e.nom
                 }}</a>
                 — {{ e.entreprise || 'Client anonymisé' }} {{ e.prenom_contact }}
@@ -79,7 +71,7 @@ interface Tableau {
           <ul>
             @for (e of t.brouillons; track e.id_evenement) {
               <li>
-                <a routerLink="/equipe/evenements" [queryParams]="{ id: e.id_evenement }">{{
+                <a routerLink="/administration/evenements" [queryParams]="{ id: e.id_evenement }">{{
                   e.nom
                 }}</a>
                 — {{ e.entreprise || 'Client anonymisé' }}
@@ -91,7 +83,7 @@ interface Tableau {
         </section>
       </div>
     }
-    <app-prospects /><app-notes-taches [notes]="notes()" (changement)="charger()" />
+    <app-notes-taches [notes]="notes()" (changement)="charger()" />
   </section>`,
 })
 export class TableauDeBord {

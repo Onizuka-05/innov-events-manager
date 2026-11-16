@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { Router, type CanActivateFn } from '@angular/router';
-import { AuthentificationService } from './authentification.service';
+import { AuthentificationService, accueilRole } from './authentification.service';
 
 /** Conserve la destination ; le serveur reste seul responsable de l'autorisation. */
 export const authentificationGuard: CanActivateFn = async (route, etat) => {
@@ -15,11 +15,16 @@ export const authentificationGuard: CanActivateFn = async (route, etat) => {
     return router.createUrlTree(['/nouveau-mot-de-passe'], { queryParams: { retour: etat.url } });
   if (!auth.utilisateur())
     return router.createUrlTree(['/connexion'], { queryParams: { retour: etat.url } });
-  if (route.data['equipe'] && !['admin', 'employe'].includes(auth.utilisateur()!.role))
+  const role = auth.utilisateur()!.role;
+  const accueil = accueilRole(role);
+  if (route.data['equipe'] && !['admin', 'employe'].includes(role))
     return router.createUrlTree(['/espace']);
-  return (
-    !route.data['admin'] ||
-    auth.utilisateur()?.role === 'admin' ||
-    router.createUrlTree(['/espace'])
-  );
+  if (route.data['admin'] && role !== 'admin') return router.createUrlTree([accueil]);
+  if (route.data['espace'] && role !== 'client') return router.createUrlTree([accueil]);
+  if (route.data['devis']) {
+    if (role === 'admin')
+      return router.createUrlTree(['/administration/devis'], { queryParams: route.queryParams });
+    if (role === 'employe') return router.createUrlTree([accueil]);
+  }
+  return true;
 };

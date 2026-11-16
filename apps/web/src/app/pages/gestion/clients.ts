@@ -12,7 +12,6 @@ import { type Client, LIBELLES } from '../../core/gestion.models';
   imports: [FormsModule, RouterLink, DatePipe],
   styleUrl: './gestion.css',
   template: ` <section class="conteneur page gestion">
-    <a routerLink="/espace">Mon espace</a>
     <h1>Clients</h1>
     @if (erreur()) {
       <p class="erreur" role="alert">{{ erreur() }}</p>
@@ -67,9 +66,11 @@ import { type Client, LIBELLES } from '../../core/gestion.models';
         <ul>
           @for (e of c.evenements; track e.id_evenement) {
             <li>
-              <a [routerLink]="['/equipe/evenements']" [queryParams]="{ id: e.id_evenement }">{{
-                e.nom
-              }}</a>
+              <a
+                [routerLink]="['/administration/evenements']"
+                [queryParams]="{ id: e.id_evenement }"
+                >{{ e.nom }}</a
+              >
               · {{ e.date_debut | date: 'short' }} · {{ libelles[e.statut_evenement] }}
             </li>
           } @empty {

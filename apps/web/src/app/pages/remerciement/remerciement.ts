@@ -7,7 +7,8 @@ import { ApiService, messageErreur } from '../../core/api.service';
   selector: 'app-remerciement',
   imports: [ReactiveFormsModule],
   template: ` <section class="conteneur page page-formulaire">
-    <h1>Message de remerciement</h1>
+    <h1>Paramètres</h1>
+    <h2>Message de remerciement</h2>
     <p>Ce texte s’affiche après les prochaines demandes de devis.</p>
     <form class="carte formulaire" (submit)="$event.preventDefault(); enregistrer()">
       <div class="champ">

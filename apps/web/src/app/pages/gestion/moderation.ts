@@ -1,5 +1,4 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { ApiService, messageErreur } from '../../core/api.service';
 import { LIBELLES } from '../../core/gestion.models';
 interface Avis {
@@ -12,11 +11,9 @@ interface Avis {
 /** Les avis ne deviennent publics qu'apres validation explicite. */
 @Component({
   selector: 'app-moderation',
-  imports: [RouterLink],
   styleUrl: './gestion.css',
   template: `<section class="conteneur page gestion">
-    <a routerLink="/espace">Mon espace</a>
-    <h1>Modération des avis</h1>
+    <h1>Avis</h1>
     @if (erreur()) {
       <p role="alert" class="erreur">{{ erreur() }}</p>
     }

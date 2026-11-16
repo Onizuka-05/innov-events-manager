@@ -1,49 +1,96 @@
 import { authentificationGuard } from './core/authentification.guard';
-import { Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { Router, type Routes, type RedirectFunction } from '@angular/router';
 
 export const routes: Routes = [
   {
     path: 'administration',
-    title: 'Tableau de bord | Innov’Events',
-    canActivate: [authentificationGuard],
-    data: { admin: true },
-    loadComponent: () => import('./pages/gestion/tableau-de-bord').then((m) => m.TableauDeBord),
-  },
-  {
-    path: 'administration/comptes',
-    title: 'Comptes | Innov’Events',
-    canActivate: [authentificationGuard],
-    data: { admin: true },
-    loadComponent: () => import('./pages/gestion/comptes').then((m) => m.Comptes),
-  },
-  {
-    path: 'administration/journaux',
-    title: 'Journaux | Innov’Events',
-    canActivate: [authentificationGuard],
-    data: { admin: true },
-    loadComponent: () => import('./pages/gestion/journaux').then((m) => m.Journaux),
-  },
-  {
-    path: 'equipe/clients',
-    title: 'Clients | Innov’Events',
     canActivate: [authentificationGuard],
     data: { equipe: true },
-    loadComponent: () => import('./pages/gestion/clients').then((m) => m.Clients),
+    loadComponent: () => import('./pages/gestion/espace-equipe').then((m) => m.EspaceEquipe),
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        title: "Tableau de bord | Innov'Events",
+        canActivate: [authentificationGuard],
+        data: { admin: true },
+        loadComponent: () => import('./pages/gestion/tableau-de-bord').then((m) => m.TableauDeBord),
+      },
+      {
+        path: 'prospects',
+        title: "Prospects | Innov'Events",
+        canActivate: [authentificationGuard],
+        data: { admin: true },
+        loadComponent: () => import('./pages/gestion/prospects').then((m) => m.Prospects),
+      },
+      {
+        path: 'clients',
+        canActivate: [authentificationGuard],
+        data: { equipe: true },
+        title: "Clients | Innov'Events",
+        loadComponent: () => import('./pages/gestion/clients').then((m) => m.Clients),
+      },
+      {
+        path: 'evenements',
+        canActivate: [authentificationGuard],
+        data: { equipe: true },
+        title: "Événements | Innov'Events",
+        loadComponent: () => import('./pages/gestion/evenements').then((m) => m.EvenementsGestion),
+      },
+      {
+        path: 'devis',
+        title: "Devis | Innov'Events",
+        canActivate: [authentificationGuard],
+        data: { admin: true },
+        loadComponent: () => import('./pages/devis/devis').then((m) => m.Devis),
+      },
+      {
+        path: 'taches',
+        canActivate: [authentificationGuard],
+        data: { equipe: true },
+        title: "Tâches | Innov'Events",
+        loadComponent: () => import('./pages/gestion/taches').then((m) => m.Taches),
+      },
+      {
+        path: 'avis',
+        canActivate: [authentificationGuard],
+        data: { equipe: true },
+        title: "Avis | Innov'Events",
+        loadComponent: () => import('./pages/gestion/moderation').then((m) => m.Moderation),
+      },
+      {
+        path: 'comptes',
+        title: "Comptes | Innov'Events",
+        canActivate: [authentificationGuard],
+        data: { admin: true },
+        loadComponent: () => import('./pages/gestion/comptes').then((m) => m.Comptes),
+      },
+      {
+        path: 'journaux',
+        title: "Journaux | Innov'Events",
+        canActivate: [authentificationGuard],
+        data: { admin: true },
+        loadComponent: () => import('./pages/gestion/journaux').then((m) => m.Journaux),
+      },
+      {
+        path: 'parametres',
+        title: "Paramètres | Innov'Events",
+        canActivate: [authentificationGuard],
+        data: { admin: true },
+        loadComponent: () =>
+          import('./pages/remerciement/remerciement').then((m) => m.Remerciement),
+      },
+      { path: 'remerciement', pathMatch: 'full', redirectTo: 'parametres' },
+    ],
   },
-  {
-    path: 'equipe/evenements',
-    title: 'Événements | Innov’Events',
-    canActivate: [authentificationGuard],
-    data: { equipe: true },
-    loadComponent: () => import('./pages/gestion/evenements').then((m) => m.EvenementsGestion),
-  },
-  {
-    path: 'equipe/avis',
-    title: 'Modération | Innov’Events',
-    canActivate: [authentificationGuard],
-    data: { equipe: true },
-    loadComponent: () => import('./pages/gestion/moderation').then((m) => m.Moderation),
-  },
+  ...['clients', 'evenements', 'avis'].map((rubrique) => ({
+    path: `equipe/${rubrique}`,
+    redirectTo: (({ queryParams }) =>
+      inject(Router).createUrlTree(['/administration', rubrique], {
+        queryParams,
+      })) as RedirectFunction,
+  })),
   {
     path: 'avis',
     title: 'Avis | Innov’Events',
@@ -89,22 +136,17 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/demande-devis/demande-devis').then((m) => m.DemandeDevis),
   },
   {
-    path: 'administration/remerciement',
-    title: 'Message de remerciement | Innov’Events',
-    canActivate: [authentificationGuard],
-    data: { admin: true },
-    loadComponent: () => import('./pages/remerciement/remerciement').then((m) => m.Remerciement),
-  },
-  {
     path: 'devis',
-    title: 'Devis | Innov’Events',
+    title: 'Mes devis | Innov’Events',
     canActivate: [authentificationGuard],
+    data: { devis: true },
     loadComponent: () => import('./pages/devis/devis').then((m) => m.Devis),
   },
   {
     path: 'espace',
     title: 'Mon espace | Innov’Events',
     canActivate: [authentificationGuard],
+    data: { espace: true },
     loadComponent: () => import('./pages/espace/espace').then((m) => m.Espace),
   },
   {

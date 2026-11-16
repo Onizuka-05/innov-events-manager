@@ -67,7 +67,7 @@ function preparer<T>(composant: Type<T>, role = 'admin', reponses: Record<string
   return { api, fixture: TestBed.createComponent(composant) };
 }
 describe('espaces de gestion', () => {
-  it('affiche les rubriques du tableau de bord et les prospects', async () => {
+  it('conserve les notes sur le tableau de bord sans la liste des prospects', async () => {
     const { fixture } = preparer(TableauDeBord, 'admin', {
       '/administration/tableau-de-bord': {
         prochains_evenements: [evenement],
@@ -84,10 +84,10 @@ describe('espaces de gestion', () => {
       '5 notes récentes',
       'Clients actifs (1)',
       'Événements en brouillon',
-      'Prospects',
       'Notes globales',
     ])
       expect(t).toContain(titre);
+    expect(fixture.nativeElement.querySelector('app-prospects')).toBeNull();
   });
   it('recherche un client et montre son historique sans edition employe', async () => {
     const { fixture, api } = preparer(Clients, 'employe', {
@@ -287,8 +287,14 @@ describe('espaces de gestion', () => {
     });
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('a')?.getAttribute('href')).toBe(
-      '/devis?prospect=7',
+    fixture.nativeElement
+      .querySelector('button[aria-label="Convertir en client : Test SAS"]')
+      .click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('#prospect').value).toBe('7');
+    expect(fixture.nativeElement.querySelector('.infos-demande').textContent).toContain(
+      'lea@example.org',
     );
   });
   it('la vue des devis acceptes permet de passer l’evenement en cours', async () => {

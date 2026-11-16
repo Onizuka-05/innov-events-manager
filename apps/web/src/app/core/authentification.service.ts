@@ -53,11 +53,20 @@ export class AuthentificationService {
 }
 
 /** Une destination reste interne a l'application et ne peut jamais devenir une URL externe. */
-export function retourInterne(valeur: string | null): string {
+export function retourInterne(valeur: string | null, defaut = '/espace'): string {
   return valeur &&
     /^\/(?!\/)/u.test(valeur) &&
     ![...valeur].some((c) => c === '\\' || c.charCodeAt(0) <= 32) &&
     !/^\/(connexion|inscription|mot-de-passe-oublie|nouveau-mot-de-passe)(?:[/?#]|$)/u.test(valeur)
     ? valeur
-    : '/espace';
+    : defaut;
+}
+
+/** Accueil de chaque role ; les autorisations restent verifiees par le serveur. */
+export function accueilRole(role: Utilisateur['role'] | undefined): string {
+  return role === 'admin'
+    ? '/administration'
+    : role === 'employe'
+      ? '/administration/evenements'
+      : '/espace';
 }

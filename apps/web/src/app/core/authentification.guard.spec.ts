@@ -29,9 +29,9 @@ describe('Destination conservee avant connexion', () => {
 
   it('redirige vers la connexion avec la destination demandee', async () => {
     const harness = await RouterTestingHarness.create();
-    await harness.navigateByUrl('/administration/remerciement');
+    await harness.navigateByUrl('/administration/parametres');
     const { Router } = await import('@angular/router');
-    expect(TestBed.inject(Router).url).toBe('/connexion?retour=%2Fadministration%2Fremerciement');
+    expect(TestBed.inject(Router).url).toBe('/connexion?retour=%2Fadministration%2Fparametres');
   });
   it('redirige une session restreinte vers le renouvellement en conservant la destination', async () => {
     restreinte.set(true);
@@ -78,6 +78,6 @@ describe('Acces aux espaces de gestion', () => {
     if (!autorise)
       expect(
         TestBed.inject(Router).serializeUrl(resultat as import('@angular/router').UrlTree),
-      ).toBe('/espace');
+      ).toBe(role === 'employe' ? '/administration/evenements' : '/espace');
   });
 });

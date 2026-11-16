@@ -56,17 +56,11 @@ describe('parcours devis', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.textContent).toContain('Créer un devis');
   });
-  it('affiche les informations de la demande choisie pour la conversion', async () => {
+  it('ne conserve pas la conversion dans la rubrique Devis', async () => {
     const { fixture } = preparer('admin');
     await fixture.whenStable();
     fixture.detectChanges();
-    const liste = fixture.nativeElement.querySelector('#prospect') as HTMLSelectElement;
-    liste.value = '7';
-    liste.dispatchEvent(new Event('change'));
-    fixture.detectChanges();
-    await fixture.whenStable();
-    const infos = fixture.nativeElement.querySelector('.infos-demande') as HTMLElement | null;
-    expect(infos?.textContent).toContain('client-j8@example.org');
-    expect(infos?.textContent).toContain('0600000002');
+    expect(fixture.nativeElement.querySelector('#prospect')).toBeNull();
+    expect(fixture.nativeElement.querySelector('#nom')).not.toBeNull();
   });
 });
