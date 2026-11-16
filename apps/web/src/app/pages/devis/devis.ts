@@ -1,6 +1,6 @@
 import { Component, Injector, afterNextRender, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ApiService, messageErreur } from '../../core/api.service';
 import { AuthentificationService } from '../../core/authentification.service';
 
@@ -81,6 +81,8 @@ const FORMAT_EUROS = new Intl.NumberFormat('fr-FR', { style: 'currency', currenc
 })
 export class Devis {
   private readonly api = inject(ApiService);
+  private readonly route = inject(ActivatedRoute);
+  protected filtre_devis = '';
   private readonly injector = inject(Injector);
   protected readonly auth = inject(AuthentificationService);
   protected readonly admin = computed(() => this.auth.utilisateur()?.role === 'admin');
@@ -92,10 +94,6 @@ export class Devis {
   protected readonly prospects = signal<Prospect[]>([]);
   protected readonly types = signal<{ id_type_evenement: number; libelle: string }[]>([]);
   protected readonly themes = signal<{ id_theme: number; libelle: string }[]>([]);
-  protected recherche = '';
-  protected filtreStatut = '';
-  protected messageEchec = '';
-  protected readonly prospectEchec = signal<Prospect | null>(null);
   protected readonly clients = signal<Client[]>([]);
   protected readonly evenements = signal<Evenement[]>([]);
   protected motif = '';
@@ -159,10 +157,43 @@ export class Devis {
         this.evenements.set(evenements);
         this.types.set(types);
         this.themes.set(themes);
+        const id = this.route.snapshot.queryParamMap.get('prospect');
+        if (id && !this.id_prospect && !this.id_prospect_evenement) this.preparerConversion(id);
       }
     } catch (e) {
       this.erreur.set(messageErreur(e));
     }
+  }
+  protected devisFiltres() {
+    return this.devis().filter((d) => !this.filtre_devis || d.statut_devis === this.filtre_devis);
+  }
+  protected evenementAccepte(id: string) {
+    return this.evenements().some((e) => e.id_evenement === id && e.statut_evenement === 'accepte');
+  }
+  protected demarrer(id: string) {
+    return this.operation(async () => {
+      const e = await this.api.get<{
+        nom: string;
+        id_type_evenement: number;
+        id_theme: number | null;
+        date_debut: string;
+        date_fin: string;
+        lieu: string;
+        image_url: string | null;
+        visible_public: boolean;
+      }>('/evenements/' + id);
+      await this.api.modifier('PATCH', '/evenements/' + id, {
+        nom: e.nom,
+        id_type_evenement: e.id_type_evenement,
+        id_theme: e.id_theme,
+        date_debut: e.date_debut,
+        date_fin: e.date_fin,
+        lieu: e.lieu,
+        image_url: e.image_url,
+        visible_public: e.visible_public,
+        statut_evenement: 'en_cours',
+      });
+    }, 'Événement passé en cours.');
   }
   protected async ouvrir(id: string) {
     try {
@@ -204,33 +235,6 @@ export class Devis {
     } finally {
       this.chargement.set(false);
     }
-  }
-  protected prospectsFiltres() {
-    return this.prospects().filter(
-      (p) =>
-        (!this.filtreStatut || p.statut_prospect === this.filtreStatut) &&
-        `${p.entreprise} ${p.nom} ${p.prenom} ${p.email}`
-          .toLocaleLowerCase()
-          .includes(this.recherche.toLocaleLowerCase()),
-    );
-  }
-  protected choisirEchec(p: Prospect) {
-    this.prospectEchec.set(p);
-    this.messageEchec = '';
-  }
-  protected annulerEchec() {
-    this.prospectEchec.set(null);
-    this.messageEchec = '';
-  }
-  protected echouer() {
-    return this.operation(async () => {
-      const p = this.prospectEchec();
-      if (!p) return;
-      await this.api.modifier('POST', `/prospects/${p.id_prospect}/echec`, {
-        message: this.messageEchec,
-      });
-      this.annulerEchec();
-    }, 'Demande classée sans suite : le message a été envoyé par e-mail.');
   }
   /** Fiche client existante du meme e-mail : la conversion y rattachera la demande. */
   protected clientExistant(p: Prospect): Client | null {

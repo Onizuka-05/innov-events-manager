@@ -11,9 +11,7 @@ export function creerRoutesDevis(c: DevisController, auth: AuthentificationServi
   r.get('/prospects', admin, c.prospects);
   r.post('/prospects/:id/conversion', admin, c.convertir);
   r.post('/prospects/:id/echec', admin, c.echouer);
-  r.get('/clients', admin, c.clients);
-  r.get('/themes', admin, c.themes);
-  r.get('/evenements', admin, c.evenements);
+  r.get('/themes', exigerRoles(auth, ['admin', 'employe']), c.themes);
   r.post('/evenements', admin, c.creerEvenement);
   r.get('/devis', connecte, c.liste);
   r.post('/devis', admin, c.creer);

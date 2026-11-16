@@ -1,3 +1,7 @@
+import { GestionRepository } from './repositories/gestion.repository.js';
+import { GestionService } from './services/gestion.service.js';
+import { GestionController } from './controllers/gestion.controller.js';
+import { creerRoutesGestion } from './routes/gestion.routes.js';
 import csrf from '@dr.pogodin/csurf';
 import connectPgSimple from 'connect-pg-simple';
 import express from 'express';
@@ -139,6 +143,19 @@ export function creerApp({
     new LogsService(new LogsRepository(mongodb, configuration.mongodbDatabase)),
     configuration.mailContact ?? 'contact@innov-events.invalid',
     new DevisPdfService(),
+  );
+  app.use(
+    '/api',
+    creerRoutesGestion(
+      new GestionController(
+        new GestionService(
+          new GestionRepository(postgres),
+          new LogsRepository(mongodb, configuration.mongodbDatabase),
+          envoi,
+        ),
+      ),
+      auth,
+    ),
   );
   app.use('/api', creerRoutesDevis(new DevisController(devisService), auth));
   app.use(routeAbsente);

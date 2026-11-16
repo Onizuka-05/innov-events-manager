@@ -158,6 +158,15 @@ export class DevisRepository {
 
   async creerEvenement(d: EvenementSaisie): Promise<string> {
     return this.transaction(async (db) => {
+      if (
+        !(
+          await db.query(
+            `SELECT 1 FROM innov_events.clients WHERE id_client=$1 AND date_anonymisation IS NULL FOR UPDATE`,
+            [d.id_client],
+          )
+        ).rowCount
+      )
+        throw new ErreurHttp(409, 'Client absent ou anonymisé.');
       if (d.id_prospect) {
         const r = await db.query<{ id_client: string }>(
           `SELECT id_client::text FROM innov_events.prospects

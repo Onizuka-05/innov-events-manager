@@ -1,0 +1,116 @@
+@if (erreur()) {
+  <p role="alert" class="erreur">{{ erreur() }}</p>
+}
+@if (information()) {
+  <p role="status">{{ information() }}</p>
+}
+<section class="carte bloc" aria-labelledby="titre-prospects">
+  <h2 id="titre-prospects">Prospects</h2>
+  <div class="formulaire barre-filtres">
+    <div class="champ">
+      <label for="recherche">Rechercher un prospect</label>
+      <input
+        id="recherche"
+        name="recherche"
+        type="search"
+        placeholder="Entreprise, nom ou e-mail"
+        [(ngModel)]="recherche"
+      />
+    </div>
+    <div class="champ">
+      <label for="filtre">Statut</label>
+      <select id="filtre" name="filtre" [(ngModel)]="filtreStatut">
+        <option value="">Tous</option>
+        <option value="a_contacter">À contacter</option>
+        <option value="converti">Converti</option>
+        <option value="echoue">Échoué</option>
+      </select>
+    </div>
+  </div>
+  @if (prospectsFiltres().length === 0) {
+    <p class="vide">Aucune demande ne correspond.</p>
+  } @else {
+    <div class="tableau-defilant" tabindex="0" role="region" aria-label="Liste des prospects">
+      <table>
+        <caption class="masque">
+          Demandes de devis reçues
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Entreprise</th>
+            <th scope="col">Contact</th>
+            <th scope="col">Date souhaitée</th>
+            <th scope="col">Statut</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of prospectsFiltres(); track p.id_prospect) {
+            <tr>
+              <td>{{ p.entreprise }}</td>
+              <td>
+                {{ p.prenom }} {{ p.nom }}<br /><span class="texte-secondaire">{{ p.email }}</span>
+              </td>
+              <td>{{ dateCourte(p.date_souhaitee) }}</td>
+              <td>
+                <span [class]="'statut ' + classeStatut(p.statut_prospect)">{{
+                  libelleStatut(p.statut_prospect)
+                }}</span>
+              </td>
+              <td>
+                @if (p.statut_prospect === 'a_contacter') {
+                  <div class="actions">
+                    <a
+                      class="bouton-secondaire"
+                      [attr.aria-label]="'Convertir en client : ' + p.entreprise"
+                      [routerLink]="['/devis']"
+                      [queryParams]="{ prospect: p.id_prospect }"
+                    >
+                      Convertir
+                    </a>
+                    <button
+                      type="button"
+                      [attr.aria-label]="'Classer sans suite : ' + p.entreprise"
+                      (click)="choisirEchec(p)"
+                    >
+                      Classer sans suite
+                    </button>
+                  </div>
+                } @else {
+                  <span class="texte-secondaire">—</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (prospectEchec(); as p) {
+    <form class="formulaire panneau" (ngSubmit)="echouer()">
+      <h3>Classer sans suite : {{ p.entreprise }}</h3>
+      <p class="aide">Le message est envoyé par e-mail à {{ p.email }}.</p>
+      <div class="champ">
+        <label for="message-echec">Message au prospect</label>
+        <textarea
+          id="message-echec"
+          name="messageEchec"
+          rows="3"
+          maxlength="3000"
+          required
+          [(ngModel)]="messageEchec"
+        ></textarea>
+      </div>
+      <div class="actions">
+        <button
+          type="submit"
+          class="bouton-primaire"
+          [disabled]="chargement() || !messageEchec.trim()"
+        >
+          Envoyer et classer
+        </button>
+        <button type="button" (click)="annulerEchec()">Annuler</button>
+      </div>
+    </form>
+  }
+</section>

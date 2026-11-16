@@ -193,9 +193,6 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)('J8 avec PostgreSQL reel', () =>
   it('controle chaque route administrateur pour les roles client et employe', async () => {
     const routes: { methode: 'get' | 'post' | 'patch'; chemin: string }[] = [
       { methode: 'get', chemin: '/api/prospects' },
-      { methode: 'get', chemin: '/api/clients' },
-      { methode: 'get', chemin: '/api/evenements' },
-      { methode: 'get', chemin: '/api/themes' },
       { methode: 'post', chemin: '/api/prospects/1/conversion' },
       { methode: 'post', chemin: '/api/prospects/1/echec' },
       { methode: 'post', chemin: '/api/evenements' },
@@ -473,6 +470,117 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)('J8 avec PostgreSQL reel', () =>
         ])
       ).rowCount,
     ).toBe(0);
+  });
+  it('refuse une image d evenement non HTTPS sans creer l evenement', async () => {
+    const f = await fixture();
+    const { agent } = await connecte('admin@example.org', 'admin');
+    const resultat = await agent
+      .post('/api/evenements')
+      .set(proxy)
+      .set('X-CSRF-Token', await csrf(agent))
+      .send({
+        id_client: f.idClient,
+        id_prospect: null,
+        id_type_evenement: idType,
+        id_theme: null,
+        nom: 'Image non securisee',
+        date_debut: '2027-02-20T09:00:00Z',
+        date_fin: '2027-02-20T17:00:00Z',
+        lieu: 'Paris',
+        statut_evenement: 'brouillon',
+        image_url: 'http://example.org/image.jpg',
+        visible_public: false,
+      });
+    expect(resultat.status).toBe(400);
+    expect((await admin.query('SELECT 1 FROM innov_events.evenements')).rowCount).toBe(1);
+  });
+  it('refuse l envoi d un devis sans prestation sans modifier son etat', async () => {
+    const f = await fixture();
+    const { agent } = await connecte('admin@example.org', 'admin');
+    const resultat = await agent
+      .post(`/api/devis/${f.devis}/envoi`)
+      .set(proxy)
+      .set('X-CSRF-Token', await csrf(agent))
+      .send({});
+    expect(resultat.status).toBe(409);
+    const devis = await repository.detail(f.devis);
+    expect(devis.statut_devis).toBe('en_preparation');
+    expect(devis.date_envoi).toBeNull();
+    expect(devis.lignes).toHaveLength(0);
+    expect(courriels).toHaveLength(0);
+    expect(
+      (
+        await admin.query('SELECT id_utilisateur FROM innov_events.clients WHERE id_client=$1', [
+          f.idClient,
+        ])
+      ).rows[0]?.id_utilisateur,
+    ).toBeNull();
+  });
+  it('renvoie une contre proposition apres une demande de modification avec motif', async () => {
+    const f = await fixture();
+    const gestion = await connecte('admin@example.org', 'admin');
+    const client = await connecte('ada@example.org', 'client', f.idClient);
+    await repository.remplacerLignes(f.devis, [{ libelle_prestation: 'Salle', montant_ht: 100 }]);
+    const envoyer = async () =>
+      gestion.agent
+        .post(`/api/devis/${f.devis}/envoi`)
+        .set(proxy)
+        .set('X-CSRF-Token', await csrf(gestion.agent))
+        .send({});
+    expect((await envoyer()).status).toBe(200);
+    expect((await repository.detail(f.devis)).statut_devis).toBe('etude_client');
+
+    const motif = 'Ajouter un accueil avec boissons.';
+    const demande = await client.agent
+      .post(`/api/devis/${f.devis}/reponse`)
+      .set(proxy)
+      .set('X-CSRF-Token', await csrf(client.agent))
+      .send({ choix: 'modification', motif_modification: motif });
+    expect(demande.status).toBe(200);
+    const modification = await repository.detail(f.devis);
+    expect(modification.statut_devis).toBe('modification');
+    expect(modification.motif_modification).toBe(motif);
+    expect(
+      (
+        await admin.query('SELECT date_modification FROM innov_events.devis WHERE id_devis=$1', [
+          f.devis,
+        ])
+      ).rows[0]?.date_modification,
+    ).toBeTruthy();
+
+    const intitule = await gestion.agent
+      .patch(`/api/devis/${f.devis}`)
+      .set(proxy)
+      .set('X-CSRF-Token', await csrf(gestion.agent))
+      .send({ intitule: 'Formule A avec accueil' });
+    expect(intitule.status).toBe(200);
+    const prestations = await gestion.agent
+      .post(`/api/devis/${f.devis}/lignes`)
+      .set(proxy)
+      .set('X-CSRF-Token', await csrf(gestion.agent))
+      .send({
+        lignes: [
+          { libelle_prestation: 'Salle', montant_ht: 100 },
+          { libelle_prestation: 'Accueil avec boissons', montant_ht: 50 },
+        ],
+      });
+    expect(prestations.status).toBe(200);
+    expect((await envoyer()).status).toBe(200);
+
+    const consultation = await client.agent.get(`/api/devis/${f.devis}`).set(proxy);
+    expect(consultation.status).toBe(200);
+    expect(consultation.body).toMatchObject({
+      id_devis: f.devis,
+      intitule: 'Formule A avec accueil',
+      statut_devis: 'etude_client',
+      motif_modification: motif,
+      totaux: { total_ht: '150.00', total_ttc: '180.00' },
+    });
+    expect(consultation.body.lignes).toHaveLength(2);
+    expect((await repository.detail(f.devis)).statut_devis).toBe('etude_client');
+    expect(courriels).toHaveLength(2);
+    expect(courriels[1]?.destinataire).toBe('ada@example.org');
+    expect(courriels[1]?.piecesJointes?.[0]?.contenu.subarray(0, 4).toString()).toBe('%PDF');
   });
   it('une seule acceptation concurrente reussit', async () => {
     const f = await fixture();
