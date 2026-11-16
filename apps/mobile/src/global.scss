@@ -34,4 +34,55 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+
+body {
+  background: #f5f8fc;
+  color: #192a3f;
+}
+.page-mobile {
+  max-width: 720px;
+  margin: auto;
+  padding: 24px 20px 48px;
+}
+input,
+select,
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 8px 0 20px;
+  padding: 10px;
+  border: 1px solid #687b90;
+  border-radius: 8px;
+  background: #fff;
+  color: #192a3f;
+}
+button {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #075e57;
+  border-radius: 8px;
+  background: #075e57;
+  color: #fff;
+  font: inherit;
+  margin: 4px 0 16px;
+}
+button:disabled {
+  opacity: 0.65;
+}
+a {
+  color: #135da0;
+  text-decoration: underline;
+}
+label {
+  font-weight: 600;
+}
+.erreur {
+  padding: 16px;
+  background: #fff0ee;
+  color: #b42318;
+}
+:focus-visible {
+  outline: 3px solid #6d28d9;
+  outline-offset: 3px;
+}
