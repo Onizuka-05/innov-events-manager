@@ -23,6 +23,21 @@ export class LogsRepository {
     await this.mongodb.db(this.base).collection<Journal>('logs').insertOne(journal);
   }
 
+  /** Page de 50 journaux, sans projection des champs BSON internes. */
+  async lister(type: string, page: number) {
+    const filtre = type ? { type_action: type } : {};
+    return this.mongodb
+      .db(this.base)
+      .collection<Journal>('logs')
+      .find(filtre, {
+        projection: { _id: 0, horodatage: 1, type_action: 1, id_utilisateur: 1, details: 1 },
+      })
+      .sort({ horodatage: -1, _id: -1 })
+      .skip((page - 1) * 50)
+      .limit(50)
+      .toArray();
+  }
+
   /**
    * Index TTL partiel : seuls les journaux de connexion expirent. La creation est idempotente,
    * donc relancee sans risque a chaque demarrage ; les journaux anterieurs sont aussi purges.

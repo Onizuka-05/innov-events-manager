@@ -15,6 +15,8 @@ export const authentificationGuard: CanActivateFn = async (route, etat) => {
     return router.createUrlTree(['/nouveau-mot-de-passe'], { queryParams: { retour: etat.url } });
   if (!auth.utilisateur())
     return router.createUrlTree(['/connexion'], { queryParams: { retour: etat.url } });
+  if (route.data['equipe'] && !['admin', 'employe'].includes(auth.utilisateur()!.role))
+    return router.createUrlTree(['/espace']);
   return (
     !route.data['admin'] ||
     auth.utilisateur()?.role === 'admin' ||

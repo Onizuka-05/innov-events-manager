@@ -3,6 +3,53 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: 'administration',
+    title: 'Tableau de bord | Innov’Events',
+    canActivate: [authentificationGuard],
+    data: { admin: true },
+    loadComponent: () => import('./pages/gestion/tableau-de-bord').then((m) => m.TableauDeBord),
+  },
+  {
+    path: 'administration/comptes',
+    title: 'Comptes | Innov’Events',
+    canActivate: [authentificationGuard],
+    data: { admin: true },
+    loadComponent: () => import('./pages/gestion/comptes').then((m) => m.Comptes),
+  },
+  {
+    path: 'administration/journaux',
+    title: 'Journaux | Innov’Events',
+    canActivate: [authentificationGuard],
+    data: { admin: true },
+    loadComponent: () => import('./pages/gestion/journaux').then((m) => m.Journaux),
+  },
+  {
+    path: 'equipe/clients',
+    title: 'Clients | Innov’Events',
+    canActivate: [authentificationGuard],
+    data: { equipe: true },
+    loadComponent: () => import('./pages/gestion/clients').then((m) => m.Clients),
+  },
+  {
+    path: 'equipe/evenements',
+    title: 'Événements | Innov’Events',
+    canActivate: [authentificationGuard],
+    data: { equipe: true },
+    loadComponent: () => import('./pages/gestion/evenements').then((m) => m.EvenementsGestion),
+  },
+  {
+    path: 'equipe/avis',
+    title: 'Modération | Innov’Events',
+    canActivate: [authentificationGuard],
+    data: { equipe: true },
+    loadComponent: () => import('./pages/gestion/moderation').then((m) => m.Moderation),
+  },
+  {
+    path: 'avis',
+    title: 'Avis | Innov’Events',
+    loadComponent: () => import('./pages/gestion/avis-publics').then((m) => m.AvisPublics),
+  },
+  {
     path: '',
     pathMatch: 'full',
     title: 'Accueil | Innov’Events',
@@ -24,11 +71,6 @@ export const routes: Routes = [
       path: 'evenements',
       titre: 'Événements',
       description: 'Le catalogue des événements sera disponible prochainement.',
-    },
-    {
-      path: 'avis',
-      titre: 'Avis',
-      description: 'Les avis validés seront disponibles prochainement.',
     },
   ].map(({ path, titre, description }) => ({
     path,

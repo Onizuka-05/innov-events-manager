@@ -5,7 +5,7 @@
     <p class="texte-secondaire">
       {{
         admin()
-          ? 'Suivez les demandes, convertissez les prospects et préparez les propositions.'
+          ? 'Convertissez une demande et préparez les propositions.'
           : 'Consultez les propositions reçues et donnez votre réponse.'
       }}
     </p>
@@ -18,118 +18,7 @@
   }
 
   @if (admin()) {
-    <section class="carte bloc" aria-labelledby="titre-prospects">
-      <h2 id="titre-prospects">Prospects</h2>
-      <div class="formulaire barre-filtres">
-        <div class="champ">
-          <label for="recherche">Rechercher un prospect</label>
-          <input
-            id="recherche"
-            name="recherche"
-            type="search"
-            placeholder="Entreprise, nom ou e-mail"
-            [(ngModel)]="recherche"
-          />
-        </div>
-        <div class="champ">
-          <label for="filtre">Statut</label>
-          <select id="filtre" name="filtre" [(ngModel)]="filtreStatut">
-            <option value="">Tous</option>
-            <option value="a_contacter">À contacter</option>
-            <option value="converti">Converti</option>
-            <option value="echoue">Échoué</option>
-          </select>
-        </div>
-      </div>
-      @if (prospectsFiltres().length === 0) {
-        <p class="vide">Aucune demande ne correspond.</p>
-      } @else {
-        <div class="tableau-defilant" tabindex="0" role="region" aria-label="Liste des prospects">
-          <table>
-            <caption class="masque">
-              Demandes de devis reçues
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Entreprise</th>
-                <th scope="col">Contact</th>
-                <th scope="col">Date souhaitée</th>
-                <th scope="col">Statut</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (p of prospectsFiltres(); track p.id_prospect) {
-                <tr>
-                  <td>{{ p.entreprise }}</td>
-                  <td>
-                    {{ p.prenom }} {{ p.nom }}<br /><span class="texte-secondaire">{{
-                      p.email
-                    }}</span>
-                  </td>
-                  <td>{{ dateCourte(p.date_souhaitee) }}</td>
-                  <td>
-                    <span [class]="'statut ' + classeStatut(p.statut_prospect)">{{
-                      libelleStatut(p.statut_prospect)
-                    }}</span>
-                  </td>
-                  <td>
-                    @if (p.statut_prospect === 'a_contacter') {
-                      <div class="actions">
-                        <button
-                          type="button"
-                          class="bouton-secondaire"
-                          [attr.aria-label]="'Convertir en client : ' + p.entreprise"
-                          (click)="choisirConversion(p.id_prospect)"
-                        >
-                          Convertir
-                        </button>
-                        <button
-                          type="button"
-                          [attr.aria-label]="'Classer sans suite : ' + p.entreprise"
-                          (click)="choisirEchec(p)"
-                        >
-                          Classer sans suite
-                        </button>
-                      </div>
-                    } @else {
-                      <span class="texte-secondaire">—</span>
-                    }
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      }
-      @if (prospectEchec(); as p) {
-        <form class="formulaire panneau" (ngSubmit)="echouer()">
-          <h3>Classer sans suite : {{ p.entreprise }}</h3>
-          <p class="aide">Le message est envoyé par e-mail à {{ p.email }}.</p>
-          <div class="champ">
-            <label for="message-echec">Message au prospect</label>
-            <textarea
-              id="message-echec"
-              name="messageEchec"
-              rows="3"
-              maxlength="3000"
-              required
-              [(ngModel)]="messageEchec"
-            ></textarea>
-          </div>
-          <div class="actions">
-            <button
-              type="submit"
-              class="bouton-primaire"
-              [disabled]="chargement() || !messageEchec.trim()"
-            >
-              Envoyer et classer
-            </button>
-            <button type="button" (click)="annulerEchec()">Annuler</button>
-          </div>
-        </form>
-      }
-    </section>
+    <p><a routerLink="/administration">Voir les prospects et le tableau de bord</a></p>
 
     <section class="carte bloc" aria-labelledby="titre-conversion">
       <h2 id="titre-conversion"><span class="etape">1</span>Convertir un prospect</h2>
@@ -322,6 +211,13 @@
   }
 
   <section class="carte bloc" aria-labelledby="titre-liste-devis">
+    @if (admin()) {
+      <label for="filtre-devis">Afficher</label
+      ><select id="filtre-devis" name="filtre_devis" [(ngModel)]="filtre_devis">
+        <option value="">Tous les devis</option>
+        <option value="accepte">Devis acceptés</option>
+      </select>
+    }
     <h2 id="titre-liste-devis">{{ admin() ? 'Liste des devis' : 'Mes propositions' }}</h2>
     @if (devis().length === 0) {
       <p class="vide">Aucun devis disponible.</p>
@@ -343,7 +239,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (d of devis(); track d.id_devis) {
+            @for (d of devisFiltres(); track d.id_devis) {
               <tr [attr.aria-current]="selection()?.id_devis === d.id_devis ? 'true' : null">
                 <td>{{ d.intitule }}</td>
                 <td>{{ d.evenement }}</td>
@@ -364,6 +260,17 @@
                   >
                     Ouvrir
                   </button>
+                  @if (
+                    admin() && d.statut_devis === 'accepte' && evenementAccepte(d.id_evenement)
+                  ) {
+                    <button
+                      type="button"
+                      [disabled]="chargement()"
+                      (click)="demarrer(d.id_evenement)"
+                    >
+                      Passer l'événement en cours
+                    </button>
+                  }
                 </td>
               </tr>
             }
