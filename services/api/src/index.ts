@@ -3,6 +3,8 @@ import { Pool } from 'pg';
 import { creerApp } from './app.js';
 import { chargerConfiguration } from './config/config.js';
 import { LogsRepository } from './repositories/logs.repository.js';
+import { PurgesRepository } from './repositories/purges.repository.js';
+import { PurgesService } from './services/purges.service.js';
 
 async function demarrer(): Promise<void> {
   const configuration = chargerConfiguration();
@@ -27,10 +29,18 @@ async function demarrer(): Promise<void> {
     console.error(JSON.stringify({ evenement: 'index_expiration_journaux_echec' }));
   });
   const app = creerApp({ postgres, mongodb, configuration });
+  // Purges automatiques au demarrage puis toutes les 24 heures, sans bloquer l'API.
+  const arreterPurges = configuration.purgesActives
+    ? new PurgesService(
+        new PurgesRepository(postgres),
+        new LogsRepository(mongodb, configuration.mongodbDatabase),
+      ).demarrer()
+    : () => undefined;
   const serveur = app.listen(configuration.port, '0.0.0.0', () => {
     console.info(`API disponible sur le port ${configuration.port}`);
   });
   async function arreter(): Promise<void> {
+    arreterPurges();
     serveur.close();
     await Promise.allSettled([postgres.end(), mongodb.close()]);
   }

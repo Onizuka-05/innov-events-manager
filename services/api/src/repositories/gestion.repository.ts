@@ -107,13 +107,16 @@ export class GestionRepository {
       [id],
     );
   }
-  /** Tri chronologique ; le filtre a venir est commun au web et au mobile. */
+  /**
+   * Tri chronologique ; le filtre a venir est commun au web et au mobile. Il retient les
+   * evenements non termines (date de fin a venir) : un evenement commence reste dans la liste.
+   */
   async evenements(avenir = false) {
     return (
       await this.pool.query(
         `SELECT ${EVENEMENT} FROM innov_events.evenements e
       JOIN innov_events.clients c USING(id_client)
-      WHERE NOT $1::boolean OR (e.date_debut>=NOW() AND e.statut_evenement IN ('brouillon','accepte','en_cours'))
+      WHERE NOT $1::boolean OR (e.date_fin>=NOW() AND e.statut_evenement IN ('brouillon','accepte','en_cours'))
       ORDER BY e.date_debut,e.id_evenement`,
         [avenir],
       )
