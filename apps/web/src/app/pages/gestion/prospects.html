@@ -62,9 +62,7 @@
                 </td>
                 <td>{{ dateCourte(p.date_souhaitee) }}</td>
                 <td>
-                  <span [class]="'statut ' + classeStatut(p.statut_prospect)">{{
-                    libelleStatut(p.statut_prospect)
-                  }}</span>
+                  <app-badge-statut [statut]="p.statut_prospect" />
                 </td>
                 <td>
                   @if (p.statut_prospect === 'a_contacter') {
@@ -80,6 +78,7 @@
                       </button>
                       <button
                         type="button"
+                        class="bouton-secondaire"
                         [attr.aria-label]="'Classer sans suite : ' + p.entreprise"
                         (click)="choisirEchec(p)"
                       >
@@ -119,7 +118,7 @@
           >
             Envoyer et classer
           </button>
-          <button type="button" (click)="annulerEchec()">Annuler</button>
+          <button type="button" class="bouton-secondaire" (click)="annulerEchec()">Annuler</button>
         </div>
       </form>
     }

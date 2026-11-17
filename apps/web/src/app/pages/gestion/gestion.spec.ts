@@ -11,6 +11,8 @@ import { Moderation } from './moderation';
 import { Comptes } from './comptes';
 import { Prospects } from './prospects';
 import { Devis } from '../devis/devis';
+import { Journaux, detailsLisibles } from './journaux';
+import { Taches } from './taches';
 import type { Type } from '@angular/core';
 
 const evenement = {
@@ -328,5 +330,145 @@ describe('espaces de gestion', () => {
       '/evenements/3',
       expect.objectContaining({ statut_evenement: 'en_cours' }),
     );
+  });
+  it('affiche des journaux lisibles avec l’identifiant de l’utilisateur', async () => {
+    const { fixture, api } = preparer(Journaux, 'admin', {
+      '/comptes': [{ ...utilisateur, nom_utilisateur: 'ada' }],
+      '/journaux?type_action=&page=1': [
+        {
+          horodatage: '2026-11-16T10:00:00+00:00',
+          type_action: 'CHANGEMENT_STATUT_EVENEMENT',
+          id_utilisateur: '1',
+          details: { id_evenement: '3', ancien: 'brouillon', nouveau: 'accepte' },
+        },
+        {
+          horodatage: '2026-11-16T09:00:00+00:00',
+          type_action: 'SUPPRESSION_CLIENT',
+          id_utilisateur: '9',
+          details: { id_client: '2', nom_client: 'Léa Martin' },
+        },
+        {
+          horodatage: '2026-11-16T08:00:00+00:00',
+          type_action: 'CONNEXION_ECHOUEE',
+          id_utilisateur: null,
+          details: { email: 'inconnu@example.org', ip: '203.0.113.5' },
+        },
+      ],
+    });
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const lignes = [...(fixture.nativeElement.querySelectorAll('tbody tr') as NodeListOf<Element>)];
+    const cellules = (i: number) =>
+      [...lignes[i].querySelectorAll('td')].map((td) => td.textContent?.trim());
+    expect(lignes).toHaveLength(3);
+    expect(cellules(0)[1]).toBe('Changement de statut d’un événement');
+    expect(cellules(0)[2]).toBe('ada (Ada Martin)');
+    expect(cellules(0)[3]).toBe('Statut : Brouillon → Accepté · Événement n° 3');
+    expect(cellules(1)[2]).toBe('Compte supprimé n° 9');
+    expect(cellules(1)[3]).toBe('Client : Léa Martin · Fiche client n° 2');
+    expect(cellules(2)[2]).toBe('—');
+    expect(cellules(2)[3]).toBe('E-mail : inconnu@example.org · Adresse IP : 203.0.113.5');
+    expect(fixture.nativeElement.querySelector('tbody').textContent).not.toContain('{');
+    expect(api.get).toHaveBeenCalledWith('/comptes');
+  });
+  it('garde le numero du compte si la liste des comptes est indisponible', async () => {
+    const indisponible = {
+      then: (_: unknown, rejeter: (e: Error) => void) => rejeter(new Error('Indisponible')),
+    };
+    const { fixture } = preparer(Journaux, 'admin', {
+      '/comptes': indisponible,
+      '/journaux?type_action=&page=1': [
+        {
+          horodatage: '2026-11-16T10:00:00+00:00',
+          type_action: 'GENERATION_PDF',
+          id_utilisateur: '4',
+          details: { id_devis: '8' },
+        },
+      ],
+    });
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const cellules = [...fixture.nativeElement.querySelectorAll('tbody td')].map((td) =>
+      (td as HTMLElement).textContent?.trim(),
+    );
+    expect(cellules[2]).toBe('Compte n° 4');
+    expect(cellules[3]).toBe('Devis n° 8');
+  });
+  it('reformule les details sans perdre une cle inconnue', () => {
+    expect(detailsLisibles({ id_devis: '5', statut_devis: 'modification' })).toBe(
+      'Devis n° 5 · Réponse : Modification demandée',
+    );
+    expect(detailsLisibles({ origine: 'script' })).toBe('origine : script');
+    expect(detailsLisibles({})).toBe('—');
+  });
+  it.each([Journaux, Comptes])('ne met plus de lien Tableau de bord en tete (%o)', async (page) => {
+    const { fixture } = preparer(page as Type<unknown>, 'admin');
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('a[href="/administration"]')).toBeNull();
+    expect(fixture.nativeElement.textContent).not.toContain('Tableau de bord');
+  });
+  it('affiche le nom de l’evenement sur chaque carte de tache', async () => {
+    const tache = {
+      id_tache: '11',
+      id_utilisateur: '1',
+      id_evenement: '3',
+      titre: 'Préparer la salle',
+      description: null,
+      statut_tache: 'en_cours',
+      date_echeance: null,
+      prenom: 'Ada',
+      nom: 'Martin',
+    };
+    const { fixture } = preparer(Taches, 'employe', {
+      '/evenements': [{ id_evenement: '3', nom: 'Salon de Lyon' }],
+      '/evenements/3': { ...evenement, nom: 'Salon de Lyon', taches: [tache] },
+    });
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const carte = fixture.nativeElement.querySelector('article') as HTMLElement;
+    expect(carte.querySelector('.nom-evenement')?.textContent?.trim()).toBe('Salon de Lyon');
+    expect(carte.querySelector('.statut-information')?.textContent?.trim()).toBe('En cours');
+    expect(carte.querySelector('a')?.textContent).toContain('Salon de Lyon');
+  });
+  it('affiche les statuts en badges aux couleurs d’etat', async () => {
+    const liste = preparer(EvenementsGestion, 'employe', {
+      '/evenements': [evenement, { ...evenement, id_evenement: '4', statut_evenement: 'en_cours' }],
+    });
+    await liste.fixture.whenStable();
+    liste.fixture.detectChanges();
+    const badges = [...liste.fixture.nativeElement.querySelectorAll('.statut')].map(
+      (b) => (b as HTMLElement).className,
+    );
+    expect(badges).toEqual(['statut statut-succes', 'statut statut-information']);
+  });
+  it('respecte la hierarchie des boutons : un primaire par zone, les autres a contour', async () => {
+    const { fixture } = preparer(Clients, 'admin', {
+      '/clients?recherche=': [client],
+      '/clients/2': client,
+    });
+    await fixture.whenStable();
+    fixture.detectChanges();
+    [...(fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>)]
+      .find((b) => b.textContent?.includes('Test SAS'))!
+      .click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const boutons = [
+      ...(fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>),
+    ];
+    for (const b of boutons)
+      expect(
+        ['bouton-primaire', 'bouton-secondaire', 'bouton-danger'].some((c) =>
+          b.classList.contains(c),
+        ),
+        b.textContent ?? '',
+      ).toBe(true);
+    for (const zone of fixture.nativeElement.querySelectorAll('.actions') as NodeListOf<Element>)
+      expect(zone.querySelectorAll('.bouton-primaire').length).toBeLessThanOrEqual(1);
+    const rechercher = boutons.find((b) => b.textContent?.trim() === 'Rechercher')!;
+    expect(rechercher.classList.contains('bouton-secondaire')).toBe(true);
+    const supprimer = boutons.find((b) => b.textContent?.includes('Supprimer et anonymiser'))!;
+    expect(supprimer.classList.contains('bouton-danger')).toBe(true);
   });
 });

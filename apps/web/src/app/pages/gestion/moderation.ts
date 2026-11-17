@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { ApiService, messageErreur } from '../../core/api.service';
-import { LIBELLES } from '../../core/gestion.models';
+import { BadgeStatut } from '../../core/badge-statut';
 interface Avis {
   id_avis: string;
   commentaire: string;
@@ -11,6 +11,7 @@ interface Avis {
 /** Les avis ne deviennent publics qu'apres validation explicite. */
 @Component({
   selector: 'app-moderation',
+  imports: [BadgeStatut],
   styleUrl: './gestion.css',
   template: `<section class="conteneur page gestion">
     <h1>Avis</h1>
@@ -23,11 +24,30 @@ interface Avis {
     @for (a of avis(); track a.id_avis) {
       <article class="carte bloc">
         <h2>{{ a.evenement }}</h2>
-        <p>{{ a.note_evaluation }} / 5 · {{ libelles[a.statut_avis] }}</p>
+        <p class="meta">
+          <span>Note : {{ a.note_evaluation }} sur 5</span>
+          <app-badge-statut [statut]="a.statut_avis" />
+        </p>
         <p>{{ a.commentaire }}</p>
         @if (a.statut_avis === 'en_attente') {
-          <button type="button" [disabled]="envoi()" (click)="moderer(a, 'valide')">Valider</button>
-          <button type="button" [disabled]="envoi()" (click)="moderer(a, 'refuse')">Refuser</button>
+          <div class="actions">
+            <button
+              type="button"
+              class="bouton-primaire"
+              [disabled]="envoi()"
+              (click)="moderer(a, 'valide')"
+            >
+              Valider
+            </button>
+            <button
+              type="button"
+              class="bouton-secondaire"
+              [disabled]="envoi()"
+              (click)="moderer(a, 'refuse')"
+            >
+              Refuser
+            </button>
+          </div>
         }
       </article>
     } @empty {
@@ -41,7 +61,6 @@ export class Moderation {
   protected readonly erreur = signal('');
   protected readonly message = signal('');
   protected readonly envoi = signal(false);
-  protected readonly libelles = LIBELLES;
   constructor() {
     void this.charger();
   }

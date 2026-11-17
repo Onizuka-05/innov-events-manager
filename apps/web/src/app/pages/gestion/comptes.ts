@@ -1,15 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { ApiService, messageErreur } from '../../core/api.service';
 import { type Compte, type Client, LIBELLES } from '../../core/gestion.models';
+import { BadgeStatut } from '../../core/badge-statut';
 /** Gestion des comptes clients et employes ; administrateur protege par l'API. */
 @Component({
   selector: 'app-comptes',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, BadgeStatut],
   styleUrl: './gestion.css',
   template: ` <section class="conteneur page gestion">
-    <a routerLink="/administration">Tableau de bord</a>
     <h1>Comptes</h1>
     @if (erreur()) {
       <p role="alert" class="erreur">{{ erreur() }}</p>
@@ -20,14 +19,28 @@ import { type Compte, type Client, LIBELLES } from '../../core/gestion.models';
     <ul class="liste">
       @for (u of comptes(); track u.id_utilisateur) {
         <li>
-          <strong>{{ u.prenom }} {{ u.nom }}</strong> · {{ u.email_connexion }} ·
-          {{ libelles[u.role] }} · {{ libelles[u.statut_compte] }}
+          <p class="meta">
+            <strong>{{ u.prenom }} {{ u.nom }}</strong>
+            <span>{{ libelles[u.role] }}</span>
+            <app-badge-statut [statut]="u.statut_compte" />
+          </p>
+          <p class="texte-secondaire">{{ u.nom_utilisateur }} · {{ u.email_connexion }}</p>
           @if (u.role !== 'admin' && u.statut_compte !== 'supprime') {
             <div class="actions">
-              <button type="button" [disabled]="envoi()" (click)="statut(u)">
+              <button
+                type="button"
+                class="bouton-secondaire"
+                [disabled]="envoi()"
+                (click)="statut(u)"
+              >
                 {{ u.statut_compte === 'actif' ? 'Suspendre' : 'Réactiver' }}
                 <span class="visuellement-cache">{{ u.prenom }} {{ u.nom }}</span></button
-              ><button type="button" [disabled]="envoi()" (click)="supprimer(u)">
+              ><button
+                type="button"
+                class="bouton-danger"
+                [disabled]="envoi()"
+                (click)="supprimer(u)"
+              >
                 Supprimer <span class="visuellement-cache">{{ u.prenom }} {{ u.nom }}</span>
               </button>
             </div>
@@ -74,7 +87,7 @@ import { type Compte, type Client, LIBELLES } from '../../core/gestion.models';
           }
         </select>
       }
-      <button type="submit" [disabled]="envoi()">Créer le compte</button>
+      <button type="submit" class="bouton-primaire" [disabled]="envoi()">Créer le compte</button>
     </form>
   </section>`,
 })

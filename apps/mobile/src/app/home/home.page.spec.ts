@@ -58,4 +58,34 @@ describe('Evenements mobiles', () => {
     await fixture.whenStable();
     expect(auth.deconnecter).toHaveBeenCalled();
   });
+  it('affiche des badges d’etat distincts pour Brouillon, Accepte et En cours', async () => {
+    const { fixture, api } = preparer();
+    api.get.mockResolvedValueOnce([
+      { ...evenements[0], id_evenement: '1', statut_evenement: 'brouillon' },
+      { ...evenements[0], id_evenement: '2', statut_evenement: 'accepte' },
+      { ...evenements[0], id_evenement: '3', statut_evenement: 'en_cours' },
+    ]);
+    await fixture.componentInstance.ionViewWillEnter();
+    fixture.detectChanges();
+    const badges = [
+      ...(fixture.nativeElement.querySelectorAll('.statut') as NodeListOf<HTMLElement>),
+    ];
+    expect(badges.map((b) => b.textContent?.trim())).toEqual(['Brouillon', 'Accepté', 'En cours']);
+    expect(badges.map((b) => b.className)).toEqual([
+      'statut statut-neutre',
+      'statut statut-succes',
+      'statut statut-information',
+    ]);
+  });
+  it('presente Se deconnecter en bouton secondaire, Actualiser en bouton principal', () => {
+    const { fixture } = preparer();
+    fixture.detectChanges();
+    const boutons = [
+      ...(fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>),
+    ];
+    const deconnexion = boutons.find((b) => b.textContent?.includes('déconnecter'))!;
+    const actualiser = boutons.find((b) => b.textContent?.includes('Actualiser'))!;
+    expect(deconnexion.classList.contains('bouton-secondaire')).toBe(true);
+    expect(actualiser.classList.contains('bouton-secondaire')).toBe(false);
+  });
 });

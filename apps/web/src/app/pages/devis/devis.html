@@ -149,18 +149,22 @@
   }
 
   <section class="carte bloc" aria-labelledby="titre-liste-devis">
-    @if (admin()) {
-      <label for="filtre-devis">Afficher</label
-      ><select id="filtre-devis" name="filtre_devis" [(ngModel)]="filtre_devis">
-        <option value="">Tous les devis</option>
-        <option value="en_preparation">En préparation</option>
-        <option value="etude_client">Étude client</option>
-        <option value="modification">Modification demandée</option>
-        <option value="accepte">Acceptés</option>
-        <option value="refuse">Refusés</option>
-      </select>
-    }
     <h2 id="titre-liste-devis">{{ admin() ? 'Liste des devis' : 'Mes propositions' }}</h2>
+    @if (admin()) {
+      <div class="formulaire champ-filtre">
+        <div class="champ">
+          <label for="filtre-devis">Afficher</label>
+          <select id="filtre-devis" name="filtre_devis" [(ngModel)]="filtre_devis">
+            <option value="">Tous les devis</option>
+            <option value="en_preparation">En préparation</option>
+            <option value="etude_client">Étude client</option>
+            <option value="modification">Modification demandée</option>
+            <option value="accepte">Acceptés</option>
+            <option value="refuse">Refusés</option>
+          </select>
+        </div>
+      </div>
+    }
     @if (devisFiltres().length === 0) {
       <p class="vide">Aucun devis disponible.</p>
     } @else {
@@ -189,30 +193,31 @@
                   <td>{{ d.entreprise }}</td>
                 }
                 <td>
-                  <span [class]="'statut ' + classeStatut(d.statut_devis)">{{
-                    libelleStatut(d.statut_devis)
-                  }}</span>
+                  <app-badge-statut [statut]="d.statut_devis" />
                 </td>
                 <td>
-                  <button
-                    type="button"
-                    class="bouton-secondaire"
-                    [attr.aria-label]="'Ouvrir le devis ' + d.intitule"
-                    (click)="afficher(d.id_devis)"
-                  >
-                    Ouvrir
-                  </button>
-                  @if (
-                    admin() && d.statut_devis === 'accepte' && evenementAccepte(d.id_evenement)
-                  ) {
+                  <div class="actions">
                     <button
                       type="button"
-                      [disabled]="chargement()"
-                      (click)="demarrer(d.id_evenement)"
+                      class="bouton-secondaire"
+                      [attr.aria-label]="'Ouvrir le devis ' + d.intitule"
+                      (click)="afficher(d.id_devis)"
                     >
-                      Passer l'événement en cours
+                      Ouvrir
                     </button>
-                  }
+                    @if (
+                      admin() && d.statut_devis === 'accepte' && evenementAccepte(d.id_evenement)
+                    ) {
+                      <button
+                        type="button"
+                        class="bouton-secondaire"
+                        [disabled]="chargement()"
+                        (click)="demarrer(d.id_evenement)"
+                      >
+                        Passer l'événement en cours
+                      </button>
+                    }
+                  </div>
                 </td>
               </tr>
             }
@@ -224,14 +229,12 @@
 
   @if (selection(); as d) {
     <section class="carte bloc" aria-labelledby="detail-devis">
-      <div class="detail-en-tete">
+      <div class="detail-en-tete carte-en-tete">
         <div>
           <h2 id="detail-devis" tabindex="-1">{{ d.intitule }}</h2>
           <p class="texte-secondaire">
             {{ nomEvenement(d.id_devis) }}
-            <span [class]="'statut ' + classeStatut(d.statut_devis)">{{
-              libelleStatut(d.statut_devis)
-            }}</span>
+            <app-badge-statut [statut]="d.statut_devis" />
           </p>
         </div>
         <button type="button" class="bouton-secondaire" (click)="telecharger()">
@@ -304,7 +307,9 @@
                 [(ngModel)]="nouvelIntitule"
               />
             </div>
-            <button type="submit" [disabled]="chargement()">Modifier l'intitulé</button>
+            <button type="submit" class="bouton-secondaire" [disabled]="chargement()">
+              Modifier l'intitulé
+            </button>
           </form>
         </div>
 
@@ -334,13 +339,15 @@
                     [(ngModel)]="l.montant_ht"
                   />
                 </div>
-                <button type="button" (click)="retirerLigne(i)">
+                <button type="button" class="bouton-secondaire" (click)="retirerLigne(i)">
                   Retirer <span class="masque">la prestation {{ i + 1 }}</span>
                 </button>
               </div>
             }
             <div class="actions">
-              <button type="button" (click)="ajouterLigne()">Ajouter une prestation</button>
+              <button type="button" class="bouton-secondaire" (click)="ajouterLigne()">
+                Ajouter une prestation
+              </button>
               <button type="submit" class="bouton-secondaire" [disabled]="chargement()">
                 Enregistrer les prestations
               </button>

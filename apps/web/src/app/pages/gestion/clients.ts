@@ -4,12 +4,13 @@ import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ApiService, messageErreur } from '../../core/api.service';
 import { AuthentificationService } from '../../core/authentification.service';
-import { type Client, LIBELLES } from '../../core/gestion.models';
+import { type Client } from '../../core/gestion.models';
+import { BadgeStatut } from '../../core/badge-statut';
 
 /** Recherche des clients et historique ; formulaires reserves a l'administrateur. */
 @Component({
   selector: 'app-clients',
-  imports: [FormsModule, RouterLink, DatePipe],
+  imports: [FormsModule, RouterLink, DatePipe, BadgeStatut],
   styleUrl: './gestion.css',
   template: ` <section class="conteneur page gestion">
     <h1>Clients</h1>
@@ -19,23 +20,31 @@ import { type Client, LIBELLES } from '../../core/gestion.models';
     @if (message()) {
       <p role="status">{{ message() }}</p>
     }
-    <form class="formulaire" (ngSubmit)="charger()">
-      <label for="recherche-client">Rechercher une entreprise ou un contact</label
-      ><input
-        id="recherche-client"
-        name="recherche"
-        type="search"
-        maxlength="200"
-        [(ngModel)]="recherche"
-      /><button type="submit">Rechercher</button>
+    <form class="formulaire barre-recherche" (ngSubmit)="charger()">
+      <div class="champ">
+        <label for="recherche-client">Rechercher une entreprise ou un contact</label>
+        <input
+          id="recherche-client"
+          name="recherche"
+          type="search"
+          maxlength="200"
+          [(ngModel)]="recherche"
+        />
+      </div>
+      <button type="submit" class="bouton-secondaire">Rechercher</button>
     </form>
     @if (admin()) {
-      <button type="button" (click)="nouveau()">Créer un client</button>
+      <button type="button" class="bouton-primaire" (click)="nouveau()">Créer un client</button>
     }
-    <ul class="liste">
+    <ul class="liste liste-selection">
       @for (c of clients(); track c.id_client) {
         <li>
-          <button type="button" (click)="ouvrir(c.id_client)">
+          <button
+            type="button"
+            class="bouton-secondaire"
+            [attr.aria-current]="selection()?.id_client === c.id_client ? 'true' : null"
+            (click)="ouvrir(c.id_client)"
+          >
             {{ c.entreprise || 'Client anonymisé' }} — {{ c.prenom_contact }} {{ c.nom_contact }}
           </button>
         </li>
@@ -57,10 +66,14 @@ import { type Client, LIBELLES } from '../../core/gestion.models';
           <dd>{{ c.adresse_postale || '—' }}</dd>
         </dl>
         @if (admin() && !c.date_anonymisation) {
-          <button type="button" (click)="modifier(c)">Modifier la fiche</button>
-          <button type="button" [disabled]="envoi()" (click)="supprimer(c)">
-            Supprimer et anonymiser le client
-          </button>
+          <div class="actions">
+            <button type="button" class="bouton-primaire" (click)="modifier(c)">
+              Modifier la fiche
+            </button>
+            <button type="button" class="bouton-danger" [disabled]="envoi()" (click)="supprimer(c)">
+              Supprimer et anonymiser le client
+            </button>
+          </div>
         }
         <h3>Historique des événements</h3>
         <ul>
@@ -71,7 +84,8 @@ import { type Client, LIBELLES } from '../../core/gestion.models';
                 [queryParams]="{ id: e.id_evenement }"
                 >{{ e.nom }}</a
               >
-              · {{ e.date_debut | date: 'short' }} · {{ libelles[e.statut_evenement] }}
+              · {{ e.date_debut | date: 'short' }} ·
+              <app-badge-statut [statut]="e.statut_evenement" />
             </li>
           } @empty {
             <li>Aucun événement.</li>
@@ -92,8 +106,12 @@ import { type Client, LIBELLES } from '../../core/gestion.models';
             [(ngModel)]="formulaire[c.cle]"
           />
         }
-        <button type="submit" [disabled]="envoi()">Enregistrer</button>
-        <button type="button" (click)="edition.set(false)">Annuler</button>
+        <div class="actions">
+          <button type="submit" class="bouton-primaire" [disabled]="envoi()">Enregistrer</button>
+          <button type="button" class="bouton-secondaire" (click)="edition.set(false)">
+            Annuler
+          </button>
+        </div>
       </form>
     }
   </section>`,
@@ -107,7 +125,6 @@ export class Clients {
   protected readonly message = signal('');
   protected readonly envoi = signal(false);
   protected readonly edition = signal(false);
-  protected readonly libelles = LIBELLES;
   protected recherche = '';
   protected id_client = '';
   protected formulaire = {

@@ -15,6 +15,29 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
+  overflow-wrap: anywhere;
+}
+/* Liste de fiches a ouvrir : boutons secondaires de meme largeur. */
+.liste-selection li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+.liste-selection li > button {
+  flex: 1 1 16rem;
+  margin: 0;
+  text-align: left;
+}
+.liste-selection li > button[aria-current='true'] {
+  background: var(--surface-alt);
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin: 0;
 }
 .grille {
   display: grid;
@@ -31,6 +54,7 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  align-items: center;
 }
 .carte {
   overflow-wrap: anywhere;
@@ -48,23 +72,68 @@ button {
   margin: 4px;
   min-height: 44px;
 }
+.actions button {
+  margin: 0;
+}
 select,
 input,
 textarea {
   max-width: 100%;
 }
+/* Barre de recherche ou de filtre : champ et bouton sur une ligne, repli sous le champ. */
+.barre-recherche {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px 12px;
+  margin-bottom: 16px;
+}
+.barre-recherche .champ {
+  flex: 1 1 16rem;
+  margin-bottom: 0;
+}
+.formulaire.barre-recherche input:not([type='checkbox']),
+.formulaire.barre-recherche select {
+  margin-bottom: 0;
+}
+.formulaire.barre-recherche button[type='submit'] {
+  margin: 0;
+}
+/* Tableaux : en-tetes sur surface secondaire, lignes alternees sur le fond de page. */
+.tableau {
+  overflow-x: auto;
+  margin-bottom: 16px;
+  border: 1px solid #dce5ee;
+  border-radius: 8px;
+}
 table {
   width: 100%;
   border-collapse: collapse;
+  background: var(--surface);
+}
+caption {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
 }
 td,
 th {
-  padding: 12px;
+  padding: 12px 16px;
   text-align: left;
-  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  border-bottom: 1px solid #dce5ee;
 }
-.tableau {
-  overflow-x: auto;
+thead th {
+  background: var(--surface-alt);
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+tbody tr:nth-child(even) td {
+  background: var(--page);
+}
+tbody tr:last-child td {
+  border-bottom: none;
 }
 @media (max-width: 767px) {
   .grille {

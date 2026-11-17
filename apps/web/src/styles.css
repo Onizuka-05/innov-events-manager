@@ -10,8 +10,19 @@
   --link-hover: #0d427b;
   --border: #687b90;
   --focus: #6d28d9;
+  --success-text: #176344;
+  --success-bg: #e6f4eb;
   --warning-text: #8b520a;
   --warning-bg: #fff1d6;
+  --error-text: #a3212a;
+  --error-bg: #fce9e9;
+  --error-shade: #8f1d25;
+  --info-text: #1559a8;
+  --info-bg: #e8f2fc;
+  --neutral-text: #30465e;
+  --neutral-bg: #e9eff6;
+  --disabled-text: #59667a;
+  --disabled-bg: #e2e7ee;
   font-family:
     system-ui,
     -apple-system,
@@ -101,12 +112,39 @@ button,
 }
 .bouton-secondaire {
   border-color: var(--primary);
+  background: var(--surface);
   color: var(--primary);
 }
 .bouton-secondaire:hover {
   border-color: var(--primary-hover);
+  background: var(--surface-alt);
   color: var(--primary-hover);
   text-decoration: underline;
+}
+/* Action destructive (CO-09) : fond rouge, texte blanc, confirmation textuelle avant suppression. */
+.bouton-danger {
+  border-color: var(--error-text);
+  background: var(--error-text);
+  color: white;
+}
+.bouton-danger:hover {
+  border-color: var(--error-shade);
+  background: var(--error-shade);
+  color: white;
+  text-decoration: underline;
+}
+button.bouton-primaire,
+button.bouton-secondaire,
+button.bouton-danger {
+  font-weight: 600;
+}
+:is(button, .bouton):disabled,
+:is(button, .bouton):disabled:hover {
+  border-color: var(--disabled-bg);
+  background: var(--disabled-bg);
+  color: var(--disabled-text);
+  cursor: not-allowed;
+  text-decoration: none;
 }
 a:focus-visible,
 button:focus-visible,
@@ -183,10 +221,16 @@ main:not(:has(> router-outlet + *)) + .pied-page {
   max-width: 720px;
 }
 .carte {
+  --carte-espace: 24px;
   background: var(--surface);
   border: 1px solid #dce5ee;
   border-radius: 12px;
-  padding: 24px;
+  padding: var(--carte-espace);
+}
+@media (max-width: 767px) {
+  .carte {
+    --carte-espace: 16px;
+  }
 }
 .formulaire .champ {
   margin-bottom: 16px;
@@ -212,7 +256,7 @@ main:not(:has(> router-outlet + *)) + .pied-page {
   resize: vertical;
 }
 .formulaire [aria-invalid='true'] {
-  border: 2px solid #b42318;
+  border: 2px solid var(--error-text);
 }
 .aide {
   color: var(--text-muted);
@@ -228,8 +272,8 @@ main:not(:has(> router-outlet + *)) + .pied-page {
   cursor: wait;
 }
 .erreur {
-  background: #fff0ee;
-  color: #b42318;
+  background: var(--error-bg);
+  color: var(--error-text);
   padding: 12px;
   border-left: 4px solid currentColor;
 }
@@ -237,4 +281,67 @@ main:not(:has(> router-outlet + *)) + .pied-page {
   background: var(--surface-alt);
   color: var(--primary);
   padding: 16px;
+}
+
+/* Etiquettes de statut (CO-09, §6) : libelle en clair sur le fond de sa famille. */
+.statut {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.statut-neutre {
+  background: var(--neutral-bg);
+  color: var(--neutral-text);
+}
+.statut-information {
+  background: var(--info-bg);
+  color: var(--info-text);
+}
+.statut-alerte {
+  background: var(--warning-bg);
+  color: var(--warning-text);
+}
+.statut-succes {
+  background: var(--success-bg);
+  color: var(--success-text);
+}
+.statut-erreur {
+  background: var(--error-bg);
+  color: var(--error-text);
+}
+
+/* Espace de l'equipe : charte appliquee sans changer la mise en page des rubriques. */
+.espace-equipe .carte > :is(h2, .carte-en-tete):first-child {
+  margin: calc(-1 * var(--carte-espace)) calc(-1 * var(--carte-espace)) var(--carte-espace);
+  padding: 16px var(--carte-espace);
+  border-bottom: 1px solid #dce5ee;
+  border-radius: 12px 12px 0 0;
+  background: var(--surface-alt);
+  color: var(--text);
+}
+.espace-equipe .carte-en-tete h2,
+.espace-equipe .carte-en-tete p {
+  margin: 0;
+}
+.espace-equipe .carte > :is(h2, .carte-en-tete):first-child .etape {
+  background: var(--surface);
+}
+.espace-equipe .formulaire button[type='submit'] {
+  width: auto;
+  margin-block: 8px 0;
+}
+.espace-equipe .colonne-lecture {
+  max-width: 720px;
+}
+/* Petit ecran : l'action principale prend la largeur disponible, les autres restent a leur taille. */
+@media (max-width: 767px) {
+  .espace-equipe .bouton-primaire,
+  .espace-equipe .formulaire button.bouton-primaire[type='submit'] {
+    width: 100%;
+    margin-inline: 0;
+  }
 }

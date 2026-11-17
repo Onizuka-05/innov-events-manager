@@ -5,6 +5,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular';
 
 import { ApiService, messageErreur } from '../core/api.service';
 import { AuthentificationService } from '../core/authentification.service';
+import { familleStatut, libelleStatut } from '../core/statuts';
 
 interface Evenement {
   id_evenement: string;
@@ -29,11 +30,9 @@ export class HomePage {
   protected readonly evenements = signal<Evenement[]>([]);
   protected readonly erreur = signal('');
   protected readonly chargement = signal(false);
-  protected readonly libelles: Record<string, string> = {
-    brouillon: 'Brouillon',
-    accepte: 'Accepté',
-    en_cours: 'En cours',
-  };
+  /** Badge d'etat aux couleurs de la charte, libelle toujours ecrit en clair. */
+  protected readonly famille = familleStatut;
+  protected readonly libelle = libelleStatut;
   /** Ionic conserve les pages : cette methode recharge aussi apres une navigation de retour. */
   async ionViewWillEnter(): Promise<void> {
     await this.charger();
