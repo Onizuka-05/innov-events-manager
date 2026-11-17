@@ -33,7 +33,7 @@ Le suivi de l’accueil porte sur les demandes rattachées à la fiche. Il ne ra
 | `npm.cmd run test:coverage` | OK : 12 fichiers, 179 tests réussis sur 179 ; couverture : lignes 82,49 %, instructions 80,74 %, branches 74,42 %, fonctions 66,94 % | Sortie de la commande, `coverage/` |
 | `npm.cmd run build` | OK : compilation vers `dist/web/`, sans avertissement de budget ; bundle initial 311,08 kB (86,09 kB transférés) | `dist/web/` |
 | `npm.cmd audit --omit=dev --audit-level=high` | OK : `found 0 vulnerabilities` | Sortie de la commande |
-| CI de la PR : trois jobs de validation | à compléter | |
+| CI de la PR : trois jobs de validation | OK : `validation (api)`, `validation (web)` et `validation (mobile)` réussis sur `722304f` (exécution n° 45, 2 min 36 s) | https://github.com/Onizuka-05/innov-events-manager/actions/runs/44111971440 |
 
 ## Tests applicatifs concernés
 
