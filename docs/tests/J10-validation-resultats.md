@@ -31,7 +31,7 @@ Outillage du web : dépendance de développement `@playwright/test` (même plage
 | `services/api` : `npm.cmd run format:check`, `lint`, `typecheck` | Réussi, aucune erreur | |
 | `services/api` : `npm.cmd run test:coverage` (PostgreSQL de test jetable) | Réussi : 207 tests réussis, 2 ignorés (nginx absent du poste), dont les 3 de `formulaires.service.spec.ts` ; lignes 90,92 % | |
 | `node outils/tableau-des-tests.mjs` puis `node outils/tableau-des-tests.mjs --verifier` | Réussi : « docs/tests/tableau-des-tests.md est à jour. » ; 451 cas (303 unitaires, 143 d’intégration, 5 de bout en bout), aucun test non classé | |
-| CI de la PR (trois jobs `validation`) | à compléter | Lien de l’exécution |
+| CI de la PR (trois jobs `validation`) | Réussi sur `60b2c53` : trois jobs `validation` verts ; API 209 tests (nginx compris), web 179, mobile 58 ; builds et audits de production réussis | https://github.com/Onizuka-05/innov-events-manager/actions/runs/44161229838 |
 
 ## Test de bout en bout (TST-02)
 
