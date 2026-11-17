@@ -1,3 +1,5 @@
+import { LIBELLES_STATUT } from './statuts';
+
 export interface Note {
   id_note: string;
   id_utilisateur: string;
@@ -58,21 +60,10 @@ export interface Compte {
   statut_compte: string;
   id_client: string | null;
 }
-/** Libelles communs sans transformer les valeurs du contrat API. */
+/** Libelles communs (statuts et roles) sans transformer les valeurs du contrat API. */
 export const LIBELLES: Record<string, string> = {
-  brouillon: 'Brouillon',
-  accepte: 'Accepté',
-  en_cours: 'En cours',
-  termine: 'Terminé',
-  annule: 'Annulé',
-  a_faire: 'À faire',
-  actif: 'Actif',
-  suspendu: 'Suspendu',
-  supprime: 'Supprimé',
+  ...LIBELLES_STATUT,
   admin: 'Administrateur',
   employe: 'Employé',
   client: 'Client',
-  en_attente: 'En attente',
-  valide: 'Validé',
-  refuse: 'Refusé',
 };

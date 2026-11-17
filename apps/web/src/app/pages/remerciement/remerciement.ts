@@ -6,11 +6,15 @@ import { ApiService, messageErreur } from '../../core/api.service';
 @Component({
   selector: 'app-remerciement',
   imports: [ReactiveFormsModule],
-  template: ` <section class="conteneur page page-formulaire">
+  template: ` <section class="conteneur page">
     <h1>Paramètres</h1>
-    <h2>Message de remerciement</h2>
-    <p>Ce texte s’affiche après les prochaines demandes de devis.</p>
-    <form class="carte formulaire" (submit)="$event.preventDefault(); enregistrer()">
+    <form
+      class="carte formulaire colonne-lecture"
+      aria-labelledby="titre-remerciement"
+      (submit)="$event.preventDefault(); enregistrer()"
+    >
+      <h2 id="titre-remerciement">Message de remerciement</h2>
+      <p>Ce texte s’affiche après les prochaines demandes de devis.</p>
       <div class="champ">
         <label for="texte_remerciement">Message *</label
         ><textarea

@@ -67,8 +67,23 @@ button {
   font: inherit;
   margin: 4px 0 16px;
 }
-button:disabled {
-  opacity: 0.65;
+/* Action secondaire : fond blanc, texte et contour primaires (CO-09). */
+button.bouton-secondaire {
+  border: 2px solid #075e57;
+  background: #fff;
+  color: #075e57;
+  font-weight: 600;
+}
+button.bouton-secondaire:hover {
+  border-color: #05473f;
+  background: #edf3f7;
+  color: #05473f;
+}
+button:disabled,
+button:disabled:hover {
+  border-color: #e2e7ee;
+  background: #e2e7ee;
+  color: #59667a;
 }
 a {
   color: #135da0;
@@ -79,8 +94,37 @@ label {
 }
 .erreur {
   padding: 16px;
-  background: #fff0ee;
-  color: #b42318;
+  background: #fce9e9;
+  color: #a3212a;
+}
+/* Etiquettes de statut (CO-09, §6) : libelle en clair sur le fond de sa famille. */
+.statut {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.statut-neutre {
+  background: #e9eff6;
+  color: #30465e;
+}
+.statut-information {
+  background: #e8f2fc;
+  color: #1559a8;
+}
+.statut-alerte {
+  background: #fff1d6;
+  color: #8b520a;
+}
+.statut-succes {
+  background: #e6f4eb;
+  color: #176344;
+}
+.statut-erreur {
+  background: #fce9e9;
+  color: #a3212a;
 }
 :focus-visible {
   outline: 3px solid #6d28d9;

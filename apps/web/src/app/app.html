@@ -12,80 +12,104 @@
       #boutonMenu
       class="bouton-menu"
       type="button"
-      aria-controls="navigation-principale"
+      aria-controls="menu-principal"
       [attr.aria-expanded]="menuOuvert()"
       (click)="basculerMenu()"
     >
       {{ menuOuvert() ? 'Fermer le menu' : 'Ouvrir le menu' }}
     </button>
-    <nav
-      id="navigation-principale"
-      aria-label="Navigation principale"
-      [class.ouvert]="menuOuvert()"
-    >
-      <a
-        routerLink="/"
-        routerLinkActive="actif"
-        [routerLinkActiveOptions]="{ exact: true }"
-        ariaCurrentWhenActive="page"
-        (click)="choisirLien()"
-        >Accueil</a
-      >
-      <a
-        routerLink="/evenements"
-        routerLinkActive="actif"
-        ariaCurrentWhenActive="page"
-        (click)="choisirLien()"
-        >Événements</a
-      >
-      <a
-        routerLink="/avis"
-        routerLinkActive="actif"
-        ariaCurrentWhenActive="page"
-        (click)="choisirLien()"
-        >Avis</a
-      >
-      <a
-        routerLink="/contact"
-        routerLinkActive="actif"
-        ariaCurrentWhenActive="page"
-        (click)="choisirLien()"
-        >Contact</a
-      >
-      @if (auth.utilisateur()) {
-        <a
-          routerLink="/espace"
-          routerLinkActive="actif"
-          ariaCurrentWhenActive="page"
-          (click)="choisirLien()"
-          >Mon espace</a
-        >
-        <button
-          class="bouton bouton-secondaire"
-          type="button"
-          [disabled]="deconnexion()"
-          (click)="deconnecter()"
-        >
-          Déconnexion
-        </button>
-      } @else {
-        <a
-          routerLink="/connexion"
-          routerLinkActive="actif"
-          ariaCurrentWhenActive="page"
-          (click)="choisirLien()"
-          >Connexion</a
-        >
+    <div id="menu-principal" class="menu-principal" [class.ouvert]="menuOuvert()">
+      @if (equipe()) {
+        <nav class="navigation-equipe-compacte" aria-label="Espace équipe">
+          <ul>
+            @for (r of rubriques(); track r.chemin) {
+              <li>
+                <a
+                  [routerLink]="r.chemin"
+                  routerLinkActive="actif"
+                  [routerLinkActiveOptions]="optionsRubrique"
+                  ariaCurrentWhenActive="page"
+                  (click)="choisirLien()"
+                  >{{ r.libelle }}</a
+                >
+              </li>
+            }
+          </ul>
+        </nav>
       }
-      <a
-        class="bouton bouton-primaire"
-        routerLink="/demande-devis"
-        routerLinkActive="actif"
-        ariaCurrentWhenActive="page"
-        (click)="choisirLien()"
-        >Demander un devis</a
-      >
-    </nav>
+      <nav id="navigation-principale" aria-label="Navigation principale">
+        <a
+          routerLink="/"
+          routerLinkActive="actif"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ariaCurrentWhenActive="page"
+          (click)="choisirLien()"
+          >Accueil</a
+        >
+        <a
+          routerLink="/evenements"
+          routerLinkActive="actif"
+          ariaCurrentWhenActive="page"
+          (click)="choisirLien()"
+          >Événements</a
+        >
+        <a
+          routerLink="/avis"
+          routerLinkActive="actif"
+          ariaCurrentWhenActive="page"
+          (click)="choisirLien()"
+          >Avis</a
+        >
+        <a
+          routerLink="/contact"
+          routerLinkActive="actif"
+          ariaCurrentWhenActive="page"
+          (click)="choisirLien()"
+          >Contact</a
+        >
+        @if (auth.utilisateur()) {
+          @if (equipe()) {
+            <a [routerLink]="accueil()" routerLinkActive="actif" (click)="choisirLien()"
+              >Administration</a
+            >
+          } @else {
+            <a
+              routerLink="/espace"
+              routerLinkActive="actif"
+              ariaCurrentWhenActive="page"
+              (click)="choisirLien()"
+              >Mon espace</a
+            >
+          }
+          <button
+            class="bouton bouton-secondaire"
+            type="button"
+            [disabled]="deconnexion()"
+            (click)="deconnecter()"
+          >
+            Déconnexion
+          </button>
+        } @else {
+          <a
+            routerLink="/connexion"
+            routerLinkActive="actif"
+            ariaCurrentWhenActive="page"
+            (click)="choisirLien()"
+            >Connexion</a
+          >
+        }
+        @if (!equipe()) {
+          <a
+            class="bouton bouton-primaire"
+            routerLink="/demande-devis"
+            routerLinkActive="actif"
+            ariaCurrentWhenActive="page"
+            (click)="choisirLien()"
+            >Demander un devis</a
+          >
+        }
+      </nav>
+    </div>
   </div>
 </header>
 <main id="contenu" #contenu tabindex="-1"><router-outlet /></main>

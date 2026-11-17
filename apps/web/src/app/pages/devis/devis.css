@@ -46,6 +46,9 @@
 }
 
 /* Grilles de formulaire */
+.champ-filtre {
+  max-width: 320px;
+}
 .barre-filtres {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
@@ -90,10 +93,6 @@
 .actions .aide {
   margin: 0;
 }
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
 
 /* Tableaux */
 .tableau-defilant {
@@ -125,7 +124,7 @@ tbody tr:last-child th {
   border-bottom: none;
 }
 tr[aria-current='true'] td {
-  background: #eef6f5;
+  background: var(--surface-alt);
 }
 .montant {
   text-align: right;
@@ -134,34 +133,6 @@ tr[aria-current='true'] td {
 }
 .vide {
   color: var(--text-muted);
-}
-
-/* Badges de statut : contrastes supérieurs à 4,5:1 */
-.statut {
-  display: inline-block;
-  background: var(--surface-alt);
-  color: var(--text);
-  padding: 2px 10px;
-  border-radius: 999px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-.statut-attente {
-  background: var(--warning-bg);
-  color: var(--warning-text);
-}
-.statut-info {
-  background: #e7f2ff;
-  color: var(--link);
-}
-.statut-succes {
-  background: #e3f4ee;
-  color: var(--primary);
-}
-.statut-echec {
-  background: #fff0ee;
-  color: #b42318;
 }
 
 /* Panneau « classer sans suite » */
@@ -287,5 +258,10 @@ tr[aria-current='true'] td {
   .ligne-formulaire button[type='submit'],
   .ligne-prestation button {
     justify-self: start;
+  }
+  .actions button.bouton-primaire,
+  .formulaire .actions button.bouton-primaire[type='submit'] {
+    width: 100%;
+    margin-inline: 0;
   }
 }

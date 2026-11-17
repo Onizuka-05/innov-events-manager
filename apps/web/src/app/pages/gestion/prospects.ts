@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { ApiService, messageErreur } from '../../core/api.service';
 import type { Prospect } from '../../core/prospects.models';
 import type { Client } from '../../core/gestion.models';
+import { BadgeStatut } from '../../core/badge-statut';
 
 /** Recherche, classement et conversion des demandes recues. */
 @Component({
   selector: 'app-prospects',
-  imports: [FormsModule],
+  imports: [FormsModule, BadgeStatut],
   templateUrl: './prospects.html',
   styleUrl: '../devis/devis.css',
 })
@@ -51,19 +52,6 @@ export class Prospects {
           .toLocaleLowerCase()
           .includes(this.recherche.toLocaleLowerCase()),
     );
-  }
-  protected libelleStatut(s: string) {
-    return (
-      (
-        { a_contacter: 'À contacter', echoue: 'Échoué', converti: 'Converti' } as Record<
-          string,
-          string
-        >
-      )[s] ?? s
-    );
-  }
-  protected classeStatut(s: string) {
-    return s === 'converti' ? 'statut-succes' : s === 'echoue' ? 'statut-echec' : 'statut-attente';
   }
   protected dateCourte(v: string) {
     return v.slice(0, 10).split('-').reverse().join('/');

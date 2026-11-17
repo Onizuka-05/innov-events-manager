@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ApiService, messageErreur } from '../../core/api.service';
 import type { Prospect } from '../../core/prospects.models';
 import { AuthentificationService } from '../../core/authentification.service';
+import { BadgeStatut } from '../../core/badge-statut';
 
 interface Ligne {
   libelle_prestation: string;
@@ -37,33 +38,12 @@ interface Evenement {
   statut_evenement: string;
 }
 
-/** Libelles lisibles des statuts (prospects et devis). */
-const LIBELLES_STATUT: Record<string, string> = {
-  a_contacter: 'À contacter',
-  converti: 'Converti',
-  echoue: 'Échoué',
-  en_preparation: 'En préparation',
-  etude_client: 'Étude client',
-  modification: 'Modification demandée',
-  accepte: 'Accepté',
-  refuse: 'Refusé',
-};
-/** Couleur du badge : attente, succes, echec ou neutre. */
-const CLASSES_STATUT: Record<string, string> = {
-  a_contacter: 'statut-attente',
-  etude_client: 'statut-info',
-  modification: 'statut-attente',
-  converti: 'statut-succes',
-  accepte: 'statut-succes',
-  echoue: 'statut-echec',
-  refuse: 'statut-echec',
-};
 const FORMAT_EUROS = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
 
 /** Vue admin et vue client, protections reelles imposees par l'API. */
 @Component({
   selector: 'app-devis',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, BadgeStatut],
   templateUrl: './devis.html',
   styleUrl: './devis.css',
 })
@@ -104,12 +84,6 @@ export class Devis {
   protected lignes: Ligne[] = [];
   constructor() {
     void this.charger();
-  }
-  protected libelleStatut(statut: string): string {
-    return LIBELLES_STATUT[statut] ?? statut;
-  }
-  protected classeStatut(statut: string): string {
-    return CLASSES_STATUT[statut] ?? 'statut-neutre';
   }
   protected euros(montant: string | number): string {
     return FORMAT_EUROS.format(Number(montant));

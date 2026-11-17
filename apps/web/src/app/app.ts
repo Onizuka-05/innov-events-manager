@@ -2,9 +2,13 @@ import { Component, ElementRef, inject, signal, viewChild } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
-import { AuthentificationService } from './core/authentification.service';
+import { AuthentificationService, accueilRole } from './core/authentification.service';
+import { OPTIONS_RUBRIQUE_ACTIVE, estEquipe, rubriquesEquipe } from './core/rubriques-equipe';
 
-/** Gabarit commun aux pages publiques. Navigation adaptee a la session courante. */
+/**
+ * Gabarit commun. La navigation suit la session courante ; sur petit ecran, un seul bouton
+ * ouvre les rubriques de l'equipe puis les liens du site.
+ */
 @Component({
   imports: [RouterLink, RouterLinkActive, RouterOutlet],
   selector: 'app-root',
@@ -15,6 +19,7 @@ import { AuthentificationService } from './core/authentification.service';
 export class App {
   protected readonly auth = inject(AuthentificationService);
   protected readonly menuOuvert = signal(false);
+  protected readonly optionsRubrique = OPTIONS_RUBRIQUE_ACTIVE;
   private readonly contenu = viewChild<ElementRef<HTMLElement>>('contenu');
   private readonly boutonMenu = viewChild<ElementRef<HTMLButtonElement>>('boutonMenu');
   private navigationInitiale = true;
@@ -38,6 +43,21 @@ export class App {
           this.contenu()?.nativeElement.focus({ preventScroll: true });
         }
       });
+  }
+
+  /** Vrai pour l'administratrice et l'employe ; affichage seulement, l'API controle les droits. */
+  protected equipe(): boolean {
+    return estEquipe(this.auth.utilisateur()?.role);
+  }
+
+  /** Rubriques de l'equipe placees en tete du menu compact. */
+  protected rubriques() {
+    return rubriquesEquipe(this.auth.utilisateur()?.role);
+  }
+
+  /** Accueil de l'espace selon le role : Administration pour l'equipe, Mon espace sinon. */
+  protected accueil(): string {
+    return accueilRole(this.auth.utilisateur()?.role);
   }
 
   /** Atteint le contenu sans suivre la base URL des liens fragmentaires. */

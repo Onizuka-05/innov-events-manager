@@ -6,11 +6,12 @@ import { ApiService, messageErreur } from '../../core/api.service';
 import { AuthentificationService } from '../../core/authentification.service';
 import { LIBELLES, type Evenement, type Compte, type Client } from '../../core/gestion.models';
 import { NotesTaches } from './notes-taches';
+import { BadgeStatut } from '../../core/badge-statut';
 
 /** Fiches evenement : lecture en equipe, structure et cycle pilotes par l'administrateur. */
 @Component({
   selector: 'app-evenements-gestion',
-  imports: [FormsModule, DatePipe, NotesTaches],
+  imports: [FormsModule, DatePipe, NotesTaches, BadgeStatut],
   styleUrl: './gestion.css',
   template: ` <section class="conteneur page gestion">
     <h1>Événements</h1>
@@ -21,15 +22,23 @@ import { NotesTaches } from './notes-taches';
       <p role="status">{{ message() }}</p>
     }
     @if (admin()) {
-      <button type="button" (click)="nouveau()">Créer un événement</button>
+      <button type="button" class="bouton-primaire" (click)="nouveau()">Créer un événement</button>
     }
-    <ul class="liste">
+    <ul class="liste liste-selection">
       @for (e of evenements(); track e.id_evenement) {
         <li>
-          <button type="button" (click)="ouvrir(e.id_evenement)">
+          <button
+            type="button"
+            class="bouton-secondaire"
+            [attr.aria-current]="selection()?.id_evenement === e.id_evenement ? 'true' : null"
+            (click)="ouvrir(e.id_evenement)"
+          >
             {{ e.nom }} — {{ e.entreprise || 'Client anonymisé' }}
           </button>
-          · {{ e.date_debut | date: 'short' }} · {{ libelles[e.statut_evenement] }}
+          <p class="meta">
+            <span>{{ e.date_debut | date: 'short' }}</span>
+            <app-badge-statut [statut]="e.statut_evenement" />
+          </p>
         </li>
       } @empty {
         <li>Aucun événement.</li>
@@ -48,7 +57,7 @@ import { NotesTaches } from './notes-taches';
           <dt>Lieu</dt>
           <dd>{{ e.lieu }}</dd>
           <dt>Statut</dt>
-          <dd>{{ libelles[e.statut_evenement] }}</dd>
+          <dd><app-badge-statut [statut]="e.statut_evenement" /></dd>
           <dt>Type / thème</dt>
           <dd>{{ typeLibelle(e.id_type_evenement) }} / {{ themeLibelle(e.id_theme) }}</dd>
         </dl>
@@ -56,10 +65,14 @@ import { NotesTaches } from './notes-taches';
           <img [src]="e.image_url" [alt]="'Illustration de ' + e.nom" width="480" />
         }
         @if (admin()) {
-          <button type="button" (click)="modifier(e)">Modifier l'événement</button>
-          <button type="button" [disabled]="envoi()" (click)="supprimer(e)">
-            Supprimer l'événement
-          </button>
+          <div class="actions">
+            <button type="button" class="bouton-primaire" (click)="modifier(e)">
+              Modifier l'événement
+            </button>
+            <button type="button" class="bouton-danger" [disabled]="envoi()" (click)="supprimer(e)">
+              Supprimer l'événement
+            </button>
+          </div>
         }
       </section>
       <app-notes-taches
@@ -161,8 +174,14 @@ import { NotesTaches } from './notes-taches';
           />
           Visible publiquement avec l'accord du client</label
         >
-        <button type="submit" [disabled]="envoi()">Enregistrer l'événement</button>
-        <button type="button" (click)="edition.set(false)">Annuler</button>
+        <div class="actions">
+          <button type="submit" class="bouton-primaire" [disabled]="envoi()">
+            Enregistrer l'événement
+          </button>
+          <button type="button" class="bouton-secondaire" (click)="edition.set(false)">
+            Annuler
+          </button>
+        </div>
       </form>
     }
   </section>`,

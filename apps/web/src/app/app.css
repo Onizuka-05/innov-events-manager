@@ -46,13 +46,53 @@
   font-size: 0.875rem;
   font-weight: 400;
 }
-.entete nav {
+.menu-principal,
+#navigation-principale {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 4px;
 }
-.entete nav a:not(.bouton) {
+.navigation-equipe-compacte {
+  display: none;
+}
+.navigation-equipe-compacte ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0 0 16px;
+  list-style: none;
+  border-bottom: 1px solid var(--surface-alt);
+}
+.navigation-equipe-compacte a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+.navigation-equipe-compacte a:hover {
+  border-color: var(--primary-hover);
+  background: var(--surface-alt);
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+.navigation-equipe-compacte a.actif {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: white;
+}
+.navigation-equipe-compacte a.actif:hover {
+  border-color: var(--primary-hover);
+  background: var(--primary-hover);
+  color: white;
+}
+#navigation-principale a:not(.bouton) {
   display: flex;
   align-items: center;
   min-height: 44px;
@@ -60,8 +100,8 @@
   color: var(--text);
   text-decoration: none;
 }
-.entete nav a:hover,
-.entete nav a.actif:not(.bouton) {
+#navigation-principale a:hover,
+#navigation-principale a.actif:not(.bouton) {
   text-decoration: underline;
   text-underline-offset: 6px;
 }
@@ -123,18 +163,29 @@ main:focus {
     display: block;
     margin-left: auto;
   }
-  .entete nav {
+  .menu-principal {
     display: none;
     width: 100%;
   }
-  .entete nav.ouvert {
+  .menu-principal.ouvert {
     display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  #navigation-principale {
     flex-direction: column;
     align-items: stretch;
     gap: 8px;
   }
-  .entete nav .bouton {
+  #navigation-principale .bouton {
     margin-top: 8px;
+  }
+}
+/* Petit ecran : les rubriques de l'equipe rejoignent le menu unique, en premier. */
+@media (max-width: 767px) {
+  .navigation-equipe-compacte {
+    display: block;
   }
 }
 @media (max-width: 600px) {
