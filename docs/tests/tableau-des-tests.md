@@ -12,12 +12,12 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 | [Sécurité et contrôle des accès](#sécurité-et-contrôle-des-accès) | 21 | 29 | 0 | 50 |
 | [Authentification et comptes](#authentification-et-comptes) | 13 | 24 | 0 | 37 |
 | [Site public, demande de devis et contact](#site-public-demande-de-devis-et-contact) | 56 | 28 | 2 | 86 |
-| [Devis et événements](#devis-et-événements) | 23 | 21 | 0 | 44 |
+| [Devis et événements](#devis-et-événements) | 23 | 25 | 0 | 48 |
 | [Espace de l’équipe et administration](#espace-de-léquipe-et-administration) | 73 | 22 | 0 | 95 |
 | [Espace client](#espace-client) | 27 | 15 | 0 | 42 |
 | [Journaux et purges des données](#journaux-et-purges-des-données) | 5 | 3 | 0 | 8 |
 | [Application mobile](#application-mobile) | 58 | 1 | 3 | 62 |
-| **Total** | **303** | **143** | **5** | **451** |
+| **Total** | **303** | **147** | **5** | **455** |
 
 ## Socle technique
 
@@ -167,7 +167,7 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 
 ## Devis et événements
 
-44 tests.
+48 tests.
 
 | Fichier | Test | Niveau | Cas |
 | --- | --- | --- | ---: |
@@ -201,6 +201,9 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › refuse une image d evenement non HTTPS sans creer l evenement | Intégration | 1 |
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › refuse l envoi d un devis sans prestation sans modifier son etat | Intégration | 1 |
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › renvoie une contre proposition apres une demande de modification avec motif | Intégration | 1 |
+| `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › refuse l acceptation et la modification d un devis envoye si l evenement est %s | Intégration | 2 |
+| `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › repond 409 au client qui accepte le devis d un evenement annule | Intégration | 1 |
+| `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › refuse l envoi d un devis si l evenement est annule ou termine | Intégration | 1 |
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › une seule acceptation concurrente reussit | Intégration | 1 |
 | `services/api/src/services/devis.service.spec.ts` | devis › additionne les lignes HT | Unitaire | 1 |
 | `services/api/src/services/devis.service.spec.ts` | devis › calcule la TVA | Unitaire | 1 |

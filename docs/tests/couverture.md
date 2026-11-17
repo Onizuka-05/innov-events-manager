@@ -16,11 +16,11 @@ Dans la CI GitHub Actions, chaque exécution publie trois artefacts conservés 9
 
 ## Résultats
 
-Relevés le 17/11/2026 sur le poste (Windows 11, Node.js 24.22.0), sur `dev` après la fusion de toutes les PR du J10, complété par les tests de cette validation. Colonnes du rapport : instructions (`% Stmts`), branches (`% Branch`), fonctions (`% Funcs`), lignes (`% Lines`).
+Relevés le 17/11/2026 sur le poste (Windows 11, Node.js 24.22.0), sur `dev` après la fusion de toutes les PR du J10, complété par les tests de cette validation. Ligne de l’API relevée de nouveau le 18/11/2026 après la correction des devis d’un événement annulé ou terminé. Colonnes du rapport : instructions (`% Stmts`), branches (`% Branch`), fonctions (`% Funcs`), lignes (`% Lines`).
 
 | Application | Commit | Tests réussis | Instructions | Branches | Fonctions | Lignes | Source |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| API | `feature/j10-validation` (base `45ec400`) | 207 (+ 2 ignorés : nginx absent du poste) | 88,82 % | 82,07 % | 92,19 % | 90,92 % | poste, avec `TEST_DATABASE_URL` |
+| API | `fix/devis-evenement-clos` (base `4612fbe`) | 211 (+ 2 ignorés : nginx absent du poste) | 88,95 % | 82,31 % | 92,21 % | 90,97 % | poste, avec `TEST_DATABASE_URL` |
 | Site web | `feature/j10-validation` (base `45ec400`) | 179 | 80,74 % | 74,42 % | 66,94 % | 82,49 % | poste |
 | Mobile | `feature/j10-validation` (base `45ec400`) | 58 | 86,36 % | 84,26 % | 75,30 % | 86,24 % | poste |
 
