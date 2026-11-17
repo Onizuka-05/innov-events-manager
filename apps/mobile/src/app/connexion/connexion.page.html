@@ -50,5 +50,9 @@
     } @if(mode==='changement'){<button type="button" [disabled]="envoi()" (click)="annuler()">
       Annuler et demander un nouveau mot de passe temporaire</button
     >}
+    <nav class="liens-legaux" aria-label="Informations légales">
+      <a routerLink="/cgu">Conditions générales d’utilisation</a>
+      <a routerLink="/cgv">Conditions générales de vente</a>
+    </nav>
   </main></ion-content
 >

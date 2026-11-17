@@ -1,0 +1,22 @@
+<ion-header
+  ><ion-toolbar><ion-title>Informations légales</ion-title></ion-toolbar></ion-header
+>
+<ion-content
+  ><main class="page-mobile page-legale">
+    <p><a class="retour" routerLink="/home">‹ Retour à l’application</a></p>
+    <h1>{{contenu.titre}}</h1>
+    <p class="aide">{{version}}</p>
+    <p class="information">{{contenu.introduction}}</p>
+    @for(section of contenu.sections;track section.titre){
+    <section>
+      <h2>{{section.titre}}</h2>
+      @for(paragraphe of section.paragraphes;track $index){
+      <p>{{paragraphe}}</p>
+      }
+    </section>
+    }
+    <nav class="liens-legaux" aria-label="Informations légales">
+      <a [routerLink]="autre.lien">{{autre.libelle}}</a>
+    </nav>
+  </main></ion-content
+>

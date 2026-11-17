@@ -130,3 +130,113 @@ label {
   outline: 3px solid #6d28d9;
   outline-offset: 3px;
 }
+/* Cartes de contenu (CO-09, §5 et §6) : fond blanc, rayon de 12 px. */
+.carte,
+.carte-cliquable {
+  margin: 0 0 16px;
+  padding: 16px 20px;
+  background: #fff;
+  border: 1px solid #687b90;
+  border-radius: 12px;
+}
+.carte h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+/* Carte entierement cliquable : le lien du titre s'etend a toute la carte. */
+.carte-cliquable {
+  position: relative;
+  border-width: 2px;
+}
+.lien-carte::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+/* Texte secondaire et etiquettes : 14 px minimum, contraste 7,60:1 sur blanc. */
+.aide,
+.etiquette {
+  color: #465569;
+  font-size: 0.875rem;
+}
+h2.etiquette {
+  margin: 0 0 4px;
+  font-weight: 400;
+}
+.valeur {
+  margin: 0 0 12px;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+.adresse {
+  white-space: pre-line;
+}
+.coupure,
+.contenu-note {
+  overflow-wrap: anywhere;
+}
+.contenu-note {
+  white-space: pre-line;
+}
+.informations {
+  margin: 0;
+}
+.informations dt {
+  color: #465569;
+  font-size: 0.875rem;
+}
+.informations dd {
+  margin: 0 0 12px;
+  font-weight: 700;
+}
+.notes {
+  list-style: none;
+  padding: 0;
+}
+textarea {
+  resize: vertical;
+}
+/* Bouton principal en largeur disponible, et lien presente comme un bouton principal. */
+.bouton-pleine-largeur,
+.bouton-lien {
+  display: block;
+  width: 100%;
+}
+.bouton-lien {
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #075e57;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+}
+.bouton-lien:hover {
+  background: #05473f;
+  color: #fff;
+}
+.confirmation {
+  padding: 16px;
+  background: #e6f4eb;
+  color: #176344;
+}
+.information {
+  padding: 16px;
+  background: #e8f2fc;
+  color: #1559a8;
+}
+.retour {
+  display: inline-block;
+  padding: 10px 0;
+}
+.liens-legaux {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 32px;
+}
+.liens-legaux a {
+  display: inline-block;
+  padding: 10px 0;
+}
