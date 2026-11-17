@@ -46,7 +46,7 @@ Ajoutés avant la correction : 4 tests en échec, puis réussis après la correc
 | `npm.cmd run test:coverage` (PostgreSQL de test jetable) | 212 réussis, 2 ignorés (nginx absent du poste) ; lignes 91,00 %, instructions 89,00 %, branches 82,43 %, fonctions 92,21 % | Sortie de la commande |
 | `npm.cmd run build` | OK | `dist/` |
 | `node outils/tableau-des-tests.mjs --verifier` (racine) | « docs/tests/tableau-des-tests.md est à jour. » ; 456 cas (303 unitaires, 148 d’intégration, 5 de bout en bout) | Sortie de la commande |
-| CI de la PR (trois jobs `validation`) | à compléter | Onglet « Checks » de la PR |
+| CI de la PR (trois jobs `validation`) | OK : `validation (api)`, `validation (web)` et `validation (mobile)` réussis sur `3df6e58` (exécution n° 53, 1 min 59 s) | https://github.com/Onizuka-05/innov-events-manager/actions/runs/44201680809 |
 
 ## Limites connues
 
