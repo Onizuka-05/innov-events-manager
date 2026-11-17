@@ -1,0 +1,137 @@
+<section class="conteneur page client-page colonne-client">
+  <h1>Mes événements</h1>
+  <p class="introduction">
+    Consultez vos événements, partagez votre avis et choisissez leur publication.
+  </p>
+  @if (chargement()) {
+    <p role="status">Chargement de vos événements…</p>
+  }
+  @if (erreur()) {
+    <p role="alert" class="erreur">{{ erreur() }}</p>
+    <button type="button" class="bouton-secondaire" [disabled]="chargement()" (click)="charger()">
+      Réessayer
+    </button>
+  }
+  @if (!chargement() && !erreur()) {
+    @for (e of evenements(); track e.id_evenement) {
+      <article class="carte bloc" [attr.aria-labelledby]="'evenement-' + e.id_evenement">
+        <header>
+          <h2 [id]="'evenement-' + e.id_evenement">{{ e.nom }}</h2>
+          <app-badge-statut [statut]="e.statut_evenement" />
+        </header>
+        <p>
+          <time [attr.datetime]="e.date_debut">{{
+            e.date_debut | date: 'dd/MM/yyyy · HH:mm'
+          }}</time>
+          — <time [attr.datetime]="e.date_fin">{{ e.date_fin | date: 'dd/MM/yyyy · HH:mm' }}</time>
+        </p>
+        <p>{{ e.lieu }} · {{ e.libelle_type }}</p>
+        <section [attr.aria-labelledby]="'publication-' + e.id_evenement">
+          <h3 [id]="'publication-' + e.id_evenement">Publication de l’événement</h3>
+          <div class="formulaire">
+            <label class="case-client" [for]="'accord-' + e.id_evenement"
+              ><input
+                type="checkbox"
+                role="switch"
+                [id]="'accord-' + e.id_evenement"
+                [checked]="!!e.date_accord_publication"
+                [attr.aria-checked]="!!e.date_accord_publication"
+                [disabled]="envoisAccord().includes(e.id_evenement)"
+                [attr.aria-describedby]="'aide-accord-' + e.id_evenement"
+                (change)="changerAccord(e, $event)"
+              />J’autorise la publication de cet événement.</label
+            >
+          </div>
+          <p class="aide" [id]="'aide-accord-' + e.id_evenement">
+            L’événement est publié uniquement si Innov’Events le rend également visible et s’il
+            n’est pas en brouillon. Vous pouvez retirer votre accord à tout moment.
+          </p>
+          @if (e.date_accord_publication) {
+            <p>Accord donné le {{ e.date_accord_publication | date: 'dd/MM/yyyy · HH:mm' }}.</p>
+          }
+          @if (erreurs()['accord-' + e.id_evenement]) {
+            <p role="alert" class="erreur">{{ erreurs()['accord-' + e.id_evenement] }}</p>
+          }
+          @if (messages()['accord-' + e.id_evenement]) {
+            <p role="status" class="succes">{{ messages()['accord-' + e.id_evenement] }}</p>
+          }
+        </section>
+        <section [attr.aria-labelledby]="'avis-' + e.id_evenement">
+          <h3 tabindex="-1" [id]="'avis-' + e.id_evenement">Mon avis</h3>
+          @if (e.avis; as a) {
+            <p>
+              Note : {{ a.note_evaluation }} sur 5 · <app-badge-statut [statut]="a.statut_avis" />
+            </p>
+            <p class="texte-libre">{{ a.commentaire }}</p>
+          } @else if (e.statut_evenement === 'termine') {
+            <form
+              class="formulaire"
+              (ngSubmit)="envoyerAvis(e)"
+              novalidate
+              [attr.aria-describedby]="
+                erreurs()['avis-' + e.id_evenement] ? 'erreur-avis-' + e.id_evenement : null
+              "
+            >
+              <fieldset [disabled]="envoisAvis().includes(e.id_evenement)">
+                <legend>Note de l’événement (obligatoire)</legend>
+                <div class="choix-note">
+                  @for (n of notes; track n) {
+                    <label class="case-client" [for]="'note-' + e.id_evenement + '-' + n"
+                      ><input
+                        type="radio"
+                        [id]="'note-' + e.id_evenement + '-' + n"
+                        [name]="'evaluation-' + e.id_evenement"
+                        [value]="n"
+                        [(ngModel)]="saisies[e.id_evenement].note_evaluation"
+                        required
+                      />{{ n }} sur 5</label
+                    >
+                  }
+                </div>
+              </fieldset>
+              <label [for]="'commentaire-' + e.id_evenement">Commentaire (obligatoire)</label>
+              <textarea
+                [id]="'commentaire-' + e.id_evenement"
+                [name]="'commentaire-' + e.id_evenement"
+                [(ngModel)]="saisies[e.id_evenement].commentaire"
+                maxlength="2000"
+                rows="4"
+                required
+                [disabled]="envoisAvis().includes(e.id_evenement)"
+                [attr.aria-describedby]="
+                  'compteur-' + e.id_evenement + ' erreur-avis-' + e.id_evenement
+                "
+                [attr.aria-invalid]="erreurs()['avis-' + e.id_evenement] ? 'true' : null"
+              ></textarea>
+              <p class="aide" [id]="'compteur-' + e.id_evenement">
+                {{ saisies[e.id_evenement].commentaire.length }} / 2 000 caractères. Votre avis sera
+                soumis à modération.
+              </p>
+              <p
+                class="erreur-champ"
+                [id]="'erreur-avis-' + e.id_evenement"
+                [attr.role]="erreurs()['avis-' + e.id_evenement] ? 'alert' : null"
+              >
+                {{ erreurs()['avis-' + e.id_evenement] }}
+              </p>
+              <button
+                class="bouton-primaire"
+                type="submit"
+                [disabled]="envoisAvis().includes(e.id_evenement)"
+              >
+                {{ envoisAvis().includes(e.id_evenement) ? 'Envoi…' : 'Envoyer mon avis' }}
+              </button>
+            </form>
+          } @else {
+            <p>Vous pourrez donner votre avis une fois l’événement terminé.</p>
+          }
+          @if (messages()['avis-' + e.id_evenement]) {
+            <p role="status" class="succes">{{ messages()['avis-' + e.id_evenement] }}</p>
+          }
+        </section>
+      </article>
+    } @empty {
+      <p>Aucun événement rattaché à votre espace pour le moment.</p>
+    }
+  }
+</section>

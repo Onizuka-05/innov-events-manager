@@ -167,3 +167,34 @@ tbody tr:last-child td {
 .formulaire textarea {
   margin-bottom: 16px;
 }
+
+/* Valeurs cles et listes du tableau de bord. */
+.indicateurs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 48px;
+  margin: 0;
+}
+.indicateurs dd {
+  margin: 0;
+  color: var(--primary);
+  font-size: 2rem;
+  font-weight: 700;
+}
+.liste-bord li {
+  padding: 16px;
+}
+.liste-bord h3 {
+  margin-bottom: 8px;
+}
+.liste-bord h3 a {
+  display: inline-block;
+  min-height: 44px;
+  padding-block: 8px;
+}
+.liste-bord p:last-child {
+  margin-bottom: 0;
+}
+.texte-note {
+  white-space: pre-line;
+}

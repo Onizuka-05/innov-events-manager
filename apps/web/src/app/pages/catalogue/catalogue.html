@@ -1,0 +1,119 @@
+<section class="conteneur page catalogue">
+  <h1>Événements</h1>
+  <p class="introduction">Découvrez les événements partagés avec l’accord de nos clients.</p>
+  <form class="formulaire carte filtres" (ngSubmit)="rechercher()">
+    <h2>Rechercher un événement</h2>
+    <div class="champs-filtres">
+      <div class="champ">
+        <label for="du">Du</label><input id="du" name="du" type="date" [(ngModel)]="du" />
+      </div>
+      <div class="champ">
+        <label for="au">Au</label><input id="au" name="au" type="date" [(ngModel)]="au" />
+      </div>
+      <div class="champ">
+        <label for="type-public">Type d’événement</label
+        ><select id="type-public" name="type" [(ngModel)]="type">
+          <option value="">Tous les types</option>
+          @for (t of filtres().types; track t.id_type_evenement) {
+            <option [value]="t.id_type_evenement">{{ t.libelle }}</option>
+          }
+        </select>
+      </div>
+      <div class="champ">
+        <label for="theme-public">Thème</label
+        ><select id="theme-public" name="theme" [(ngModel)]="theme">
+          <option value="">Tous les thèmes</option>
+          @for (t of filtres().themes; track t.id_theme) {
+            <option [value]="t.id_theme">{{ t.libelle }}</option>
+          }
+        </select>
+      </div>
+      <div class="champ">
+        <label for="tri-public">Trier par date</label
+        ><select id="tri-public" name="tri" [(ngModel)]="tri">
+          <option value="recent">Plus récents d’abord</option>
+          <option value="ancien">Plus anciens d’abord</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions-catalogue">
+      <button class="bouton-primaire" type="submit">Rechercher</button
+      ><button class="bouton-secondaire" type="button" (click)="reinitialiser()">
+        Réinitialiser
+      </button>
+    </div>
+  </form>
+  @if (erreurFiltres()) {
+    <p class="erreur" role="alert">
+      Les listes des types et thèmes n’ont pas pu être chargées. {{ erreurFiltres() }}
+    </p>
+  }
+  @if (chargement()) {
+    <p role="status">Chargement des événements…</p>
+  }
+  @if (erreur()) {
+    <p class="erreur" role="alert">{{ erreur() }}</p>
+  }
+  @if (erreur() || erreurFiltres()) {
+    <button class="bouton-secondaire" type="button" [disabled]="chargement()" (click)="reessayer()">
+      Réessayer le chargement
+    </button>
+  }
+  @if (page(); as p) {
+    <p role="status">
+      {{ p.total }} {{ p.total > 1 ? 'événements trouvés' : 'événement trouvé' }} · page
+      {{ p.page }} sur {{ nombrePages() }}
+    </p>
+    <div class="grille-evenements">
+      @for (e of p.evenements; track e.id_evenement) {
+        <article class="carte carte-evenement">
+          <app-image-evenement [nom]="e.nom" [url]="e.image_url" />
+          <h2>{{ e.nom }}</h2>
+          <p><app-badge-statut [statut]="e.statut_evenement" /></p>
+          <p>
+            <time [attr.datetime]="e.date_debut">{{
+              e.date_debut | date: 'dd/MM/yyyy · HH:mm'
+            }}</time>
+            —
+            <time [attr.datetime]="e.date_fin">{{ e.date_fin | date: 'dd/MM/yyyy · HH:mm' }}</time>
+          </p>
+          <p>{{ e.lieu }}</p>
+          <p>
+            {{ e.libelle_type }}
+            @if (e.libelle_theme) {
+              · {{ e.libelle_theme }}
+            }
+          </p>
+          <a class="bouton bouton-secondaire" [routerLink]="['/evenements', e.id_evenement]"
+            >Découvrir {{ e.nom }}</a
+          >
+        </article>
+      } @empty {
+        <p>Aucun événement ne correspond à cette recherche.</p>
+      }
+    </div>
+    @if (p.total > p.par_page || p.page > 1) {
+      <nav class="pagination" aria-label="Pagination des événements">
+        @if (p.page > 1) {
+          <a
+            class="bouton bouton-secondaire"
+            routerLink="/evenements"
+            [queryParams]="parametres(p.page - 1)"
+            rel="prev"
+            >Page précédente</a
+          >
+        }
+        <span aria-current="page">Page {{ p.page }}</span>
+        @if (p.page < nombrePages()) {
+          <a
+            class="bouton bouton-secondaire"
+            routerLink="/evenements"
+            [queryParams]="parametres(p.page + 1)"
+            rel="next"
+            >Page suivante</a
+          >
+        }
+      </nav>
+    }
+  }
+</section>

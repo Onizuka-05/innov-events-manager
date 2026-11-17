@@ -113,18 +113,17 @@ export const routes: Routes = [
     data: { page },
     loadComponent: () => import('./pages/page-legale/page-legale').then((m) => m.PageLegale),
   })),
-  ...[
-    {
-      path: 'evenements',
-      titre: 'Événements',
-      description: 'Le catalogue des événements sera disponible prochainement.',
-    },
-  ].map(({ path, titre, description }) => ({
-    path,
-    title: `${titre} | Innov’Events`,
-    data: { titre, description },
-    loadComponent: () => import('./pages/page-attente/page-attente').then((m) => m.PageAttente),
-  })),
+  {
+    path: 'evenements',
+    title: 'Événements | Innov’Events',
+    loadComponent: () => import('./pages/catalogue/catalogue').then((m) => m.Catalogue),
+  },
+  {
+    path: 'evenements/:id',
+    title: 'Événement | Innov’Events',
+    loadComponent: () =>
+      import('./pages/catalogue/detail-evenement').then((m) => m.DetailEvenement),
+  },
   {
     path: 'contact',
     title: 'Contact | Innov’Events',
@@ -144,10 +143,41 @@ export const routes: Routes = [
   },
   {
     path: 'espace',
-    title: 'Mon espace | Innov’Events',
     canActivate: [authentificationGuard],
     data: { espace: true },
     loadComponent: () => import('./pages/espace/espace').then((m) => m.Espace),
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        title: 'Accueil de mon espace | Innov’Events',
+        canActivate: [authentificationGuard],
+        data: { espace: true },
+        loadComponent: () => import('./pages/espace/accueil-client').then((m) => m.AccueilClient),
+      },
+      {
+        path: 'devis',
+        title: 'Mes devis | Innov’Events',
+        canActivate: [authentificationGuard],
+        data: { espace: true },
+        loadComponent: () => import('./pages/devis/devis').then((m) => m.Devis),
+      },
+      {
+        path: 'evenements',
+        title: 'Mes événements | Innov’Events',
+        canActivate: [authentificationGuard],
+        data: { espace: true },
+        loadComponent: () =>
+          import('./pages/espace/evenements-client').then((m) => m.EvenementsClient),
+      },
+      {
+        path: 'profil',
+        title: 'Mon profil | Innov’Events',
+        canActivate: [authentificationGuard],
+        data: { espace: true },
+        loadComponent: () => import('./pages/espace/profil-client').then((m) => m.ProfilClientPage),
+      },
+    ],
   },
   {
     path: 'connexion',

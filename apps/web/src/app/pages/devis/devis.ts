@@ -51,6 +51,7 @@ export class Devis {
   private readonly api = inject(ApiService);
   private readonly route = inject(ActivatedRoute);
   protected filtre_devis = '';
+  protected recherche_devis = '';
   private prospectPrepare = '';
   private readonly injector = inject(Injector);
   protected readonly auth = inject(AuthentificationService);
@@ -136,7 +137,17 @@ export class Devis {
     }
   }
   protected devisFiltres() {
-    return this.devis().filter((d) => !this.filtre_devis || d.statut_devis === this.filtre_devis);
+    const normaliser = (v: string) =>
+      v
+        .normalize('NFD')
+        .replace(/\p{Diacritic}/gu, '')
+        .toLowerCase();
+    const termes = normaliser(this.recherche_devis.trim()).split(/\s+/u).filter(Boolean);
+    return this.devis().filter(
+      (d) =>
+        (!this.filtre_devis || d.statut_devis === this.filtre_devis) &&
+        termes.every((t) => normaliser(`${d.intitule} ${d.evenement}`).includes(t)),
+    );
   }
   protected evenementAccepte(id: string) {
     return this.evenements().some((e) => e.id_evenement === id && e.statut_evenement === 'accepte');
