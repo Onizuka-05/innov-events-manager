@@ -50,4 +50,17 @@ describe('Connexion mobile', () => {
     expect(fixture.nativeElement.querySelector('#email-mobile')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('#mot-mobile')).toBeNull();
   });
+  it('propose les CGU et les CGV depuis la connexion', () => {
+    const { fixture } = preparer();
+    fixture.detectChanges();
+    const liens = [
+      ...(fixture.nativeElement.querySelectorAll(
+        '.liens-legaux a',
+      ) as NodeListOf<HTMLAnchorElement>),
+    ].map((a) => [a.textContent?.trim(), a.getAttribute('href')]);
+    expect(liens).toEqual([
+      ['Conditions générales d’utilisation', '/cgu'],
+      ['Conditions générales de vente', '/cgv'],
+    ]);
+  });
 });

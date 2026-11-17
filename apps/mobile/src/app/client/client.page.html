@@ -1,0 +1,57 @@
+<ion-header
+  ><ion-toolbar><ion-title>Fiche client</ion-title></ion-toolbar></ion-header
+>
+<ion-content
+  ><main class="page-mobile">
+    <p>
+      @if(evenement(); as idEvenement){
+      <a class="retour" [routerLink]="['/evenements', idEvenement]">‹ Retour à l’événement</a>
+      }@else{
+      <a class="retour" routerLink="/home">‹ Retour aux événements</a>
+      }
+    </p>
+    @if(erreur()){
+    <h1>Fiche client</h1>
+    <p role="alert" class="erreur">{{erreur()}}</p>
+    } @if(chargement() && !fiche()){
+    <p role="status">Chargement de la fiche…</p>
+    } @if(fiche(); as c){ @if(anonymisee()){
+    <h1>Client anonymisé</h1>
+    <p class="information">Ce client a été anonymisé : ses coordonnées ne sont plus disponibles.</p>
+    }@else{
+    <h1>{{c.entreprise}}</h1>
+    <p class="aide">Contact : {{c.prenom_contact}} {{c.nom_contact}}</p>
+    <section class="carte" aria-labelledby="titre-telephone">
+      <h2 id="titre-telephone" class="etiquette">Téléphone</h2>
+      @if(telephone(); as lien){
+      <p class="valeur">{{c.telephone}}</p>
+      <a class="bouton-lien" [href]="lien">Appeler {{c.prenom_contact}} {{c.nom_contact}}</a>
+      }@else{
+      <p>Aucun numéro de téléphone renseigné.</p>
+      }
+    </section>
+    <section class="carte" aria-labelledby="titre-courriel">
+      <h2 id="titre-courriel" class="etiquette">Adresse e-mail</h2>
+      @if(courriel(); as lien){
+      <p class="valeur coupure">{{c.email_contact}}</p>
+      <a class="bouton-lien" [href]="lien"
+        >Envoyer un e-mail à {{c.prenom_contact}} {{c.nom_contact}}</a
+      >
+      }@else{
+      <p>Aucune adresse e-mail renseignée.</p>
+      }
+    </section>
+    <section class="carte" aria-labelledby="titre-adresse">
+      <h2 id="titre-adresse" class="etiquette">Adresse postale</h2>
+      @if(itineraire(); as lien){
+      <p class="valeur adresse">{{c.adresse_postale}}</p>
+      <a class="bouton-lien" [href]="lien" target="_blank" rel="noopener"
+        >Ouvrir l’itinéraire vers {{c.entreprise}} (nouvelle fenêtre)</a
+      >
+      }@else{
+      <p>Aucune adresse postale renseignée.</p>
+      }
+    </section>
+    } }
+  </main></ion-content
+>
