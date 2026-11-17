@@ -210,7 +210,7 @@ describe('Site public', () => {
     expect(element.querySelector('h1')?.textContent).toBe(titre);
   });
 
-  it('informe sur les prestataires et les purges sans les presenter comme deja executees', async () => {
+  it('decrit les traitements en place et les limites de conservation', async () => {
     await router.navigateByUrl('/confidentialite');
     await fixture.whenStable();
     const texte = element.querySelector('main')?.textContent ?? '';
@@ -227,7 +227,11 @@ describe('Site public', () => {
     ]) {
       expect(texte).toContain(terme);
     }
-    expect(texte).toContain('ne constituent pas la preuve de leur exécution');
+    expect(texte).toContain('la suppression est refusée sans effacer les données');
+    expect(texte).toContain('toutes les 24 heures');
+    expect(texte).toContain('180 jours');
+    expect(texte).not.toContain('une fois ces parcours raccordés');
+    expect(texte).not.toContain('son envoi réel reste à vérifier');
   });
 
   it.each([

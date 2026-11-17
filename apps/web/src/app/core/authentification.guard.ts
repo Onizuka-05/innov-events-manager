@@ -25,6 +25,7 @@ export const authentificationGuard: CanActivateFn = async (route, etat) => {
     if (role === 'admin')
       return router.createUrlTree(['/administration/devis'], { queryParams: route.queryParams });
     if (role === 'employe') return router.createUrlTree([accueil]);
+    return router.createUrlTree(['/espace/devis'], { queryParams: route.queryParams });
   }
   return true;
 };

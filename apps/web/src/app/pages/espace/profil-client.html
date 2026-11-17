@@ -1,0 +1,197 @@
+<section class="conteneur page client-page colonne-client">
+  <h1>Mon profil</h1>
+  <p class="introduction">
+    Votre compte sert à vous connecter. Les coordonnées du contact servent au suivi de vos
+    événements.
+  </p>
+  @if (chargement()) {
+    <p role="status">Chargement du profil…</p>
+  }
+  @if (erreur()) {
+    <p role="alert" class="erreur">{{ erreur() }}</p>
+    <button class="bouton-secondaire" type="button" (click)="charger()" [disabled]="chargement()">
+      Réessayer
+    </button>
+  }
+  @if (profil(); as p) {
+    <section class="carte bloc" aria-labelledby="titre-compte">
+      <h2 id="titre-compte">Mon compte</h2>
+      <form
+        class="formulaire"
+        [formGroup]="compte"
+        (ngSubmit)="enregistrerCompte()"
+        novalidate
+        aria-describedby="erreur-compte"
+      >
+        <fieldset class="formulaire-champs" [disabled]="!!envoi()">
+          <legend>Tous les champs sont obligatoires</legend>
+          @for (c of champsCompte; track c.cle) {
+            <div class="champ">
+              <label [for]="'compte-' + c.cle">{{ c.libelle }}</label><input
+                [id]="'compte-' + c.cle"
+                [type]="c.type"
+                [autocomplete]="c.auto"
+                [formControlName]="c.cle"
+                [maxlength]="c.max"
+                required
+                [attr.aria-invalid]="
+                  compte.controls[c.cle].touched && compte.controls[c.cle].invalid ? 'true' : null
+                "
+                [attr.aria-describedby]="'aide-compte-' + c.cle"
+              />
+              <p class="aide" [id]="'aide-compte-' + c.cle">
+                {{ c.max }} caractères au plus.
+                @if (compte.controls[c.cle].touched && compte.controls[c.cle].invalid) {
+                  <span class="erreur-champ"> Vérifiez ce champ obligatoire.</span>
+                }
+              </p>
+            </div>
+          }
+          @if (emailModifie()) {
+            <label for="mot-actuel">Mot de passe actuel (pour confirmer le nouvel e-mail)</label
+            ><input
+              id="mot-actuel"
+              type="password"
+              autocomplete="current-password"
+              [formControl]="motActuel"
+              maxlength="256"
+              required
+              aria-describedby="erreur-compte"
+            />
+          }
+        </fieldset>
+        <p
+          id="erreur-compte"
+          [attr.role]="erreurs()['compte'] ? 'alert' : null"
+          [class.erreur]="!!erreurs()['compte']"
+        >
+          {{ erreurs()['compte'] }}
+        </p>
+        @if (messages()['compte']) {
+          <p role="status" class="succes">{{ messages()['compte'] }}</p>
+        }
+        <button class="bouton-primaire" type="submit" [disabled]="!!envoi()">
+          {{ envoi() === 'compte' ? 'Enregistrement…' : 'Enregistrer mon compte' }}
+        </button>
+      </form>
+    </section>
+    @if (p.fiche) {
+      <section class="carte bloc" aria-labelledby="titre-fiche">
+        <h2 id="titre-fiche">Mes coordonnées</h2>
+        <form
+          class="formulaire"
+          [formGroup]="fiche"
+          (ngSubmit)="enregistrerFiche()"
+          novalidate
+          aria-describedby="erreur-fiche"
+        >
+          <fieldset class="formulaire-champs" [disabled]="!!envoi()">
+            <legend>Tous les champs sont obligatoires</legend>
+            @for (c of champsFiche; track c.cle) {
+              <div class="champ">
+                <label [for]="'fiche-' + c.cle">{{ c.libelle }}</label><input
+                  [id]="'fiche-' + c.cle"
+                  [type]="c.type"
+                  [autocomplete]="'section-contact ' + c.auto"
+                  [formControlName]="c.cle"
+                  [maxlength]="c.max"
+                  required
+                  [attr.aria-invalid]="
+                    fiche.controls[c.cle].touched && fiche.controls[c.cle].invalid ? 'true' : null
+                  "
+                  [attr.aria-describedby]="'aide-fiche-' + c.cle"
+                />
+                <p class="aide" [id]="'aide-fiche-' + c.cle">
+                  {{ c.max }} caractères au plus.
+                  @if (fiche.controls[c.cle].touched && fiche.controls[c.cle].invalid) {
+                    <span class="erreur-champ"> Vérifiez ce champ obligatoire.</span>
+                  }
+                </p>
+              </div>
+            }
+          </fieldset>
+          <p
+            id="erreur-fiche"
+            [attr.role]="erreurs()['fiche'] ? 'alert' : null"
+            [class.erreur]="!!erreurs()['fiche']"
+          >
+            {{ erreurs()['fiche'] }}
+          </p>
+          @if (messages()['fiche']) {
+            <p role="status" class="succes">{{ messages()['fiche'] }}</p>
+          }
+          <button class="bouton-primaire" type="submit" [disabled]="!!envoi()">
+            {{ envoi() === 'fiche' ? 'Enregistrement…' : 'Enregistrer mes coordonnées' }}
+          </button>
+        </form>
+      </section>
+    } @else {
+      <p class="carte bloc">Aucune fiche de contact n’est encore rattachée à votre compte.</p>
+    }
+    <section class="carte bloc zone-danger" aria-labelledby="titre-suppression">
+      <h2 id="titre-suppression">Supprimer mon compte</h2>
+      <p>
+        Cette action est irréversible : votre compte et ses sessions sont supprimés, votre fiche est
+        anonymisée, vos demandes de devis et les notes de vos événements sont effacées. Les demandes
+        non converties portant votre e-mail de connexion ou de contact sont également effacées.
+      </p>
+      <p>
+        Les événements, devis et avis restent conservés sans les coordonnées de votre fiche ; vos
+        avis sont publiés sans nom. Votre nom est retiré des journaux de votre fiche. Les
+        identifiants des journaux sont conservés jusqu’à leur purge.
+      </p>
+      <form
+        class="formulaire"
+        [formGroup]="suppression"
+        (ngSubmit)="supprimerCompte()"
+        novalidate
+        aria-describedby="erreur-suppression"
+      >
+        <fieldset class="formulaire-champs" [disabled]="!!envoi()">
+          <legend>Confirmer l’effacement</legend>
+          <label for="mot-suppression">Mot de passe actuel</label
+          ><input
+            id="mot-suppression"
+            type="password"
+            autocomplete="current-password"
+            formControlName="mot_de_passe"
+            required
+            maxlength="256"
+            [attr.aria-invalid]="
+              suppression.controls.mot_de_passe.touched && suppression.controls.mot_de_passe.invalid
+                ? 'true'
+                : null
+            "
+            aria-describedby="erreur-suppression"
+          />
+          <label class="case-client" for="confirmation-suppression"
+            ><input
+              id="confirmation-suppression"
+              type="checkbox"
+              formControlName="confirmation"
+              required
+              [attr.aria-invalid]="
+                suppression.controls.confirmation.touched &&
+                suppression.controls.confirmation.invalid
+                  ? 'true'
+                  : null
+              "
+              aria-describedby="erreur-suppression"
+            />Je confirme la suppression définitive de mon compte et j’ai compris les données
+            conservées.</label
+          >
+        </fieldset>
+        <p
+          id="erreur-suppression"
+          [attr.role]="erreurs()['suppression'] ? 'alert' : null"
+          [class.erreur]="!!erreurs()['suppression']"
+        >
+          {{ erreurs()['suppression'] }}
+        </p>
+        <button class="bouton-danger" type="submit" [disabled]="!!envoi()">
+          {{ envoi() === 'suppression' ? 'Suppression…' : 'Supprimer définitivement mon compte' }}
+        </button>
+      </form>
+    </section>
+  }
+</section>

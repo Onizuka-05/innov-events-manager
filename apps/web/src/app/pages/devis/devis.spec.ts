@@ -19,9 +19,11 @@ const prospect = {
   date_souhaitee: '2027-01-20',
 };
 
-function preparer(role: 'admin' | 'client') {
+function preparer(role: 'admin' | 'client', listeDevis: object[] = []) {
   const api = {
-    get: vi.fn(async (chemin: string) => (chemin === '/prospects' ? [prospect] : [])),
+    get: vi.fn(async (chemin: string): Promise<unknown> =>
+      chemin === '/devis' ? listeDevis : chemin === '/prospects' ? [prospect] : [],
+    ),
     modifier: vi.fn(async () => ({})),
   };
   TestBed.configureTestingModule({
@@ -62,5 +64,44 @@ describe('parcours devis', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('#prospect')).toBeNull();
     expect(fixture.nativeElement.querySelector('#nom')).not.toBeNull();
+  });
+});
+
+describe('Recherche des propositions du client', () => {
+  it('cumule recherche sans accents et filtre par statut sans appel supplementaire', async () => {
+    const { fixture, api } = preparer('client', [
+      {
+        id_devis: '1',
+        id_evenement: '3',
+        intitule: 'Formule Équipe',
+        evenement: 'Salon Aster',
+        statut_devis: 'etude_client',
+      },
+      {
+        id_devis: '2',
+        id_evenement: '3',
+        intitule: 'Formule Premium',
+        evenement: 'Salon Aster',
+        statut_devis: 'accepte',
+      },
+    ]);
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+    const recherche = el.querySelector('#recherche-devis') as HTMLInputElement;
+    recherche.value = 'equipe aster';
+    recherche.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(el.querySelectorAll('tbody tr')).toHaveLength(1);
+    expect(el.querySelector('[role="status"]')?.textContent).toContain('1 devis affiché sur 2');
+    const filtre = el.querySelector('#filtre-devis') as HTMLSelectElement;
+    filtre.value = 'accepte';
+    filtre.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(el.querySelectorAll('tbody tr')).toHaveLength(0);
+    (el.querySelector('.champ-filtre button') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(el.querySelectorAll('tbody tr')).toHaveLength(2);
+    expect(api.get.mock.calls.filter(([p]) => p === '/devis')).toHaveLength(1);
   });
 });

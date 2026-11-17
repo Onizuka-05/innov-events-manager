@@ -29,7 +29,7 @@ Charte CO-09 : cartes blanches à rayon de 12 px ; carte de la liste cliquable s
 | `npm.cmd run test:e2e` | OK : 3 scénarios réussis sur 3 (Chromium) | Sortie de la commande |
 | `npm.cmd run build` | OK : `Application bundle generation complete.`, sans avertissement de budget ; bundle initial 539,43 kB (140,00 kB transférés) | `www/` |
 | `npm.cmd audit --omit=dev --audit-level=high` | OK : `found 0 vulnerabilities` | Sortie de la commande |
-| CI de la PR (trois jobs `validation`) | à compléter | Lien de l’exécution |
+| CI de la PR (trois jobs `validation`) | OK : `validation (api)`, `validation (web)` et `validation (mobile)` réussis sur `a8f25ef` (exécution n° 43, 2 min 14 s) | https://github.com/Onizuka-05/innov-events-manager/actions/runs/44097865553 |
 
 ## Tests automatisés ajoutés ou adaptés
 

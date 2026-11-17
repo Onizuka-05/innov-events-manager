@@ -345,3 +345,12 @@ main:not(:has(> router-outlet + *)) + .pied-page {
     margin-inline: 0;
   }
 }
+
+/* Entetes des propositions dans l'espace client. */
+.espace-client .devis .carte > h2:first-child {
+  margin: calc(-1 * var(--carte-espace)) calc(-1 * var(--carte-espace)) var(--carte-espace);
+  padding: 16px var(--carte-espace);
+  border-bottom: 1px solid var(--border);
+  border-radius: 12px 12px 0 0;
+  background: var(--surface-alt);
+}

@@ -84,12 +84,17 @@ describe('espaces de gestion', () => {
     for (const titre of [
       '3 prochains événements',
       '5 notes récentes',
-      'Clients actifs (1)',
+      'Clients actifs',
       'Événements en brouillon',
       'Notes globales',
     ])
       expect(t).toContain(titre);
     expect(fixture.nativeElement.querySelector('app-prospects')).toBeNull();
+    expect(
+      [...fixture.nativeElement.querySelectorAll('.indicateurs dd')].map((e: Element) =>
+        e.textContent?.trim(),
+      ),
+    ).toEqual(['1', '0']);
   });
   it('recherche un client et montre son historique sans edition employe', async () => {
     const { fixture, api } = preparer(Clients, 'employe', {

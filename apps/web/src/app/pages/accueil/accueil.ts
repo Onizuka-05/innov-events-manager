@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 /** Presentation publique de l'agence et point d'entree vers la demande de devis. */
 @Component({
@@ -8,4 +8,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './accueil.html',
   styleUrl: './accueil.css',
 })
-export class Accueil {}
+export class Accueil {
+  protected readonly compteSupprime =
+    inject(ActivatedRoute).snapshot.queryParamMap.get('compte_supprime') === '1';
+}

@@ -182,7 +182,7 @@ describe('Organisation des espaces', () => {
   it.each([
     ['admin', '/administration/devis'],
     ['employe', '/administration/evenements'],
-    ['client', '/devis'],
+    ['client', '/espace/devis'],
   ] as const)('reserve /devis au client et redirige %s', async (role, destination) => {
     const { get } = preparer(role);
     const h = await RouterTestingHarness.create('/devis');

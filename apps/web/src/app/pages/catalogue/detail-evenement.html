@@ -1,0 +1,47 @@
+<section class="conteneur page catalogue detail-evenement">
+  <a class="retour" routerLink="/evenements">← Retour aux événements</a>
+  @if (chargement()) {
+    <h1>Fiche événement</h1>
+    <p role="status">Chargement de l’événement…</p>
+  }
+  @if (erreur()) {
+    <h1>Événement introuvable</h1>
+    <p role="alert" class="erreur">{{ erreur() }}</p>
+  }
+  @if (evenement(); as e) {
+    <h1>{{ e.nom }}</h1>
+    <p><app-badge-statut [statut]="e.statut_evenement" /></p>
+    <app-image-evenement [nom]="e.nom" [url]="e.image_url" />
+    <section class="carte" aria-labelledby="titre-informations">
+      <h2 id="titre-informations">Informations sur l’événement</h2>
+      <dl>
+        <dt>Début</dt>
+        <dd>
+          <time [attr.datetime]="e.date_debut">{{
+            e.date_debut | date: 'dd/MM/yyyy · HH:mm'
+          }}</time>
+        </dd>
+        <dt>Fin</dt>
+        <dd>
+          <time [attr.datetime]="e.date_fin">{{ e.date_fin | date: 'dd/MM/yyyy · HH:mm' }}</time>
+        </dd>
+        <dt>Lieu</dt>
+        <dd>{{ e.lieu }}</dd>
+        <dt>Type</dt>
+        <dd>{{ e.libelle_type }}</dd>
+        @if (e.libelle_theme) {
+          <dt>Thème</dt>
+          <dd>{{ e.libelle_theme }}</dd>
+        }
+      </dl>
+    </section>
+    <section class="carte" aria-labelledby="prestations-devis">
+      <h2 id="prestations-devis">Prestations et Devis</h2>
+      <p>
+        Un événement vous inspire ? Présentez votre projet pour recevoir une proposition adaptée à
+        vos besoins.
+      </p>
+      <a class="bouton bouton-primaire" routerLink="/demande-devis">Demander un devis</a>
+    </section>
+  }
+</section>

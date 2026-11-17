@@ -150,21 +150,55 @@
 
   <section class="carte bloc" aria-labelledby="titre-liste-devis">
     <h2 id="titre-liste-devis">{{ admin() ? 'Liste des devis' : 'Mes propositions' }}</h2>
-    @if (admin()) {
-      <div class="formulaire champ-filtre">
+    <form
+      class="formulaire champ-filtre"
+      role="search"
+      aria-label="Rechercher des devis"
+      (submit)="$event.preventDefault()"
+    >
+      @if (!admin()) {
         <div class="champ">
-          <label for="filtre-devis">Afficher</label>
-          <select id="filtre-devis" name="filtre_devis" [(ngModel)]="filtre_devis">
-            <option value="">Tous les devis</option>
-            <option value="en_preparation">En préparation</option>
-            <option value="etude_client">Étude client</option>
-            <option value="modification">Modification demandée</option>
-            <option value="accepte">Acceptés</option>
-            <option value="refuse">Refusés</option>
-          </select>
+          <label for="recherche-devis">Rechercher un devis</label
+          ><input
+            id="recherche-devis"
+            name="recherche_devis"
+            type="search"
+            maxlength="200"
+            [(ngModel)]="recherche_devis"
+            aria-describedby="aide-recherche-devis"
+          />
+          <p id="aide-recherche-devis" class="aide">
+            Intitulé de la proposition ou nom de l’événement.
+          </p>
         </div>
+      }
+      <div class="champ">
+        <label for="filtre-devis">Statut du devis</label>
+        <select id="filtre-devis" name="filtre_devis" [(ngModel)]="filtre_devis">
+          <option value="">Tous les devis</option>
+          @if (admin()) {
+            <option value="en_preparation">En préparation</option>
+          }
+          <option value="etude_client">Étude client</option>
+          <option value="modification">Modification demandée</option>
+          <option value="accepte">Accepté</option>
+          <option value="refuse">Refusé</option>
+        </select>
       </div>
-    }
+      @if (recherche_devis || filtre_devis) {
+        <button
+          class="bouton-secondaire"
+          type="button"
+          (click)="recherche_devis = ''; filtre_devis = ''"
+        >
+          Réinitialiser
+        </button>
+      }
+    </form>
+    <p role="status">
+      {{ devisFiltres().length }}
+      {{ devisFiltres().length > 1 ? 'devis affichés' : 'devis affiché' }} sur {{ devis().length }}
+    </p>
     @if (devisFiltres().length === 0) {
       <p class="vide">Aucun devis disponible.</p>
     } @else {

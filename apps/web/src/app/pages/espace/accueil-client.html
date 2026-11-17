@@ -1,0 +1,100 @@
+<section class="conteneur page client-page">
+  <h1>Accueil de mon espace</h1>
+  <p class="introduction">
+    Bonjour {{ auth.utilisateur()?.prenom }}. Retrouvez vos événements et l’avancement de vos
+    demandes.
+  </p>
+  @if (chargement()) {
+    <p role="status">Chargement de votre espace…</p>
+  }
+  @if (erreur()) {
+    <p role="alert" class="erreur">{{ erreur() }}</p>
+    <button type="button" class="bouton-secondaire" (click)="charger()" [disabled]="chargement()">
+      Réessayer
+    </button>
+  }
+  @if (donnees(); as d) {
+    <div class="grille-client">
+      <section class="carte bloc" aria-labelledby="prochains-evenements">
+        <h2 id="prochains-evenements">Prochains événements</h2>
+        <ul class="liste-client">
+          @for (e of d.prochains_evenements; track e.id_evenement) {
+            <li>
+              <h3>{{ e.nom }}</h3>
+              <p>
+                <time [attr.datetime]="e.date_debut">{{
+                  e.date_debut | date: 'dd/MM/yyyy · HH:mm'
+                }}</time>
+                —
+                <time [attr.datetime]="e.date_fin">{{
+                  e.date_fin | date: 'dd/MM/yyyy · HH:mm'
+                }}</time>
+              </p>
+              <p>{{ e.lieu }}</p>
+              <app-badge-statut [statut]="e.statut_evenement" />
+            </li>
+          } @empty {
+            <li>Aucun événement à venir pour le moment.</li>
+          }
+        </ul>
+        <p class="actions-client">
+          <a class="bouton bouton-secondaire" routerLink="/espace/evenements"
+            >Voir mes événements</a
+          >
+        </p>
+      </section>
+      <section class="carte bloc" aria-labelledby="suivi-demandes">
+        <h2 id="suivi-demandes">Suivi de mes demandes</h2>
+        @for (s of d.suivi; track s.id_prospect) {
+          <section [attr.aria-labelledby]="'demande-' + s.id_prospect">
+            <h3 [id]="'demande-' + s.id_prospect">
+              {{ s.libelle_type }} · demande du {{ s.date_demande | date: 'dd/MM/yyyy' }}
+            </h3>
+            <ol class="etapes">
+              <li>
+                <strong>Demande reçue</strong
+                ><time [attr.datetime]="s.date_demande">{{
+                  s.date_demande | date: 'dd/MM/yyyy · HH:mm'
+                }}</time>
+              </li>
+              <li>
+                <strong>Prise en charge</strong><app-badge-statut [statut]="s.statut_prospect" />
+              </li>
+              <li>
+                <strong>Événement</strong>
+                @if (s.evenement; as e) {
+                  <p>{{ e.nom }} · <app-badge-statut [statut]="e.statut_evenement" /></p>
+                } @else {
+                  <p>Votre événement est en préparation par l’équipe.</p>
+                }
+              </li>
+              <li>
+                <strong>Devis</strong>
+                @if (s.evenement; as e) {
+                  <ul class="liste-client">
+                    @for (v of e.devis; track v.id_devis) {
+                      <li>
+                        {{ v.intitule }} · <app-badge-statut [statut]="v.statut_devis" />
+                        <p class="aide">Envoyé le {{ v.date_envoi | date: 'dd/MM/yyyy' }}</p>
+                      </li>
+                    } @empty {
+                      <li>Aucun devis envoyé pour le moment.</li>
+                    }
+                  </ul>
+                } @else {
+                  <p>Les propositions apparaîtront ici après leur envoi.</p>
+                }
+              </li>
+            </ol>
+          </section>
+        } @empty {
+          <p>Aucune demande rattachée à votre espace pour le moment.</p>
+          <a class="bouton bouton-primaire" routerLink="/demande-devis">Demander un devis</a>
+        }
+        <p class="actions-client">
+          <a class="bouton bouton-secondaire" routerLink="/espace/devis">Consulter mes devis</a>
+        </p>
+      </section>
+    </div>
+  }
+</section>
