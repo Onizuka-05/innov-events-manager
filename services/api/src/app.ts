@@ -37,6 +37,13 @@ import { DevisService } from './services/devis.service.js';
 import { DevisPdfService } from './services/devis-pdf.service.js';
 import { DevisController } from './controllers/devis.controller.js';
 import { creerRoutesDevis } from './routes/devis.routes.js';
+import { EspaceClientRepository } from './repositories/espace-client.repository.js';
+import { EspaceClientService } from './services/espace-client.service.js';
+import { EspaceClientController } from './controllers/espace-client.controller.js';
+import { creerRoutesEspaceClient } from './routes/espace-client.routes.js';
+import { EvenementsPublicsRepository } from './repositories/evenements-publics.repository.js';
+import { EvenementsPublicsController } from './controllers/evenements-publics.controller.js';
+import { creerRoutesEvenementsPublics } from './routes/evenements-publics.routes.js';
 
 export interface Dependances {
   postgres: Pool;
@@ -158,6 +165,25 @@ export function creerApp({
     ),
   );
   app.use('/api', creerRoutesDevis(new DevisController(devisService), auth));
+  app.use(
+    '/api',
+    creerRoutesEspaceClient(
+      new EspaceClientController(
+        new EspaceClientService(
+          new EspaceClientRepository(postgres),
+          new LogsRepository(mongodb, configuration.mongodbDatabase),
+          new MotsDePasseService(),
+        ),
+      ),
+      auth,
+    ),
+  );
+  app.use(
+    '/api',
+    creerRoutesEvenementsPublics(
+      new EvenementsPublicsController(new EvenementsPublicsRepository(postgres)),
+    ),
+  );
   app.use(routeAbsente);
   app.use(gererErreurs);
   return app;

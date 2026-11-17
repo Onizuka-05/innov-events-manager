@@ -64,4 +64,9 @@ describe('chargerConfiguration', () => {
     expect(chargerConfiguration(production).mongodbUrl).toBe('mongodb://mongo:27017');
     expect(chargerConfiguration(minimum).mongodbUrl).toBe('mongodb://localhost:27017');
   });
+
+  it('active les purges automatiques par defaut, desactivables par configuration', () => {
+    expect(chargerConfiguration(minimum).purgesActives).toBe(true);
+    expect(chargerConfiguration({ ...minimum, PURGES_ACTIVES: 'false' }).purgesActives).toBe(false);
+  });
 });
