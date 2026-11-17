@@ -1,6 +1,9 @@
 import type { Pool, PoolClient } from 'pg';
 import { ErreurHttp } from '../http/erreur-http.js';
 
+/** Statuts d'evenement qui ferment l'envoi et l'acceptation des devis. */
+const EVENEMENT_CLOS = ['annule', 'termine'];
+
 export interface LigneDevis {
   libelle_prestation: string;
   montant_ht: number;
@@ -272,15 +275,54 @@ export class DevisRepository {
     );
     if (!r.rowCount) throw new ErreurHttp(409, 'Devis non modifiable.');
   }
+  /**
+   * Verrouille l'evenement du devis avant le devis lui-meme et renvoie son statut. L'annulation
+   * de l'evenement modifie la meme ligne : elle precede ou suit l'envoi et la reponse.
+   * Ordre des verrous commun a toute l'API : fiche client, puis evenement, puis devis. La
+   * suppression d'une fiche verrouille la fiche, puis l'evenement (cle id_prospect remise a
+   * NULL) : l'envoi, qui verrouille aussi la fiche, la prend donc en premier (avecFiche).
+   */
+  private async verrouillerEvenement(
+    id: string,
+    db: PoolClient,
+    avecFiche = false,
+  ): Promise<string> {
+    if (avecFiche) {
+      // Le client d'un evenement ne change jamais : il peut etre lu avant tout verrou.
+      const fiche = await db.query<{ id_client: string }>(
+        `SELECT e.id_client::text FROM innov_events.evenements e
+        JOIN innov_events.devis d ON d.id_evenement=e.id_evenement WHERE d.id_devis=$1`,
+        [id],
+      );
+      if (!fiche.rows[0]) throw new ErreurHttp(404, 'Devis introuvable.');
+      await db.query('SELECT 1 FROM innov_events.clients WHERE id_client=$1 FOR UPDATE', [
+        fiche.rows[0].id_client,
+      ]);
+    }
+    const r = await db.query<{ statut_evenement: string }>(
+      `SELECT e.statut_evenement FROM innov_events.evenements e
+      JOIN innov_events.devis d ON d.id_evenement=e.id_evenement
+      WHERE d.id_devis=$1 FOR UPDATE OF e`,
+      [id],
+    );
+    if (!r.rows[0]) throw new ErreurHttp(404, 'Devis introuvable.');
+    return r.rows[0].statut_evenement;
+  }
   /** Envoi reserve aux statuts attendus, transaction sous verrou, jamais sans lignes. */
   async preparerEnvoi(
     id: string,
     operation: (db: PoolClient, d: DevisDetail) => Promise<void>,
   ): Promise<DevisDetail> {
     return this.transaction(async (db) => {
+      const statutEvenement = await this.verrouillerEvenement(id, db, true);
       const d = await this.detail(id, db, true);
       if (!['en_preparation', 'modification'].includes(d.statut_devis) || d.lignes.length === 0)
         throw new ErreurHttp(409, 'Le devis doit contenir une prestation et être prêt pour envoi.');
+      if (EVENEMENT_CLOS.includes(statutEvenement))
+        throw new ErreurHttp(
+          409,
+          'L’événement est annulé ou terminé : ce devis ne peut plus être envoyé.',
+        );
       await operation(db, d);
       await db.query(
         `UPDATE innov_events.devis SET statut_devis='etude_client',date_envoi=NOW()
@@ -297,17 +339,7 @@ export class DevisRepository {
     motif: string,
   ): Promise<boolean> {
     return this.transaction(async (db) => {
-      if (choix === 'accepte') {
-        const evenement = await db.query<{ id_evenement: string }>(
-          `SELECT id_evenement::text FROM innov_events.devis WHERE id_devis=$1`,
-          [id],
-        );
-        if (!evenement.rows[0]) throw new ErreurHttp(404, 'Devis introuvable.');
-        await db.query(
-          'SELECT id_evenement FROM innov_events.evenements WHERE id_evenement=$1 FOR UPDATE',
-          [evenement.rows[0].id_evenement],
-        );
-      }
+      const statutEvenement = await this.verrouillerEvenement(id, db);
       const d = await this.detail(id, db, true);
       const proprietaire = await db.query(
         `SELECT 1 FROM innov_events.evenements e JOIN innov_events.clients c USING(id_client)
@@ -317,6 +349,12 @@ export class DevisRepository {
       if (!proprietaire.rowCount) throw new ErreurHttp(404, 'Devis introuvable.');
       if (d.statut_devis !== 'etude_client')
         throw new ErreurHttp(409, 'Ce devis ne peut pas recevoir de réponse.');
+      // Un evenement annule ou termine n'accepte plus d'engagement : seul le refus reste possible.
+      if (choix !== 'refuse' && EVENEMENT_CLOS.includes(statutEvenement))
+        throw new ErreurHttp(
+          409,
+          'L’événement est annulé ou terminé : ce devis ne peut plus être accepté ni modifié.',
+        );
       let evenementChange = false;
       if (choix === 'accepte') {
         // Serialise les acceptations simultanees de devis d'un même événement.

@@ -582,6 +582,123 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)('J8 avec PostgreSQL reel', () =>
     expect(courriels[1]?.destinataire).toBe('ada@example.org');
     expect(courriels[1]?.piecesJointes?.[0]?.contenu.subarray(0, 4).toString()).toBe('%PDF');
   });
+  it.each(['annule', 'termine'])(
+    'refuse l acceptation et la modification d un devis envoye si l evenement est %s',
+    async (statut) => {
+      const f = await fixture();
+      const id = await compte(f.idClient, 'ada@example.org');
+      await repository.remplacerLignes(f.devis, [
+        { libelle_prestation: 'Accueil', montant_ht: 125.5 },
+      ]);
+      await repository.preparerEnvoi(f.devis, async () => {});
+      await admin.query(
+        'UPDATE innov_events.evenements SET statut_evenement=$2 WHERE id_evenement=$1',
+        [f.evenement, statut],
+      );
+      for (const choix of ['accepte', 'modification'] as const)
+        await expect(
+          repository.repondre(f.devis, id, choix, choix === 'modification' ? 'Autre date' : ''),
+        ).rejects.toMatchObject({ statut: 409 });
+      expect((await repository.detail(f.devis)).statut_devis).toBe('etude_client');
+      const evenement = await admin.query<{ statut_evenement: string }>(
+        'SELECT statut_evenement FROM innov_events.evenements WHERE id_evenement=$1',
+        [f.evenement],
+      );
+      expect(evenement.rows[0]!.statut_evenement).toBe(statut);
+      expect(await repository.repondre(f.devis, id, 'refuse', '')).toBe(false);
+      expect((await repository.detail(f.devis)).statut_devis).toBe('refuse');
+    },
+  );
+  it('repond 409 au client qui accepte le devis d un evenement annule', async () => {
+    const f = await fixture();
+    await repository.remplacerLignes(f.devis, [
+      { libelle_prestation: 'Accueil', montant_ht: 125.5 },
+    ]);
+    await repository.preparerEnvoi(f.devis, async () => {});
+    await admin.query(
+      "UPDATE innov_events.evenements SET statut_evenement='annule' WHERE id_evenement=$1",
+      [f.evenement],
+    );
+    const { agent } = await connecte('ada@example.org', 'client', f.idClient);
+    const reponse = await agent
+      .post(`/api/devis/${f.devis}/reponse`)
+      .set(proxy)
+      .set('X-CSRF-Token', await csrf(agent))
+      .send({ choix: 'accepte' });
+    expect(reponse.status).toBe(409);
+    expect((await repository.detail(f.devis)).statut_devis).toBe('etude_client');
+  });
+  it('refuse l envoi d un devis si l evenement est annule ou termine', async () => {
+    const f = await fixture();
+    await repository.remplacerLignes(f.devis, [
+      { libelle_prestation: 'Accueil', montant_ht: 125.5 },
+    ]);
+    for (const statut of ['annule', 'termine']) {
+      await admin.query(
+        'UPDATE innov_events.evenements SET statut_evenement=$2 WHERE id_evenement=$1',
+        [f.evenement, statut],
+      );
+      const operation = vi.fn(async () => {});
+      await expect(repository.preparerEnvoi(f.devis, operation)).rejects.toMatchObject({
+        statut: 409,
+      });
+      expect(operation).not.toHaveBeenCalled();
+      const d = await repository.detail(f.devis);
+      expect(d.statut_devis).toBe('en_preparation');
+      expect(d.date_envoi).toBeNull();
+    }
+  });
+  it('n entre pas en interblocage avec la suppression de la fiche pendant l envoi', async () => {
+    const f = await fixture();
+    await repository.remplacerLignes(f.devis, [
+      { libelle_prestation: 'Accueil', montant_ht: 125.5 },
+    ]);
+    const { agent } = await connecte('admin@example.org', 'admin');
+    const jeton = await csrf(agent);
+    const suppression = await admin.connect();
+    try {
+      await suppression.query('BEGIN');
+      // Premier verrou de la suppression administrative : la fiche client.
+      await suppression.query('SELECT 1 FROM innov_events.clients WHERE id_client=$1 FOR UPDATE', [
+        f.idClient,
+      ]);
+      const envoi = agent
+        .post(`/api/devis/${f.devis}/envoi`)
+        .set(proxy)
+        .set('X-CSRF-Token', jeton)
+        .send({})
+        .then((r) => r);
+      await vi.waitFor(
+        async () => {
+          const attente = await admin.query(
+            `SELECT 1 FROM pg_stat_activity
+            WHERE datname=current_database() AND wait_event_type='Lock'`,
+          );
+          expect(attente.rowCount).toBeGreaterThan(0);
+        },
+        { timeout: 5000, interval: 50 },
+      );
+      // Suite de la suppression : la demande convertie est supprimee, ce qui met
+      // evenements.id_prospect a NULL et exige le verrou de l'evenement.
+      await suppression.query('SELECT innov_events.supprimer_compte_client($1)', [f.idClient]);
+      await suppression.query('COMMIT');
+      expect((await envoi).status).toBe(404);
+    } catch (erreur) {
+      await suppression.query('ROLLBACK').catch(() => undefined);
+      throw erreur;
+    } finally {
+      suppression.release();
+    }
+    const d = await repository.detail(f.devis);
+    expect(d.statut_devis).toBe('en_preparation');
+    expect(d.date_envoi).toBeNull();
+    expect(courriels).toHaveLength(0);
+    const evenement = await admin.query<{ id_prospect: string | null }>(
+      'SELECT id_prospect FROM innov_events.evenements WHERE id_evenement=$1',
+      [f.evenement],
+    );
+    expect(evenement.rows[0]!.id_prospect).toBeNull();
+  });
   it('une seule acceptation concurrente reussit', async () => {
     const f = await fixture();
     const autre = await repository.creerDevis(f.evenement, 'Formule B');
