@@ -648,6 +648,57 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)('J8 avec PostgreSQL reel', () =>
       expect(d.date_envoi).toBeNull();
     }
   });
+  it('n entre pas en interblocage avec la suppression de la fiche pendant l envoi', async () => {
+    const f = await fixture();
+    await repository.remplacerLignes(f.devis, [
+      { libelle_prestation: 'Accueil', montant_ht: 125.5 },
+    ]);
+    const { agent } = await connecte('admin@example.org', 'admin');
+    const jeton = await csrf(agent);
+    const suppression = await admin.connect();
+    try {
+      await suppression.query('BEGIN');
+      // Premier verrou de la suppression administrative : la fiche client.
+      await suppression.query('SELECT 1 FROM innov_events.clients WHERE id_client=$1 FOR UPDATE', [
+        f.idClient,
+      ]);
+      const envoi = agent
+        .post(`/api/devis/${f.devis}/envoi`)
+        .set(proxy)
+        .set('X-CSRF-Token', jeton)
+        .send({})
+        .then((r) => r);
+      await vi.waitFor(
+        async () => {
+          const attente = await admin.query(
+            `SELECT 1 FROM pg_stat_activity
+            WHERE datname=current_database() AND wait_event_type='Lock'`,
+          );
+          expect(attente.rowCount).toBeGreaterThan(0);
+        },
+        { timeout: 5000, interval: 50 },
+      );
+      // Suite de la suppression : la demande convertie est supprimee, ce qui met
+      // evenements.id_prospect a NULL et exige le verrou de l'evenement.
+      await suppression.query('SELECT innov_events.supprimer_compte_client($1)', [f.idClient]);
+      await suppression.query('COMMIT');
+      expect((await envoi).status).toBe(404);
+    } catch (erreur) {
+      await suppression.query('ROLLBACK').catch(() => undefined);
+      throw erreur;
+    } finally {
+      suppression.release();
+    }
+    const d = await repository.detail(f.devis);
+    expect(d.statut_devis).toBe('en_preparation');
+    expect(d.date_envoi).toBeNull();
+    expect(courriels).toHaveLength(0);
+    const evenement = await admin.query<{ id_prospect: string | null }>(
+      'SELECT id_prospect FROM innov_events.evenements WHERE id_evenement=$1',
+      [f.evenement],
+    );
+    expect(evenement.rows[0]!.id_prospect).toBeNull();
+  });
   it('une seule acceptation concurrente reussit', async () => {
     const f = await fixture();
     const autre = await repository.creerDevis(f.evenement, 'Formule B');

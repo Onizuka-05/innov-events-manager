@@ -22,17 +22,19 @@ Exigences : CLI-01 (réponse du client au devis), ADM-03 (cycle de vie de l’é
 
 - l’envoi et la réponse verrouillent d’abord la ligne de l’événement, puis celle du devis (même ordre dans les deux opérations, donc sans interblocage) ; l’annulation, qui modifie la même ligne, s’exécute avant ou après, jamais pendant ;
 - événement annulé ou terminé : envoi refusé (409, « L’événement est annulé ou terminé : ce devis ne peut plus être envoyé. ») ; acceptation et demande de modification refusées (409, « … ce devis ne peut plus être accepté ni modifié. ») ; le refus du devis reste possible ;
-- le contrôle de propriété reste fait avant : un autre client reçoit toujours 404.
+- le contrôle de propriété reste fait avant : un autre client reçoit toujours 404 ;
+- ordre des verrous commun : fiche client, puis événement, puis devis. L’envoi verrouille la fiche client avant l’événement, comme la suppression d’une fiche par l’administratrice (fiche, puis événement, dont la clé `id_prospect` est remise à vide quand la demande convertie est supprimée). Sans cet ordre, un envoi et une suppression simultanés s’attendaient mutuellement : PostgreSQL interrompait l’une des deux opérations et l’API répondait 500.
 
 ## Tests ajoutés (`services/api/src/routes/j8.integration.spec.ts`, PostgreSQL réel)
 
-Ajoutés avant la correction : 4 tests en échec, puis réussis après la correction.
+Ajoutés avant la correction : 4 tests en échec, puis réussis après la correction. Le test d’interblocage, ajouté après la relecture de la PR, échouait sur la première version de la correction (500 après interblocage détecté par PostgreSQL) et réussit avec l’ordre des verrous ci-dessus.
 
 | Test | Vérification |
 | --- | --- |
 | « refuse l acceptation et la modification d un devis envoye si l evenement est annule » et « … termine » | 409 pour l’acceptation et la modification ; devis toujours « en étude », statut de l’événement inchangé ; le refus reste accepté |
 | « repond 409 au client qui accepte le devis d un evenement annule » | Route `POST /api/devis/:id/reponse` avec la session du client : 409, devis inchangé |
 | « refuse l envoi d un devis si l evenement est annule ou termine » | 409, aucun e-mail préparé, devis toujours « en préparation » sans date d’envoi |
+| « n entre pas en interblocage avec la suppression de la fiche pendant l envoi » | Deux connexions PostgreSQL, événement issu d’une demande convertie : la suppression verrouille la fiche, l’envoi attend, la suppression se termine ; l’envoi répond 404 (fiche anonymisée), sans e-mail, devis toujours « en préparation » |
 
 ## Contrôles
 
@@ -40,9 +42,10 @@ Ajoutés avant la correction : 4 tests en échec, puis réussis après la correc
 | --- | --- | --- |
 | `npx.cmd vitest run src/routes/j8.integration.spec.ts` avant la correction | 4 échecs, 21 réussis | Sortie de la commande |
 | `npm.cmd run format:check`, `lint`, `typecheck` | OK | Sortie des commandes |
-| `npm.cmd run test:coverage` (PostgreSQL de test jetable) | 211 réussis, 2 ignorés (nginx absent du poste) ; lignes 90,97 %, instructions 88,95 %, branches 82,31 %, fonctions 92,21 % | Sortie de la commande |
+| `npx.cmd vitest run src/routes/j8.integration.spec.ts` après la correction | 26 réussis | Sortie de la commande |
+| `npm.cmd run test:coverage` (PostgreSQL de test jetable) | 212 réussis, 2 ignorés (nginx absent du poste) ; lignes 91,00 %, instructions 89,00 %, branches 82,43 %, fonctions 92,21 % | Sortie de la commande |
 | `npm.cmd run build` | OK | `dist/` |
-| `node outils/tableau-des-tests.mjs --verifier` (racine) | « docs/tests/tableau-des-tests.md est à jour. » ; 455 cas (303 unitaires, 147 d’intégration, 5 de bout en bout) | Sortie de la commande |
+| `node outils/tableau-des-tests.mjs --verifier` (racine) | « docs/tests/tableau-des-tests.md est à jour. » ; 456 cas (303 unitaires, 148 d’intégration, 5 de bout en bout) | Sortie de la commande |
 | CI de la PR (trois jobs `validation`) | à compléter | Onglet « Checks » de la PR |
 
 ## Limites connues

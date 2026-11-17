@@ -276,11 +276,29 @@ export class DevisRepository {
     if (!r.rowCount) throw new ErreurHttp(409, 'Devis non modifiable.');
   }
   /**
-   * Verrouille l'evenement du devis, toujours avant le devis lui-meme (meme ordre dans l'envoi
-   * et la reponse, donc sans interblocage), et renvoie son statut. L'annulation de l'evenement
-   * modifie la meme ligne : elle attend la fin de l'envoi ou de la reponse, ou les precede.
+   * Verrouille l'evenement du devis avant le devis lui-meme et renvoie son statut. L'annulation
+   * de l'evenement modifie la meme ligne : elle precede ou suit l'envoi et la reponse.
+   * Ordre des verrous commun a toute l'API : fiche client, puis evenement, puis devis. La
+   * suppression d'une fiche verrouille la fiche, puis l'evenement (cle id_prospect remise a
+   * NULL) : l'envoi, qui verrouille aussi la fiche, la prend donc en premier (avecFiche).
    */
-  private async verrouillerEvenement(id: string, db: PoolClient): Promise<string> {
+  private async verrouillerEvenement(
+    id: string,
+    db: PoolClient,
+    avecFiche = false,
+  ): Promise<string> {
+    if (avecFiche) {
+      // Le client d'un evenement ne change jamais : il peut etre lu avant tout verrou.
+      const fiche = await db.query<{ id_client: string }>(
+        `SELECT e.id_client::text FROM innov_events.evenements e
+        JOIN innov_events.devis d ON d.id_evenement=e.id_evenement WHERE d.id_devis=$1`,
+        [id],
+      );
+      if (!fiche.rows[0]) throw new ErreurHttp(404, 'Devis introuvable.');
+      await db.query('SELECT 1 FROM innov_events.clients WHERE id_client=$1 FOR UPDATE', [
+        fiche.rows[0].id_client,
+      ]);
+    }
     const r = await db.query<{ statut_evenement: string }>(
       `SELECT e.statut_evenement FROM innov_events.evenements e
       JOIN innov_events.devis d ON d.id_evenement=e.id_evenement
@@ -296,7 +314,7 @@ export class DevisRepository {
     operation: (db: PoolClient, d: DevisDetail) => Promise<void>,
   ): Promise<DevisDetail> {
     return this.transaction(async (db) => {
-      const statutEvenement = await this.verrouillerEvenement(id, db);
+      const statutEvenement = await this.verrouillerEvenement(id, db, true);
       const d = await this.detail(id, db, true);
       if (!['en_preparation', 'modification'].includes(d.statut_devis) || d.lignes.length === 0)
         throw new ErreurHttp(409, 'Le devis doit contenir une prestation et être prêt pour envoi.');
