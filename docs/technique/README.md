@@ -20,7 +20,8 @@ Ce dossier réunit la documentation technique du projet. Chaque chapitre résume
 |---|---|
 | Démarrage local | [`README.md`](../../README.md) |
 | Procédures qualité, branches, CI/CD | [`docs/qualite.md`](../qualite.md) |
-| Conception (cas d'utilisation, statuts, MCD, MLD, architecture, wireframes, charte, maquettes, séquence de connexion) | [`docs/conception/`](../conception/) |
+| Conception (cas d'utilisation, statuts, MCD, MLD, architecture, wireframes, charte, maquettes, séquence de connexion) | [`docs/conception/CO-12-dossier-de-conception.md`](../conception/CO-12-dossier-de-conception.md) et [`docs/conception/`](../conception/) |
+| Guide d'utilisation | [`docs/utilisateur/guide-utilisateur.md`](../utilisateur/guide-utilisateur.md) |
 | Authentification, formulaires, journaux | [`docs/authentification-et-formulaires.md`](../authentification-et-formulaires.md) |
 | Sauvegarde et restauration | [`docs/sauvegarde-restauration.md`](../sauvegarde-restauration.md) |
 | Plan de tests, tableau des tests, couverture, rapports | [`docs/tests/`](../tests/) |
