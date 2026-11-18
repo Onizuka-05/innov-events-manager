@@ -90,9 +90,9 @@ est fusionnée dans `dev`.
 Les contrôles non applicables (lint, TypeScript, build)
 sont marqués N/A.
 
-Les contrôles non encore disponibles sont signalés
-comme tels. Les contrôles automatisés seront mis
-en place à J3 conformément au planning.
+Les contrôles automatisés (format, lint, TypeScript,
+tests, build, audit) s'exécutent dans GitHub Actions
+selon le fonctionnement décrit à la section 6.
 
 ## 5. Revues de code
 
@@ -128,8 +128,7 @@ fusion vers `main`. Lecture des rapports :
 
 ## 7. Livraison continue (CD)
 
-La CD préparera les livrables des applications
-validées.
+La CD déploie les applications validées.
 
 Hébergement : Render (web, mobile et API, déployés depuis
 leurs Dockerfiles), Neon (PostgreSQL), MongoDB Atlas
@@ -157,16 +156,15 @@ commit (`docs/technique/06-deploiement.md`).
 
 ## 8. Protection de main
 
-Dès sa mise en place :
+Règles appliquées à `main` :
 - Pull Request obligatoire.
 - Pas d'approbation tierce exigée.
 - Force push interdit.
 - Suppression de branche interdite.
 - Contournement des protections interdit,
   y compris pour l'administrateur.
-
-À J3 :
-- Ajout des vérifications CI obligatoires.
+- Vérifications CI obligatoires (trois jobs
+  `validation (…)`), activées sur `main`.
 
 ## 9. Traçabilité des issues
 

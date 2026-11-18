@@ -1,14 +1,16 @@
 # CO-06 — Architecture logicielle : couches et sécurité
 
 **Projet :** Innov'Events Manager  
-**Schéma associé :** `CO-06-architecture.drawio.xml` (local et production)  
+**Schéma associé :** `CO-06-architecture.drawio.xml` et `CO-06-architecture.pdf` (local et production)  
 **État de référence :** premier déploiement test du 13/11/2026. Les parcours d'authentification et les fonctions métier décrits constituent la conception à implémenter et à tester.
+
+> Ce document est la conception de l'architecture au 13/11/2026 : les mentions « à vérifier », « à implémenter » ou « à recueillir » décrivent l'état à cette date. Les mesures réalisées et vérifiées ensuite sont décrites dans la documentation technique finale : [`04-securite.md`](../technique/04-securite.md), [`06-deploiement.md`](../technique/06-deploiement.md) et [`03-bases-de-donnees.md`](../technique/03-bases-de-donnees.md).
 
 ## Couches et responsabilités
 
 | Couche / service | Rôle | Sécurité prévue ou appliquée |
 |---|---|---|
-| Angular web et Ionic/Angular mobile | Interfaces ; l'application mobile est une PWA servie par nginx. | Chaque navigateur appelle `/api` sur sa propre origine. Aucun secret dans le code client. Les guards facilitent la navigation ; les autorisations sont contrôlées dans l'API. |
+| Angular web et Ionic/Angular mobile | Interfaces ; l'application mobile est une application web Ionic/Angular servie par nginx et ouverte dans le navigateur du téléphone. | Chaque navigateur appelle `/api` sur sa propre origine. Aucun secret dans le code client. Les guards facilitent la navigation ; les autorisations sont contrôlées dans l'API. |
 | nginx web et nginx mobile | Servir les fichiers statiques et relayer `/api` vers Express. | Écrase `X-Innov-Proxy-Secret` avec la valeur serveur `INTERNAL_PROXY_SECRET`. HTTPS vers l'API en production, CSP et en-têtes transmis sous contrôle. La restitution de l'IP réelle reste à vérifier dans la chaîne des proxys Render. |
 | Middlewares Express | Vérifier les requêtes avant le traitement métier. | Refus de l'accès sans secret proxy, sauf `GET /api/sante` ; Helmet ; limitation globale de débit ; session en cookie HttpOnly / SameSite / Secure en production ; CSRF via `GET /api/csrf` puis `X-CSRF-Token`. Validation des entrées, contrôle des rôles et limite dédiée à la connexion à ajouter avec l'authentification. |
 | Routes et contrôleurs | Associer les URL aux traitements ; traduire les requêtes et réponses HTTP/JSON. | Appellent les services métier après les contrôles. Retours d'erreur sans détails techniques ni secrets. |
@@ -44,7 +46,7 @@ Les offres gratuites peuvent mettre les services en veille. L'API prévoit le ra
 
 ## Éco-conception
 
-- PWA accessible par navigateur, sans build natif obligatoire.
+- Application mobile web ouverte dans le navigateur du téléphone, sans build natif.
 - Routes Angular chargées à la demande pour limiter le JavaScript initial ; listes paginées côté API et interface pour limiter les transferts et le nombre d'éléments affichés.
 - Images adaptées à l'affichage, compressées et chargées de façon différée hors du premier écran. Les URL externes sont facultatives et limitées à HTTPS ; une alternative textuelle est fournie.
 - PDF générés à la demande, sans stockage permanent ; notes centralisées visibles après enregistrement, sans WebSocket supplémentaire.

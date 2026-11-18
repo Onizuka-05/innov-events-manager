@@ -56,11 +56,11 @@ Le sujet laisse certains points ouverts. Les règles retenues, appliquées par l
 | Modèle conceptuel | `CO-03-MCD.pdf` | Entités, associations, cardinalités | CO-03 |
 | Modèle logique et script | `CO-04-MLD.pdf`, `database/CO-04-script-postgresql.sql`, `database/CO-04-tests-contraintes.sql` | Tables, clés, contraintes, index, rôle applicatif, fonctions de suppression ; 61 tests des contraintes | CO-04 |
 | Jeu d'essai | `database/CO-05-jeu-essai.sql`, `docs/tests/CO-05-resultats.md` | Toutes les tables, chaque rôle et chaque statut, cas limites | CO-05 |
-| Architecture | `CO-06-architecture.drawio.xml`, `CO-06-couches-securite.md` | Vues locale et production, couches et sécurité | CO-06 |
-| Wireframes et enchaînement | `CO-07-wireframes.drawio.xml`, `CO-08-enchainement.drawio.xml`, `CO-07-CO-08-parcours.md`, `visuels/CO-07-*.png` | Trois écrans web (W1 demande de devis, W2 préparation et envoi du devis, W3 devis du client) et trois écrans mobiles (M1 événements, M2 fiche et note, M3 fiche client) ; enchaînement | CO-07, CO-08 |
+| Architecture | `CO-06-architecture.pdf` (source `.drawio.xml`), `CO-06-couches-securite.md` | Vues locale et production, couches et sécurité | CO-06 |
+| Wireframes et enchaînement | `CO-07-wireframes.drawio.xml`, `CO-08-enchainement.pdf` (source `.drawio.xml`), `CO-07-CO-08-parcours.md`, `visuels/CO-07-*.png` | Trois écrans web (W1 demande de devis, W2 préparation et envoi du devis, W3 devis du client) et trois écrans mobiles (M1 événements, M2 fiche et note, M3 fiche client) ; enchaînement | CO-07, CO-08 |
 | Charte graphique | `CO-09-charte.md`, `CO-09-charte-complete.pdf` | Palette, typographie, espacements, composants, contrastes, focus ; paires wireframe / maquette | CO-09 |
 | Maquettes | `CO-10-maquettes.pdf`, `CO-10-presentation.md`, `visuels/CO-10-*` | Les six écrans à la charte | CO-10 |
-| Séquence de connexion | `CO-11-sequence-connexion.drawio.xml` | Connexion, contrôle du rôle, journal, mot de passe temporaire | CO-11 |
+| Séquence de connexion | `CO-11-sequence-connexion.pdf` (source `.drawio.xml`) | Connexion, contrôle du rôle, journal, mot de passe temporaire | CO-11 |
 
 ## 4. De la conception à la réalisation
 

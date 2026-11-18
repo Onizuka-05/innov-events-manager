@@ -17,7 +17,7 @@ Commit : `18dff79` (`dev` après l'administration et l'espace employé) complét
 
 ## Navigation et accès
 
-Les tableaux suivants sont complétés lors des parcours manuels sur l'application complète, avant la mise en production.
+Les tableaux suivants sont la liste de contrôle préparée au J9. Les parcours du 17/11/2026 (`J9-finitions.md` : W1 à W12, P1 à P7) et la recette en production du 18/11/2026 (`plan-de-tests.md`, section 8 : A1 à A16) documentent certains des contrôles ; les accès sont également vérifiés par les tests automatisés de `apps/web/src/app/pages/gestion/organisation-espaces.spec.ts`. Les cases non renseignées ci-dessous ne constituent pas une preuve de validation individuelle.
 
 | Vérification | Résultat | Preuve |
 | --- | --- | --- |
@@ -73,4 +73,4 @@ Tests ignorés : 0
 
 Anomalies et corrections : aucune à l'exécution ; avant intégration, la rubrique Mes tâches de l'employé a été complétée pour afficher ses tâches.
 
-Liens des preuves : à compléter après les parcours manuels.
+Rapports complémentaires : `J9-finitions.md` et `plan-de-tests.md` (section 8). Les résultats non renseignés ci-dessus restent sans preuve individuelle dans ce tableau.

@@ -1,6 +1,6 @@
 # CO-09 — Charte graphique — Innov’Events Manager
 
-**Version :** 13/11/2026 · **Périmètre :** site public, espaces client/administration, application Ionic PWA.
+**Version :** 13/11/2026 · **Périmètre :** site public, espaces client/administration, application mobile Ionic.
 
 **Références :** CO-07, CO-08, CO-09, CO-10, CO-12, TR-01, TR-02, PUB-01, MOB-01 à MOB-07. La charte fixe une direction visuelle commune. Le §9 réunit les six mockups CO-10 et leurs six wireframes CO-07 d'origine, dans le même ordre.
 
@@ -235,7 +235,7 @@ Les variantes `shade` et `tint` complètent les valeurs de base pour les états 
 1. Les six mockups CO-10 et leurs six wireframes CO-07 d'origine sont intégrés au §9. Vérifier ensuite les interfaces réalisées sur cette palette, sans exception non documentée. Contrôler tout texte posé sur image ou sur fond personnalisé ; les ratios ci-dessus ne couvrent pas les images.
 2. Tester au clavier (Tab, Shift+Tab, Entrée, Espace, Échap selon le composant), le focus visible, les messages et les formulaires ; vérifier chaque composant Ionic ajouté conformément au §7 bis, puis la navigation et les intitulés avec un lecteur d’écran si possible.
 3. Vérifier à 320 px, 375 px, 768 px et sur écran large ; zoom 200 % et 400 %, orientation portrait/paysage, sans perte de contenu utile.
-4. Exécuter un audit axe et Lighthouse sur les interfaces une fois codées (**TR-01**), puis contrôler manuellement les contrastes des composants réellement rendus, leurs états et l’ordre de focus, notamment au regard des critères RGAA **3.2, 3.3 et 10.7**. Vérifier le rendu de la PWA en mode sombre système tout en conservant le thème clair prévu.
+4. Exécuter un audit axe et Lighthouse sur les interfaces une fois codées (**TR-01**), puis contrôler manuellement les contrastes des composants réellement rendus, leurs états et l’ordre de focus, notamment au regard des critères RGAA **3.2, 3.3 et 10.7**. Vérifier le rendu de l'application mobile en mode sombre système tout en conservant le thème clair prévu.
 5. Aucune police, image, icône, bibliothèque ou autre ressource externe ajoutée : **aucune nouvelle entrée THIRD_PARTY_NOTICES** au titre de CO-09. Toute ressource ajoutée dans les lots ultérieurs doit être vérifiée et recensée séparément.
 
 ## 9. Maquettes

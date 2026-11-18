@@ -2,16 +2,18 @@
 
 Version du 13/11/2026 — PUB-01 à PUB-04 et volet documentaire TR-04.
 
+> État à la livraison de PUB-01 à PUB-04 : les éléments indiqués comme restant à réaliser (formulaire PUB-06, session et déconnexion, purges TR-04) ont été livrés ensuite. L'état final est décrit dans [`docs/technique/`](technique/README.md) et le [guide d'utilisation](utilisateur/guide-utilisateur.md).
+
 ## Images, police et dépendances
 
 | Ressource | Emplacement | Origine et droits | Usage |
 |---|---|---|---|
 | Rencontre professionnelle | `apps/web/public/images/rencontre.svg` | Composition vectorielle propre au projet, formes géométriques ; aucune photo, police ou illustration tierce incorporée | Accueil, alternative textuelle dans le HTML |
 | Réception | `apps/web/public/images/reception.svg` | Composition vectorielle propre au projet, formes géométriques ; aucune ressource tierce incorporée | Accueil, chargement différé |
-| Favicon | `apps/web/public/favicon.svg` | Formes géométriques propres au projet | Icône du site |
+| Favicon | `apps/web/public/favicon.svg`, déclinée en `apps/web/public/favicon.ico` et `apps/mobile/src/assets/icon/favicon.png` | Formes géométriques propres au projet | Icône du site et de l'application mobile |
 | Police système | `apps/web/src/styles.css` | Police fournie par le système de l’utilisateur, sans fichier téléchargé ni redistribué | Toutes les pages |
 
-Aucune nouvelle dépendance npm et aucun asset tiers dans ce lot : aucune entrée nouvelle à ajouter à `THIRD_PARTY_NOTICES` au titre de ces trois SVG. Les notices déjà dues aux dépendances du socle restent à conserver et à compléter dans le lot documentaire correspondant. Les illustrations ne prétendent représenter aucun client ni événement réel. Les fichiers SVG ne contiennent ni script, ni ressource distante, ni métadonnée d’auteur.
+Aucune nouvelle dépendance npm et aucun asset tiers pour ces ressources : aucune entrée nouvelle à ajouter à `THIRD_PARTY_NOTICES` au titre de ces trois SVG. Les notices des dépendances figurent dans [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md). Les illustrations ne prétendent représenter aucun client ni événement réel. Les fichiers SVG ne contiennent ni script, ni ressource distante, ni métadonnée d’auteur.
 
 ## Sources du contenu légal
 
