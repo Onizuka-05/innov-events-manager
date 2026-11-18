@@ -15,6 +15,11 @@ interface ErreurConnue {
 function qualifierErreur(erreur: unknown): { statut: number; message: string } {
   const { code, type } = (erreur ?? {}) as ErreurConnue;
   if (code === 'EBADCSRFTOKEN') return { statut: 403, message: 'Jeton CSRF invalide' };
+  if (code === '23505') return { statut: 409, message: 'Cette valeur est déjà utilisée.' };
+  if (code === '23503')
+    return { statut: 409, message: 'Une référence est absente ou encore utilisée.' };
+  if (code === '23514')
+    return { statut: 400, message: 'Les données ne respectent pas les contraintes.' };
   // Erreurs du lecteur JSON d'Express : la faute vient de la requete, pas du serveur.
   if (type === 'entity.parse.failed') return { statut: 400, message: 'Donnees JSON invalides' };
   if (type === 'entity.too.large') return { statut: 413, message: 'Requete trop volumineuse' };

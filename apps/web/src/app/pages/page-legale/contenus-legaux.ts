@@ -7,6 +7,7 @@ export interface SectionLegale {
 }
 
 export interface ContenuLegal {
+  date?: string;
   titre: string;
   introduction: string;
   sections: readonly SectionLegale[];
@@ -124,9 +125,10 @@ export const PAGES_LEGALES: Record<NomPageLegale, ContenuLegal> = {
     ],
   },
   confidentialite: {
+    date: '17 novembre 2026',
     titre: 'Politique de confidentialité',
     introduction:
-      'Cette démonstration présente les règles de traitement prévues pour Innov’Events. Les parcours de collecte, d’effacement et les purges sont en cours de réalisation. Utilisez uniquement des données fictives ; les règles ci-dessous ne constituent pas la preuve de leur exécution.',
+      'Cette démonstration présente les traitements d’Innov’Events : demandes, comptes, suivi des événements et droits du client. Utilisez uniquement des données fictives.',
     sections: [
       {
         titre: 'Responsable et finalités',
@@ -149,30 +151,29 @@ export const PAGES_LEGALES: Record<NomPageLegale, ContenuLegal> = {
         ],
       },
       {
-        titre: 'Durées de conservation prévues',
-        paragraphes: [
-          'Les règles de durée et de suppression suivantes sont retenues pour le projet :',
-        ],
+        titre: 'Durées de conservation',
+        paragraphes: ['Les règles de durée et de suppression suivantes s’appliquent au projet :'],
         points: [
           'Prospects au statut « échoué » : suppression trois ans après le dernier contact.',
           'Journaux de connexion, comprenant l’adresse IP et, en cas d’échec, l’e-mail tenté : six mois ; autres journaux d’activité : un an. Leur suppression automatique ne garantit pas un effacement à la seconde exacte de l’échéance.',
-          'Session : cookie technique innov.sid d’une durée maximale de huit heures dans la configuration actuelle ; sessions détruites à la déconnexion, à la suspension ou à la suppression du compte une fois ces parcours raccordés.',
-          'Mot de passe temporaire : environ une heure pour un oubli, sept jours pour un compte créé à l’envoi d’un devis ; usage unique et changement obligatoire.',
+          'Session : cookie technique innov.sid d’une durée maximale de huit heures dans la configuration actuelle ; sessions détruites à la déconnexion, à la suspension ou à la suppression du compte.',
+          'Mot de passe temporaire : environ une heure pour un oubli, sept jours pour un compte créé ou rattaché à l’envoi d’un devis ; usage unique et changement obligatoire.',
           'Devis, événements et avis : conservation selon les règles d’effacement ci-dessous. Leur durée finale hors journaux reste à préciser avant toute collecte réelle ; aucune durée légale d’archivage commercial n’est revendiquée dans cette démonstration.',
         ],
       },
       {
         titre: 'Effacement et purges',
         paragraphes: [
-          'Le parcours prévu de suppression du compte client efface le compte, anonymise sa fiche, supprime les demandes de devis et les notes de ses événements. Les demandes non converties avec le même e-mail sont aussi effacées. Les devis, événements et avis restent conservés ; les avis sont affichés sans nom.',
+          'Depuis « Mon profil », le client peut demander la suppression de son compte en confirmant son mot de passe et son choix. Le compte et ses sessions sont supprimés, la fiche est anonymisée, les demandes de devis et les notes de ses événements sont effacées. Les demandes non converties portant l’e-mail de contact de sa fiche sont aussi effacées, sauf si une autre fiche porte la même adresse. Une adresse saisie par le client lui-même (inscription, e-mail de connexion) n’est pas vérifiée : elle ne suffit pas à effacer d’autres demandes, qui peuvent l’être sur demande écrite depuis la page Contact. Les devis, événements et avis restent conservés sans les coordonnées de la fiche ; les avis sont affichés sans nom.',
+          'Pour un compte rattaché à une fiche, si le service des journaux est indisponible, la suppression est refusée sans effacer les données et un message invite à réessayer. Lorsqu’elle est enregistrée, la demande laisse une trace durable pour reprendre le retrait du nom si nécessaire.',
           'Les journaux de création et de suppression d’une fiche par l’administration contiennent le nom du client. Si l’effacement est demandé par le client, ce nom est retiré de tous ses journaux ; si l’administration supprime la fiche, il y reste jusqu’à la purge du journal (un an). Après le retrait du nom, l’identifiant restant permet encore un rapprochement : les journaux sont pseudonymisés, et non anonymes, jusqu’à leur purge.',
-          'Les prospects échoués doivent être purgés au démarrage de l’application puis quotidiennement. Après une mise en veille du service gratuit, la purge est rattrapée à la reprise d’activité ; elle ne fonctionne pas à heure fixe pendant la veille. Les journaux sont destinés à une suppression automatique selon leur échéance. Ces mécanismes doivent être testés avant de traiter des données réelles.',
+          'Une tâche automatique supprime les prospects échoués de plus de trois ans et les journaux d’activité de plus d’un an au démarrage de l’application puis toutes les 24 heures. Elle reprend également le retrait du nom lorsqu’un effacement a abouti en base mais que ce retrait a échoué dans les journaux. Les journaux de connexion sont supprimés par un index d’expiration après 180 jours. Après une mise en veille du service gratuit, la purge est rattrapée à la reprise d’activité ; elle ne fonctionne pas à heure fixe pendant la veille.',
         ],
       },
       {
         titre: 'Prestataires et limites de l’hébergement',
         paragraphes: [
-          'Render héberge les applications à Francfort ; Neon héberge la base relationnelle à Francfort ; MongoDB Atlas héberge les journaux chez AWS à Paris. Brevo est retenu pour les courriels transactionnels ; son envoi réel reste à vérifier pour cette démonstration. En local, les courriels de test sont interceptés et ne sont pas délivrés par Brevo.',
+          'Render héberge les applications à Francfort ; Neon héberge la base relationnelle à Francfort ; MongoDB Atlas héberge les journaux chez AWS à Paris. Brevo assure l’envoi des courriels transactionnels ; l’envoi réel a été vérifié le 14 novembre 2026. En local, les courriels de test sont interceptés et ne sont pas délivrés par Brevo.',
           'Les applications et les bases sont hébergées dans l’Union européenne. Cette localisation ne suffit pas à exclure tous les transferts ou accès hors Espace économique européen, notamment pour le support ou les obligations légales des prestataires. Leurs accords de traitement, sous-traitants ultérieurs et garanties applicables doivent être vérifiés pour les comptes utilisés avant toute collecte réelle.',
           'Les offres gratuites comportent des quotas et des mises en veille. Les sauvegardes Atlas sont désactivées dans la configuration du projet. Cela ne garantit pas l’absence de toute copie ou trace technique chez le prestataire. La durée de restauration conservée par Neon reste à relever. Une purge dans l’application ne prouve pas l’effacement immédiat des traces techniques conservées par les prestataires.',
         ],
@@ -192,9 +193,9 @@ export const PAGES_LEGALES: Record<NomPageLegale, ContenuLegal> = {
       {
         titre: 'Cookies, ressources externes et droits',
         paragraphes: [
-          'Le cookie de session est destiné au fonctionnement du service. Le site n’ajoute pas de traceur publicitaire ni de mesure d’audience. Les illustrations de l’accueil sont locales ; une image externe sur un futur événement peut communiquer votre adresse IP à son hébergeur lors du chargement.',
+          'Le cookie de session est destiné au fonctionnement du service. Le site n’ajoute pas de traceur publicitaire ni de mesure d’audience. Les illustrations de l’accueil sont locales ; une image externe sur un événement peut communiquer votre adresse IP à son hébergeur lors du chargement.',
           'Selon la base juridique applicable, vous disposez de droits d’accès, de rectification, d’effacement, de limitation, d’opposition et de portabilité. Vous pouvez retirer un consentement sans remettre en cause le traitement antérieur. Vous pouvez aussi adresser une réclamation à la CNIL.',
-          'Dans cette version de démonstration, contactez la personne qui vous a fourni le lien pour toute question sur un test. Un canal opérationnel d’exercice des droits et les fonctions du compte doivent être disponibles avant tout usage réel.',
+          'Dans cette version de démonstration, contactez la personne qui vous a fourni le lien pour toute question sur un test. Les fonctions « Mon profil » permettent de rectifier les informations et de demander la suppression du compte. Un canal opérationnel d’exercice des autres droits doit être défini avant tout usage réel.',
         ],
         liens: [
           {

@@ -1,0 +1,107 @@
+.catalogue {
+  padding-bottom: 64px;
+}
+.introduction {
+  max-width: 720px;
+  color: var(--text-muted);
+}
+.filtres {
+  margin-block: 24px;
+}
+.filtres h2 {
+  font-size: 1.25rem;
+}
+.champs-filtres {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.actions-catalogue,
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-block: 16px;
+}
+.formulaire .actions-catalogue button[type='submit'] {
+  width: auto;
+  margin: 0;
+}
+.grille-evenements {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.carte-evenement {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.carte-evenement h2 {
+  font-size: 1.25rem;
+  margin-top: 16px;
+}
+.carte-evenement .bouton {
+  margin-top: auto;
+}
+.couverture {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.image-repli {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  background: var(--surface-alt);
+  color: var(--primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.detail-evenement {
+  max-width: 840px;
+}
+.detail-evenement .carte {
+  margin-block: 24px;
+}
+.detail-evenement dt {
+  font-weight: 600;
+}
+.detail-evenement dd {
+  margin: 0 0 16px;
+}
+.avis-liste {
+  display: grid;
+  gap: 24px;
+  max-width: 840px;
+}
+.note-avis {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+.commentaire {
+  white-space: pre-line;
+}
+.retour {
+  display: inline-block;
+  min-height: 44px;
+  padding-block: 10px;
+}
+@media (max-width: 1023px) {
+  .grille-evenements {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767px) {
+  .champs-filtres,
+  .grille-evenements {
+    grid-template-columns: 1fr;
+  }
+  .formulaire .actions-catalogue button[type='submit'] {
+    width: 100%;
+  }
+}

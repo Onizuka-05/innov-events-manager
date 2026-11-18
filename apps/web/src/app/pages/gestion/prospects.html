@@ -1,0 +1,208 @@
+<section class="conteneur page devis">
+  <header class="en-tete">
+    <h1>Prospects</h1>
+    <p class="texte-secondaire">
+      Recherchez une demande, classez-la sans suite ou convertissez-la en client.
+    </p>
+  </header>
+  @if (erreur()) {
+    <p role="alert" class="erreur">{{ erreur() }}</p>
+  }
+  @if (information()) {
+    <p role="status">{{ information() }}</p>
+  }
+  <section class="carte bloc" aria-labelledby="titre-prospects">
+    <h2 id="titre-prospects">Demandes reçues</h2>
+    <div class="formulaire barre-filtres">
+      <div class="champ">
+        <label for="recherche">Rechercher un prospect</label>
+        <input
+          id="recherche"
+          name="recherche"
+          type="search"
+          placeholder="Entreprise, nom ou e-mail"
+          [(ngModel)]="recherche"
+        />
+      </div>
+      <div class="champ">
+        <label for="filtre">Statut</label>
+        <select id="filtre" name="filtre" [(ngModel)]="filtreStatut">
+          <option value="">Tous</option>
+          <option value="a_contacter">À contacter</option>
+          <option value="converti">Converti</option>
+          <option value="echoue">Échoué</option>
+        </select>
+      </div>
+    </div>
+    @if (prospectsFiltres().length === 0) {
+      <p class="vide">Aucune demande ne correspond.</p>
+    } @else {
+      <div class="tableau-defilant" tabindex="0" role="region" aria-label="Liste des prospects">
+        <table>
+          <caption class="masque">
+            Demandes de devis reçues
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Entreprise</th>
+              <th scope="col">Contact</th>
+              <th scope="col">Date souhaitée</th>
+              <th scope="col">Statut</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of prospectsFiltres(); track p.id_prospect) {
+              <tr>
+                <td>{{ p.entreprise }}</td>
+                <td>
+                  {{ p.prenom }} {{ p.nom }}<br /><span class="texte-secondaire">{{
+                    p.email
+                  }}</span>
+                </td>
+                <td>{{ dateCourte(p.date_souhaitee) }}</td>
+                <td>
+                  <app-badge-statut [statut]="p.statut_prospect" />
+                </td>
+                <td>
+                  @if (p.statut_prospect === 'a_contacter') {
+                    <div class="actions">
+                      <button
+                        type="button"
+                        class="bouton-secondaire"
+                        [disabled]="chargement()"
+                        [attr.aria-label]="'Convertir en client : ' + p.entreprise"
+                        (click)="choisirConversion(p.id_prospect)"
+                      >
+                        Convertir
+                      </button>
+                      <button
+                        type="button"
+                        class="bouton-secondaire"
+                        [attr.aria-label]="'Classer sans suite : ' + p.entreprise"
+                        (click)="choisirEchec(p)"
+                      >
+                        Classer sans suite
+                      </button>
+                    </div>
+                  } @else {
+                    <span class="texte-secondaire">—</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+    @if (prospectEchec(); as p) {
+      <form class="formulaire panneau" (ngSubmit)="echouer()">
+        <h3>Classer sans suite : {{ p.entreprise }}</h3>
+        <p class="aide">Le message est envoyé par e-mail à {{ p.email }}.</p>
+        <div class="champ">
+          <label for="message-echec">Message au prospect</label>
+          <textarea
+            id="message-echec"
+            name="messageEchec"
+            rows="3"
+            maxlength="3000"
+            required
+            [(ngModel)]="messageEchec"
+          ></textarea>
+        </div>
+        <div class="actions">
+          <button
+            type="submit"
+            class="bouton-primaire"
+            [disabled]="chargement() || !messageEchec.trim()"
+          >
+            Envoyer et classer
+          </button>
+          <button type="button" class="bouton-secondaire" (click)="annulerEchec()">Annuler</button>
+        </div>
+      </form>
+    }
+  </section>
+  <section class="carte bloc" aria-labelledby="titre-conversion">
+    <h2 id="titre-conversion"><span class="etape">1</span>Convertir un prospect</h2>
+    <form class="formulaire" (ngSubmit)="convertir()">
+      <div class="grille">
+        <div class="champ">
+          <label for="prospect">Demande à convertir</label>
+          <select
+            id="prospect"
+            name="prospect"
+            required
+            [(ngModel)]="id_prospect"
+            (ngModelChange)="preparerConversion($event)"
+          >
+            <option value="">Choisir une demande</option>
+            @for (p of prospects(); track p.id_prospect) {
+              @if (p.statut_prospect === 'a_contacter') {
+                <option [value]="p.id_prospect">
+                  {{ p.entreprise }} — {{ p.prenom }} {{ p.nom }}
+                </option>
+              }
+            }
+          </select>
+        </div>
+        <div class="champ">
+          <label for="adresse">Adresse postale du client</label>
+          <input
+            id="adresse"
+            name="adresse"
+            autocomplete="street-address"
+            maxlength="2000"
+            required
+            [(ngModel)]="adresse_postale"
+          />
+        </div>
+      </div>
+      @if (prospectConversion(); as p) {
+        <h3 class="titre-infos">Informations de la demande</h3>
+        @if (clientExistant(p); as c) {
+          <p class="aide">
+            Client existant avec cet e-mail : {{ c.entreprise }} ({{ c.prenom_contact }}
+            {{ c.nom_contact }}). L’adresse d’une demande n’est pas vérifiée : comparez l’entreprise
+            et le contact ci-dessous avant de rattacher la demande à cette fiche. Sa fiche, son
+            adresse et son compte sont conservés.
+          </p>
+          <div class="champ">
+            <label class="case" for="confirmation-rattachement"
+              ><input
+                id="confirmation-rattachement"
+                type="checkbox"
+                name="confirmationRattachement"
+                required
+                [ngModel]="rattachementConfirme()"
+                (ngModelChange)="confirmerRattachement($event)"
+              />
+              Je confirme que cette demande vient de {{ c.entreprise }}</label
+            >
+          </div>
+        }
+        <dl class="infos-demande">
+          <dt>Entreprise</dt>
+          <dd>{{ p.entreprise }}</dd>
+          <dt>Nom</dt>
+          <dd>{{ p.nom }}</dd>
+          <dt>Prénom</dt>
+          <dd>{{ p.prenom }}</dd>
+          <dt>E-mail</dt>
+          <dd>{{ p.email }}</dd>
+          <dt>Téléphone</dt>
+          <dd>{{ p.telephone }}</dd>
+        </dl>
+      }
+      <div class="actions">
+        <button
+          type="submit"
+          class="bouton-primaire"
+          [disabled]="chargement() || !conversionPrete()"
+        >
+          Convertir
+        </button>
+      </div>
+    </form>
+  </section>
+</section>

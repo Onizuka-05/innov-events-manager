@@ -17,6 +17,8 @@ export interface Configuration {
   brevoApiKey?: string;
   smtpHost?: string;
   smtpPort?: number;
+  /** Purges automatiques des donnees personnelles ; desactivables par PURGES_ACTIVES=false. */
+  purgesActives?: boolean;
 }
 
 function entierDansPlage(
@@ -76,5 +78,6 @@ export function chargerConfiguration(env: NodeJS.ProcessEnv = process.env): Conf
     pgPassword: env.PGPASSWORD || '',
     mongodbUrl: env.MONGODB_URL || 'mongodb://localhost:27017',
     mongodbDatabase: env.MONGODB_DATABASE || 'innov_events_logs',
+    purgesActives: env.PURGES_ACTIVES !== 'false',
   };
 }

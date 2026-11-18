@@ -1,8 +1,10 @@
 import { Component, Injector, afterNextRender, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ApiService, messageErreur } from '../../core/api.service';
+import type { Prospect } from '../../core/prospects.models';
 import { AuthentificationService } from '../../core/authentification.service';
+import { BadgeStatut } from '../../core/badge-statut';
 
 interface Ligne {
   libelle_prestation: string;
@@ -22,19 +24,6 @@ interface Detail extends DevisItem {
   lignes: (Ligne & { id_ligne_devis: string })[];
   totaux: { total_ht: string; total_tva: string; total_ttc: string };
 }
-interface Prospect {
-  id_prospect: string;
-  entreprise: string;
-  nom: string;
-  prenom: string;
-  email: string;
-  telephone: string;
-  statut_prospect: string;
-  id_client: string | null;
-  id_type_evenement: number;
-  lieu_souhaite: string;
-  date_souhaitee: string;
-}
 interface Client {
   id_client: string;
   entreprise: string;
@@ -49,38 +38,21 @@ interface Evenement {
   statut_evenement: string;
 }
 
-/** Libelles lisibles des statuts (prospects et devis). */
-const LIBELLES_STATUT: Record<string, string> = {
-  a_contacter: 'À contacter',
-  converti: 'Converti',
-  echoue: 'Échoué',
-  en_preparation: 'En préparation',
-  etude_client: 'Étude client',
-  modification: 'Modification demandée',
-  accepte: 'Accepté',
-  refuse: 'Refusé',
-};
-/** Couleur du badge : attente, succes, echec ou neutre. */
-const CLASSES_STATUT: Record<string, string> = {
-  a_contacter: 'statut-attente',
-  etude_client: 'statut-info',
-  modification: 'statut-attente',
-  converti: 'statut-succes',
-  accepte: 'statut-succes',
-  echoue: 'statut-echec',
-  refuse: 'statut-echec',
-};
 const FORMAT_EUROS = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
 
 /** Vue admin et vue client, protections reelles imposees par l'API. */
 @Component({
   selector: 'app-devis',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, BadgeStatut],
   templateUrl: './devis.html',
   styleUrl: './devis.css',
 })
 export class Devis {
   private readonly api = inject(ApiService);
+  private readonly route = inject(ActivatedRoute);
+  protected filtre_devis = '';
+  protected recherche_devis = '';
+  private prospectPrepare = '';
   private readonly injector = inject(Injector);
   protected readonly auth = inject(AuthentificationService);
   protected readonly admin = computed(() => this.auth.utilisateur()?.role === 'admin');
@@ -92,17 +64,11 @@ export class Devis {
   protected readonly prospects = signal<Prospect[]>([]);
   protected readonly types = signal<{ id_type_evenement: number; libelle: string }[]>([]);
   protected readonly themes = signal<{ id_theme: number; libelle: string }[]>([]);
-  protected recherche = '';
-  protected filtreStatut = '';
-  protected messageEchec = '';
-  protected readonly prospectEchec = signal<Prospect | null>(null);
   protected readonly clients = signal<Client[]>([]);
   protected readonly evenements = signal<Evenement[]>([]);
   protected motif = '';
   protected choix = 'modification';
   protected nouvelIntitule = '';
-  protected adresse_postale = '';
-  protected id_prospect = '';
   protected id_client = '';
   protected id_prospect_evenement = '';
   protected visible_public = false;
@@ -119,16 +85,6 @@ export class Devis {
   protected lignes: Ligne[] = [];
   constructor() {
     void this.charger();
-  }
-  /** Methode et non computed : id_prospect est un champ ngModel, pas un signal. */
-  protected prospectConversion(): Prospect | null {
-    return this.prospects().find((p) => p.id_prospect === this.id_prospect) ?? null;
-  }
-  protected libelleStatut(statut: string): string {
-    return LIBELLES_STATUT[statut] ?? statut;
-  }
-  protected classeStatut(statut: string): string {
-    return CLASSES_STATUT[statut] ?? 'statut-neutre';
   }
   protected euros(montant: string | number): string {
     return FORMAT_EUROS.format(Number(montant));
@@ -159,10 +115,67 @@ export class Devis {
         this.evenements.set(evenements);
         this.types.set(types);
         this.themes.set(themes);
+        const id = this.route.snapshot.queryParamMap.get('prospect');
+        if (id && id !== this.prospectPrepare) {
+          const p = prospects.find(
+            (p) => p.id_prospect === id && p.statut_prospect === 'converti' && p.id_client,
+          );
+          if (!p) {
+            this.erreur.set(
+              'La demande convertie est introuvable. Choisissez une demande ou un client.',
+            );
+            return;
+          }
+          this.prospectPrepare = id;
+          this.id_prospect_evenement = id;
+          this.preRemplirEvenement();
+          this.focaliser('titre-evenement');
+        }
       }
     } catch (e) {
       this.erreur.set(messageErreur(e));
     }
+  }
+  protected devisFiltres() {
+    const normaliser = (v: string) =>
+      v
+        .normalize('NFD')
+        .replace(/\p{Diacritic}/gu, '')
+        .toLowerCase();
+    const termes = normaliser(this.recherche_devis.trim()).split(/\s+/u).filter(Boolean);
+    return this.devis().filter(
+      (d) =>
+        (!this.filtre_devis || d.statut_devis === this.filtre_devis) &&
+        termes.every((t) => normaliser(`${d.intitule} ${d.evenement}`).includes(t)),
+    );
+  }
+  protected evenementAccepte(id: string) {
+    return this.evenements().some((e) => e.id_evenement === id && e.statut_evenement === 'accepte');
+  }
+  protected demarrer(id: string) {
+    return this.operation(async () => {
+      const e = await this.api.get<{
+        nom: string;
+        id_type_evenement: number;
+        id_theme: number | null;
+        date_debut: string;
+        date_fin: string;
+        lieu: string;
+        image_url: string | null;
+        visible_public: boolean;
+      }>('/evenements/' + id);
+      await this.api.modifier('PATCH', '/evenements/' + id, {
+        nom: e.nom,
+        id_type_evenement: e.id_type_evenement,
+        id_theme: e.id_theme,
+        date_debut: e.date_debut,
+        date_fin: e.date_fin,
+        lieu: e.lieu,
+        image_url: e.image_url,
+        visible_public: e.visible_public,
+        statut_evenement: 'en_cours',
+      });
+    }, 'Événement passé en cours.');
   }
   protected async ouvrir(id: string) {
     try {
@@ -205,73 +218,6 @@ export class Devis {
       this.chargement.set(false);
     }
   }
-  protected prospectsFiltres() {
-    return this.prospects().filter(
-      (p) =>
-        (!this.filtreStatut || p.statut_prospect === this.filtreStatut) &&
-        `${p.entreprise} ${p.nom} ${p.prenom} ${p.email}`
-          .toLocaleLowerCase()
-          .includes(this.recherche.toLocaleLowerCase()),
-    );
-  }
-  protected choisirEchec(p: Prospect) {
-    this.prospectEchec.set(p);
-    this.messageEchec = '';
-  }
-  protected annulerEchec() {
-    this.prospectEchec.set(null);
-    this.messageEchec = '';
-  }
-  protected echouer() {
-    return this.operation(async () => {
-      const p = this.prospectEchec();
-      if (!p) return;
-      await this.api.modifier('POST', `/prospects/${p.id_prospect}/echec`, {
-        message: this.messageEchec,
-      });
-      this.annulerEchec();
-    }, 'Demande classée sans suite : le message a été envoyé par e-mail.');
-  }
-  /** Fiche client existante du meme e-mail : la conversion y rattachera la demande. */
-  protected clientExistant(p: Prospect): Client | null {
-    const email = p.email.toLocaleLowerCase();
-    return this.clients().find((c) => c.email_contact?.toLocaleLowerCase() === email) ?? null;
-  }
-  protected preparerConversion(id: string) {
-    this.id_prospect = id;
-    const p = this.prospectConversion();
-    this.adresse_postale = (p && this.clientExistant(p)?.adresse_postale) || '';
-  }
-  protected choisirConversion(id: string) {
-    this.preparerConversion(id);
-    document.getElementById('adresse')?.focus();
-  }
-  protected convertir() {
-    const id = this.id_prospect;
-    let cree = true;
-    return this.operation(
-      async () => {
-        const resultat = await this.api.modifier<{ cree?: boolean }>(
-          'POST',
-          `/prospects/${id}/conversion`,
-          { adresse_postale: this.adresse_postale },
-        );
-        cree = resultat.cree !== false;
-        this.id_prospect = '';
-        this.adresse_postale = '';
-      },
-      'Client créé : l’événement est pré-rempli à l’étape 2.',
-      () => {
-        if (!cree)
-          this.information.set(
-            'Demande rattachée au client existant : l’événement est pré-rempli à l’étape 2.',
-          );
-        this.id_prospect_evenement = id;
-        this.preRemplirEvenement();
-        this.focaliser('titre-evenement');
-      },
-    );
-  }
   protected preRemplirEvenement() {
     const p = this.prospects().find((p) => p.id_prospect === this.id_prospect_evenement);
     if (!p) return;
@@ -303,7 +249,7 @@ export class Devis {
         idEvenement = cree.id_evenement;
         this.viderEvenement();
       },
-      'Événement créé : il est présélectionné à l’étape 3.',
+      'Événement créé : il est présélectionné à l’étape 2.',
       () => {
         this.id_evenement = idEvenement;
         this.focaliser('titre-creation-devis');

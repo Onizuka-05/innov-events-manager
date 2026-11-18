@@ -5,6 +5,14 @@ import { Router, provideRouter } from '@angular/router';
 import { App } from './app';
 import { routes } from './app.routes';
 
+const compte = {
+  id_utilisateur: '1',
+  email_connexion: 'equipe@example.org',
+  nom_utilisateur: 'equipe',
+  prenom: 'Chloé',
+  nom: 'Martin',
+};
+
 describe('Site public', () => {
   let fixture: ComponentFixture<App>;
   let router: Router;
@@ -202,7 +210,7 @@ describe('Site public', () => {
     expect(element.querySelector('h1')?.textContent).toBe(titre);
   });
 
-  it('informe sur les prestataires et les purges sans les presenter comme deja executees', async () => {
+  it('decrit les traitements en place et les limites de conservation', async () => {
     await router.navigateByUrl('/confidentialite');
     await fixture.whenStable();
     const texte = element.querySelector('main')?.textContent ?? '';
@@ -219,6 +227,94 @@ describe('Site public', () => {
     ]) {
       expect(texte).toContain(terme);
     }
-    expect(texte).toContain('ne constituent pas la preuve de leur exécution');
+    expect(texte).toContain('la suppression est refusée sans effacer les données');
+    expect(texte).toContain('toutes les 24 heures');
+    expect(texte).toContain('180 jours');
+    expect(texte).not.toContain('une fois ces parcours raccordés');
+    expect(texte).not.toContain('son envoi réel reste à vérifier');
+  });
+
+  it.each([
+    ['admin', '/administration'],
+    ['employe', '/administration/evenements'],
+  ] as const)(
+    'propose Administration sans Demander un devis a l’equipe (%s)',
+    async (role, accueil) => {
+      TestBed.inject(AuthentificationService).utilisateur.set({ ...compte, role });
+      fixture.detectChanges();
+      const site = element.querySelector('#navigation-principale') as HTMLElement;
+      const liens = [...site.querySelectorAll('a')].map((a) => a.textContent?.trim());
+      expect(liens).toContain('Administration');
+      expect(liens).not.toContain('Mon espace');
+      expect(liens).not.toContain('Demander un devis');
+      expect(element.querySelector('header a[href="/demande-devis"]')).toBeNull();
+      const administration = [...site.querySelectorAll('a')].find(
+        (a) => a.textContent?.trim() === 'Administration',
+      );
+      expect(administration?.getAttribute('href')).toBe(accueil);
+    },
+  );
+
+  it('garde Mon espace et Demander un devis pour le client', async () => {
+    TestBed.inject(AuthentificationService).utilisateur.set({ ...compte, role: 'client' });
+    fixture.detectChanges();
+    const liens = [...element.querySelectorAll('#navigation-principale a')].map((a) =>
+      a.textContent?.trim(),
+    );
+    expect(liens).toContain('Mon espace');
+    expect(liens).toContain('Demander un devis');
+    expect(liens).not.toContain('Administration');
+    expect(element.querySelector('nav[aria-label="Espace équipe"]')).toBeNull();
+  });
+
+  it.each([
+    ['admin', 10, 'Tableau de bord'],
+    ['employe', 4, 'Clients'],
+  ] as const)(
+    'ouvre un seul menu compact, rubriques de l’equipe en premier (%s)',
+    async (role, nombre, premiere) => {
+      TestBed.inject(AuthentificationService).utilisateur.set({ ...compte, role });
+      fixture.detectChanges();
+      expect(element.querySelectorAll('header button[aria-controls]')).toHaveLength(1);
+      const bouton = element.querySelector<HTMLButtonElement>('.bouton-menu')!;
+      expect(bouton.getAttribute('aria-controls')).toBe('menu-principal');
+      const menu = element.querySelector('#menu-principal') as HTMLElement;
+      const blocs = [...menu.querySelectorAll(':scope > nav')].map((n) =>
+        n.getAttribute('aria-label'),
+      );
+      expect(blocs).toEqual(['Espace équipe', 'Navigation principale']);
+      const rubriques = menu.querySelectorAll('nav[aria-label="Espace équipe"] a');
+      expect(rubriques).toHaveLength(nombre);
+      expect(rubriques[0].textContent?.trim()).toBe(premiere);
+      bouton.click();
+      await fixture.whenStable();
+      expect(bouton.getAttribute('aria-expanded')).toBe('true');
+      expect(menu.classList.contains('ouvert')).toBe(true);
+      const lien = rubriques[0] as HTMLAnchorElement;
+      lien.focus();
+      const retourFocus = vi.spyOn(bouton, 'focus');
+      lien.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      await fixture.whenStable();
+      expect(bouton.getAttribute('aria-expanded')).toBe('false');
+      expect(retourFocus).toHaveBeenCalledOnce();
+    },
+  );
+
+  it('referme le menu compact apres le choix d’une rubrique de l’equipe', async () => {
+    const auth = TestBed.inject(AuthentificationService);
+    vi.spyOn(auth, 'charger').mockResolvedValue(undefined);
+    auth.utilisateur.set({ ...compte, role: 'employe' });
+    fixture.detectChanges();
+    const bouton = element.querySelector<HTMLButtonElement>('.bouton-menu')!;
+    bouton.click();
+    await fixture.whenStable();
+    element
+      .querySelector<HTMLAnchorElement>(
+        'nav[aria-label="Espace équipe"] a[href="/administration/clients"]',
+      )!
+      .click();
+    await fixture.whenStable();
+    expect(router.url).toBe('/administration/clients');
+    expect(bouton.getAttribute('aria-expanded')).toBe('false');
   });
 });

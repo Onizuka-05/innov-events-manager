@@ -1,6 +1,43 @@
 import type { Pool, PoolClient } from 'pg';
 import { ErreurHttp } from '../http/erreur-http.js';
 
+/** Statuts d'evenement qui ferment l'envoi et l'acceptation des devis. */
+const EVENEMENT_CLOS = ['annule', 'termine'];
+
+/**
+ * Compte de la session, dans la meme instruction que le controle de propriete : le compte n'est
+ * retenu que s'il est actif et si son mot de passe est encore celui qui a autorise la session.
+ * Le rattachement d'un compte a une fiche, a l'envoi du premier devis, remplace ce mot de passe :
+ * une requete autorisee juste avant ne voit donc ni la fiche, ni ses evenements, ni ses devis.
+ * Parametres : position de l'identifiant du compte, puis du hache de la session.
+ */
+export function compteSession(idCompte: number, hache: number): string {
+  return `(SELECT s.id_utilisateur FROM innov_events.utilisateurs s WHERE s.id_utilisateur=$${idCompte}
+    AND s.mot_de_passe_hache=$${hache} AND s.statut_compte='actif')`;
+}
+
+/**
+ * A appeler apres le verrou de l'evenement : le rattachement d'un compte a l'envoi du premier
+ * devis remplace son mot de passe sous ce meme verrou. Une requete d'un client deja autorisee
+ * par l'ancien mot de passe, et qui attendait ce verrou, est donc refusee (401) au lieu d'agir
+ * sur une fiche qui vient de lui etre rattachee. Lecture simple, sans verrou du compte : l'ordre
+ * des verrous (fiche, evenement, devis, puis compte a l'envoi) reste inchange.
+ */
+async function verifierSessionApresVerrou(
+  db: PoolClient,
+  idUtilisateur: string,
+  hacheSession: string,
+): Promise<void> {
+  const u = (
+    await db.query<{ mot_de_passe_hache: string | null; statut_compte: string }>(
+      'SELECT mot_de_passe_hache,statut_compte FROM innov_events.utilisateurs WHERE id_utilisateur=$1',
+      [idUtilisateur],
+    )
+  ).rows[0];
+  if (!u || u.statut_compte !== 'actif' || u.mot_de_passe_hache !== hacheSession)
+    throw new ErreurHttp(401, 'Session invalide.');
+}
+
 export interface LigneDevis {
   libelle_prestation: string;
   montant_ht: number;
@@ -58,11 +95,15 @@ export class DevisRepository {
 
   /**
    * Conversion atomique : verrouille le prospect, puis rattache la demande a la fiche existante
-   * du meme e-mail (client qui revient) ou cree une nouvelle fiche.
+   * du meme e-mail (client qui revient) ou cree une nouvelle fiche. L'e-mail d'une demande n'est
+   * jamais verifie : le rattachement a une fiche existante exige que l'administratrice ait
+   * confirme cette fiche precise (idClientConfirme), et une confirmation devenue sans objet est
+   * refusee plutot que transformee en creation.
    */
   async convertir(
     id: string,
     adresse: string,
+    idClientConfirme: string | null = null,
   ): Promise<{ id_client: string; nom_client: string; cree: boolean }> {
     return this.transaction(async (db) => {
       const resultat = await db.query<{
@@ -87,14 +128,36 @@ export class DevisRepository {
         throw new ErreurHttp(409, 'La demande est absente ou déjà convertie.');
       // Deux demandes du meme e-mail converties en meme temps ne creent pas deux fiches.
       await db.query('SELECT pg_advisory_xact_lock(hashtext(LOWER($1)))', [p.email]);
-      const existante = await db.query<{ id_client: string; nom_client: string }>(
-        `SELECT id_client::text, prenom_contact || ' ' || nom_contact AS nom_client
+      const existantes = await db.query<{
+        id_client: string;
+        nom_client: string;
+        entreprise: string | null;
+      }>(
+        `SELECT id_client::text, prenom_contact || ' ' || nom_contact AS nom_client, entreprise
         FROM innov_events.clients
         WHERE LOWER(email_contact)=LOWER($1) AND date_anonymisation IS NULL
-        ORDER BY (id_utilisateur IS NULL), id_client DESC LIMIT 1 FOR UPDATE`,
+        ORDER BY id_client FOR UPDATE`,
         [p.email],
       );
-      let fiche = existante.rows[0];
+      // Plusieurs fiches pour une meme adresse : le rattachement ne doit pas etre devine.
+      if (existantes.rows.length > 1)
+        throw new ErreurHttp(
+          409,
+          'Plusieurs fiches clients portent l’adresse de cette demande : corrigez le doublon dans « Clients » avant de convertir.',
+          'FICHES_EN_DOUBLE',
+        );
+      const existante = existantes.rows[0];
+      // Exemple : la demande d'Alpha, conservee a son effacement parce que Beta partageait son
+      // adresse, ne rejoint pas Beta du seul fait que Beta est devenue l'unique fiche active.
+      if ((existante?.id_client ?? null) !== idClientConfirme)
+        throw new ErreurHttp(
+          409,
+          existante
+            ? `Une fiche client porte déjà l’adresse de cette demande (${existante.entreprise ?? existante.nom_client}) : vérifiez qu’il s’agit de la même entreprise, puis confirmez le rattachement.`
+            : 'La fiche à laquelle rattacher la demande a changé : rechargez la page.',
+          'RATTACHEMENT_A_CONFIRMER',
+        );
+      let fiche = existante && { id_client: existante.id_client, nom_client: existante.nom_client };
       const cree = !fiche;
       if (!fiche) {
         const insertion = await db.query<{ id_client: string }>(
@@ -158,6 +221,15 @@ export class DevisRepository {
 
   async creerEvenement(d: EvenementSaisie): Promise<string> {
     return this.transaction(async (db) => {
+      if (
+        !(
+          await db.query(
+            `SELECT 1 FROM innov_events.clients WHERE id_client=$1 AND date_anonymisation IS NULL FOR UPDATE`,
+            [d.id_client],
+          )
+        ).rowCount
+      )
+        throw new ErreurHttp(409, 'Client absent ou anonymisé.');
       if (d.id_prospect) {
         const r = await db.query<{ id_client: string }>(
           `SELECT id_client::text FROM innov_events.prospects
@@ -199,7 +271,7 @@ export class DevisRepository {
     if (!r.rows[0]) throw new ErreurHttp(503, 'Paramètres de TVA indisponibles.');
     return r.rows[0].id_devis;
   }
-  async liste(idUtilisateur: string, role: string) {
+  async liste(idUtilisateur: string, role: string, hacheSession: string | null = null) {
     const client = role === 'client';
     return (
       await this.pool.query(
@@ -207,9 +279,9 @@ export class DevisRepository {
        e.nom AS evenement, c.entreprise, d.date_envoi
        FROM innov_events.devis d JOIN innov_events.evenements e ON e.id_evenement=d.id_evenement
        JOIN innov_events.clients c ON c.id_client=e.id_client
-       WHERE ($1::boolean = FALSE OR (c.id_utilisateur=$2 AND d.date_envoi IS NOT NULL))
+       WHERE ($1::boolean = FALSE OR (c.id_utilisateur=${compteSession(2, 3)} AND d.date_envoi IS NOT NULL))
        ORDER BY d.date_creation DESC LIMIT 200`,
-        [client, idUtilisateur],
+        [client, idUtilisateur, hacheSession],
       )
     ).rows;
   }
@@ -233,11 +305,12 @@ export class DevisRepository {
     );
     return { ...r.rows[0], lignes: lignes.rows };
   }
-  async possede(id: string, utilisateur: string): Promise<boolean> {
+  async possede(id: string, utilisateur: string, hacheSession: string): Promise<boolean> {
     const r = await this.pool.query(
       `SELECT 1 FROM innov_events.devis d JOIN innov_events.evenements e USING (id_evenement)
-       JOIN innov_events.clients c USING (id_client) WHERE d.id_devis=$1 AND c.id_utilisateur=$2 AND d.date_envoi IS NOT NULL`,
-      [id, utilisateur],
+       JOIN innov_events.clients c USING (id_client)
+       WHERE d.id_devis=$1 AND c.id_utilisateur=${compteSession(2, 3)} AND d.date_envoi IS NOT NULL`,
+      [id, utilisateur, hacheSession],
     );
     return r.rowCount === 1;
   }
@@ -263,15 +336,54 @@ export class DevisRepository {
     );
     if (!r.rowCount) throw new ErreurHttp(409, 'Devis non modifiable.');
   }
+  /**
+   * Verrouille l'evenement du devis avant le devis lui-meme et renvoie son statut. L'annulation
+   * de l'evenement modifie la meme ligne : elle precede ou suit l'envoi et la reponse.
+   * Ordre des verrous commun a toute l'API : fiche client, puis evenement, puis devis. La
+   * suppression d'une fiche verrouille la fiche, puis l'evenement (cle id_prospect remise a
+   * NULL) : l'envoi, qui verrouille aussi la fiche, la prend donc en premier (avecFiche).
+   */
+  private async verrouillerEvenement(
+    id: string,
+    db: PoolClient,
+    avecFiche = false,
+  ): Promise<string> {
+    if (avecFiche) {
+      // Le client d'un evenement ne change jamais : il peut etre lu avant tout verrou.
+      const fiche = await db.query<{ id_client: string }>(
+        `SELECT e.id_client::text FROM innov_events.evenements e
+        JOIN innov_events.devis d ON d.id_evenement=e.id_evenement WHERE d.id_devis=$1`,
+        [id],
+      );
+      if (!fiche.rows[0]) throw new ErreurHttp(404, 'Devis introuvable.');
+      await db.query('SELECT 1 FROM innov_events.clients WHERE id_client=$1 FOR UPDATE', [
+        fiche.rows[0].id_client,
+      ]);
+    }
+    const r = await db.query<{ statut_evenement: string }>(
+      `SELECT e.statut_evenement FROM innov_events.evenements e
+      JOIN innov_events.devis d ON d.id_evenement=e.id_evenement
+      WHERE d.id_devis=$1 FOR UPDATE OF e`,
+      [id],
+    );
+    if (!r.rows[0]) throw new ErreurHttp(404, 'Devis introuvable.');
+    return r.rows[0].statut_evenement;
+  }
   /** Envoi reserve aux statuts attendus, transaction sous verrou, jamais sans lignes. */
   async preparerEnvoi(
     id: string,
     operation: (db: PoolClient, d: DevisDetail) => Promise<void>,
   ): Promise<DevisDetail> {
     return this.transaction(async (db) => {
+      const statutEvenement = await this.verrouillerEvenement(id, db, true);
       const d = await this.detail(id, db, true);
       if (!['en_preparation', 'modification'].includes(d.statut_devis) || d.lignes.length === 0)
         throw new ErreurHttp(409, 'Le devis doit contenir une prestation et être prêt pour envoi.');
+      if (EVENEMENT_CLOS.includes(statutEvenement))
+        throw new ErreurHttp(
+          409,
+          'L’événement est annulé ou terminé : ce devis ne peut plus être envoyé.',
+        );
       await operation(db, d);
       await db.query(
         `UPDATE innov_events.devis SET statut_devis='etude_client',date_envoi=NOW()
@@ -284,21 +396,13 @@ export class DevisRepository {
   async repondre(
     id: string,
     idUtilisateur: string,
+    hacheSession: string,
     choix: 'accepte' | 'refuse' | 'modification',
     motif: string,
   ): Promise<boolean> {
     return this.transaction(async (db) => {
-      if (choix === 'accepte') {
-        const evenement = await db.query<{ id_evenement: string }>(
-          `SELECT id_evenement::text FROM innov_events.devis WHERE id_devis=$1`,
-          [id],
-        );
-        if (!evenement.rows[0]) throw new ErreurHttp(404, 'Devis introuvable.');
-        await db.query(
-          'SELECT id_evenement FROM innov_events.evenements WHERE id_evenement=$1 FOR UPDATE',
-          [evenement.rows[0].id_evenement],
-        );
-      }
+      const statutEvenement = await this.verrouillerEvenement(id, db);
+      await verifierSessionApresVerrou(db, idUtilisateur, hacheSession);
       const d = await this.detail(id, db, true);
       const proprietaire = await db.query(
         `SELECT 1 FROM innov_events.evenements e JOIN innov_events.clients c USING(id_client)
@@ -308,6 +412,12 @@ export class DevisRepository {
       if (!proprietaire.rowCount) throw new ErreurHttp(404, 'Devis introuvable.');
       if (d.statut_devis !== 'etude_client')
         throw new ErreurHttp(409, 'Ce devis ne peut pas recevoir de réponse.');
+      // Un evenement annule ou termine n'accepte plus d'engagement : seul le refus reste possible.
+      if (choix !== 'refuse' && EVENEMENT_CLOS.includes(statutEvenement))
+        throw new ErreurHttp(
+          409,
+          'L’événement est annulé ou terminé : ce devis ne peut plus être accepté ni modifié.',
+        );
       let evenementChange = false;
       if (choix === 'accepte') {
         // Serialise les acceptations simultanees de devis d'un même événement.

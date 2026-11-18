@@ -1,0 +1,163 @@
+.navigation-client {
+  padding-block: 24px 0;
+}
+.navigation-client ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.navigation-client a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+.navigation-client a:hover {
+  background: var(--surface-alt);
+  color: var(--primary-hover);
+  border-color: var(--primary-hover);
+  text-decoration: underline;
+}
+.navigation-client a.actif {
+  color: var(--surface);
+  background: var(--primary);
+}
+.navigation-client a.actif:hover {
+  background: var(--primary-hover);
+}
+.client-page {
+  padding-bottom: 64px;
+}
+.introduction {
+  max-width: 720px;
+  color: var(--text-muted);
+}
+.grille-client {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.bloc {
+  margin-block: 24px;
+  min-width: 0;
+}
+.carte > h2:first-child,
+.carte > header:first-child {
+  margin: calc(-1 * var(--carte-espace)) calc(-1 * var(--carte-espace)) 24px;
+  padding: 16px var(--carte-espace);
+  border-bottom: 1px solid var(--border);
+  border-radius: 12px 12px 0 0;
+  background: var(--surface-alt);
+}
+.carte header h2 {
+  margin-bottom: 8px;
+}
+.liste-client {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+.liste-client > li {
+  padding-block: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.liste-client > li:last-child {
+  border: 0;
+}
+.liste-client h3 {
+  margin-bottom: 8px;
+}
+.etapes {
+  padding-left: 24px;
+}
+.etapes > li {
+  padding: 8px 0 16px 8px;
+}
+.etapes strong {
+  display: block;
+}
+.actions-client {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+.formulaire fieldset {
+  min-width: 0;
+  margin: 0 0 16px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.formulaire legend {
+  font-weight: 600;
+  padding-inline: 8px;
+}
+.formulaire .choix-note {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.formulaire .case-client {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  font-weight: 400;
+  cursor: pointer;
+}
+.formulaire .case-client input {
+  width: 24px;
+  height: 24px;
+  min-height: 24px;
+  flex: 0 0 24px;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--primary);
+}
+.formulaire .choix-note label {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.formulaire .formulaire-champs {
+  border: 0;
+  padding: 0;
+}
+.erreur-champ {
+  color: var(--error-text);
+}
+.colonne-client {
+  max-width: 840px;
+}
+.texte-libre {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.zone-danger {
+  border: 2px solid var(--error-text);
+}
+@media (max-width: 767px) {
+  .grille-client {
+    grid-template-columns: 1fr;
+  }
+  .actions-client > .bouton-primaire,
+  .actions-client > .bouton-danger {
+    width: 100%;
+  }
+  .navigation-client li {
+    flex: 1 1 8rem;
+  }
+}

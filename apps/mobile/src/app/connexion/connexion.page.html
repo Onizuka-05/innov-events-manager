@@ -1,0 +1,58 @@
+<ion-header
+  ><ion-toolbar><ion-title>Innov’Events</ion-title></ion-toolbar></ion-header
+>
+<ion-content
+  ><main class="page-mobile">
+    <h1>{{titre}}</h1>
+    <p>Démonstration : utilisez des données fictives.</p>
+    @if(erreur()){
+    <p role="alert" class="erreur">{{erreur()}}</p>
+    }@if(message()){
+    <p role="status">{{message()}}</p>
+    }
+    <form [formGroup]="formulaire" (ngSubmit)="envoyer()">
+      @if(mode!=='changement'){<label for="email-mobile">E-mail</label
+      ><input
+        id="email-mobile"
+        type="email"
+        autocomplete="email"
+        formControlName="email_connexion"
+        required
+        maxlength="255"
+      />@if(formulaire.controls.email_connexion.touched&&formulaire.controls.email_connexion.invalid){
+      <p role="alert">Saisissez un e-mail valide.</p>
+      }} @if(mode!=='oubli'){<label for="mot-mobile"
+        >{{mode==='changement'?'Nouveau mot de passe':'Mot de passe'}}</label
+      ><input
+        id="mot-mobile"
+        type="password"
+        [autocomplete]="mode==='changement'?'new-password':'current-password'"
+        formControlName="mot_de_passe"
+        required
+        maxlength="256"
+      />@if(formulaire.controls.mot_de_passe.touched&&formulaire.controls.mot_de_passe.invalid){
+      <p role="alert">Saisissez votre mot de passe.</p>
+      }} @if(mode==='changement'){
+      <p>
+        Au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.
+        Vous disposez d'environ 15 minutes après la connexion temporaire.
+      </p>
+      }
+      <button type="submit" [disabled]="envoi()">
+        {{mode==='connexion'?'Se connecter':mode==='oubli'?'Demander un mot de passe
+        temporaire':'Enregistrer'}}
+      </button>
+    </form>
+    @if(mode==='connexion'){
+    <p><a routerLink="/mot-de-passe-oublie">Mot de passe oublié</a></p>
+    } @if(mode==='oubli'){
+    <p><a routerLink="/connexion">Revenir à la connexion</a></p>
+    } @if(mode==='changement'){<button type="button" [disabled]="envoi()" (click)="annuler()">
+      Annuler et demander un nouveau mot de passe temporaire</button
+    >}
+    <nav class="liens-legaux" aria-label="Informations légales">
+      <a routerLink="/cgu">Conditions générales d’utilisation</a>
+      <a routerLink="/cgv">Conditions générales de vente</a>
+    </nav>
+  </main></ion-content
+>

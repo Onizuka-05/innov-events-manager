@@ -55,13 +55,18 @@ export class UtilisateursRepository {
     return resultat.rowCount === 1;
   }
 
-  /** Le mot de passe choisi par le titulaire reste utilisable. */
-  async preparerOubli(id: string, hache: string): Promise<boolean> {
+  /**
+   * Le mot de passe choisi par le titulaire reste utilisable. Le temporaire n'est enregistre que
+   * si le compte porte encore l'adresse demandee : une demande concurrente d'un changement
+   * d'adresse ne cree pas de temporaire envoye a l'ancienne adresse.
+   */
+  async preparerOubli(id: string, hache: string, email: string): Promise<boolean> {
     const resultat = await this.postgres.query(
       `UPDATE innov_events.utilisateurs SET
       mdp_temporaire_hache = $2, mdp_temporaire_expire_le = clock_timestamp() + INTERVAL '1 hour'
-      WHERE id_utilisateur = $1 AND statut_compte = 'actif' RETURNING id_utilisateur`,
-      [id, hache],
+      WHERE id_utilisateur = $1 AND statut_compte = 'actif' AND LOWER(email_connexion) = LOWER($3)
+      RETURNING id_utilisateur`,
+      [id, hache, email],
     );
     return resultat.rowCount === 1;
   }

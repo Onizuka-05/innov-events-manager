@@ -29,9 +29,9 @@ describe('Destination conservee avant connexion', () => {
 
   it('redirige vers la connexion avec la destination demandee', async () => {
     const harness = await RouterTestingHarness.create();
-    await harness.navigateByUrl('/administration/remerciement');
+    await harness.navigateByUrl('/administration/parametres');
     const { Router } = await import('@angular/router');
-    expect(TestBed.inject(Router).url).toBe('/connexion?retour=%2Fadministration%2Fremerciement');
+    expect(TestBed.inject(Router).url).toBe('/connexion?retour=%2Fadministration%2Fparametres');
   });
   it('redirige une session restreinte vers le renouvellement en conservant la destination', async () => {
     restreinte.set(true);
@@ -39,5 +39,45 @@ describe('Destination conservee avant connexion', () => {
     await harness.navigateByUrl('/espace');
     const { Router } = await import('@angular/router');
     expect(TestBed.inject(Router).url).toBe('/nouveau-mot-de-passe?retour=%2Fespace');
+  });
+});
+
+describe('Acces aux espaces de gestion', () => {
+  it.each([
+    ['client', true, false],
+    ['employe', true, true],
+    ['admin', true, true],
+    ['client', false, false],
+    ['employe', false, false],
+    ['admin', false, true],
+  ])('role %s equipe=%s autorise=%s', async (role, equipe, autorise) => {
+    const { authentificationGuard } = await import('./authentification.guard');
+    const { Router } = await import('@angular/router');
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([]),
+        {
+          provide: AuthentificationService,
+          useValue: {
+            charger: () => Promise.resolve(),
+            restreinte: () => false,
+            utilisateur: () => ({ role }),
+          },
+        },
+      ],
+    });
+    const resultat = await TestBed.runInInjectionContext(() =>
+      authentificationGuard(
+        {
+          data: equipe ? { equipe: true } : { admin: true },
+        } as unknown as import('@angular/router').ActivatedRouteSnapshot,
+        { url: '/equipe/clients' } as import('@angular/router').RouterStateSnapshot,
+      ),
+    );
+    expect(resultat === true).toBe(autorise);
+    if (!autorise)
+      expect(
+        TestBed.inject(Router).serializeUrl(resultat as import('@angular/router').UrlTree),
+      ).toBe(role === 'employe' ? '/administration/evenements' : '/espace');
   });
 });

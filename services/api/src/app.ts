@@ -1,3 +1,7 @@
+import { GestionRepository } from './repositories/gestion.repository.js';
+import { GestionService } from './services/gestion.service.js';
+import { GestionController } from './controllers/gestion.controller.js';
+import { creerRoutesGestion } from './routes/gestion.routes.js';
 import csrf from '@dr.pogodin/csurf';
 import connectPgSimple from 'connect-pg-simple';
 import express from 'express';
@@ -33,6 +37,13 @@ import { DevisService } from './services/devis.service.js';
 import { DevisPdfService } from './services/devis-pdf.service.js';
 import { DevisController } from './controllers/devis.controller.js';
 import { creerRoutesDevis } from './routes/devis.routes.js';
+import { EspaceClientRepository } from './repositories/espace-client.repository.js';
+import { EspaceClientService } from './services/espace-client.service.js';
+import { EspaceClientController } from './controllers/espace-client.controller.js';
+import { creerRoutesEspaceClient } from './routes/espace-client.routes.js';
+import { EvenementsPublicsRepository } from './repositories/evenements-publics.repository.js';
+import { EvenementsPublicsController } from './controllers/evenements-publics.controller.js';
+import { creerRoutesEvenementsPublics } from './routes/evenements-publics.routes.js';
 
 export interface Dependances {
   postgres: Pool;
@@ -77,7 +88,7 @@ export function creerApp({
   app.use('/api/sante', creerRoutesSante(controller));
   app.use(express.json({ limit: '32kb' }));
   app.use(lireIpClient);
-  app.use(limiterDebit(120));
+  app.use(limiterDebit(1000));
   app.use((_requete, reponse, suivant) => {
     reponse.setHeader('Cache-Control', 'no-store');
     suivant();
@@ -140,7 +151,39 @@ export function creerApp({
     configuration.mailContact ?? 'contact@innov-events.invalid',
     new DevisPdfService(),
   );
+  app.use(
+    '/api',
+    creerRoutesGestion(
+      new GestionController(
+        new GestionService(
+          new GestionRepository(postgres),
+          new LogsRepository(mongodb, configuration.mongodbDatabase),
+          envoi,
+        ),
+      ),
+      auth,
+    ),
+  );
   app.use('/api', creerRoutesDevis(new DevisController(devisService), auth));
+  app.use(
+    '/api',
+    creerRoutesEspaceClient(
+      new EspaceClientController(
+        new EspaceClientService(
+          new EspaceClientRepository(postgres),
+          new LogsRepository(mongodb, configuration.mongodbDatabase),
+          new MotsDePasseService(),
+        ),
+      ),
+      auth,
+    ),
+  );
+  app.use(
+    '/api',
+    creerRoutesEvenementsPublics(
+      new EvenementsPublicsController(new EvenementsPublicsRepository(postgres)),
+    ),
+  );
   app.use(routeAbsente);
   app.use(gererErreurs);
   return app;

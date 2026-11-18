@@ -1,0 +1,200 @@
+.gestion {
+  padding-bottom: 64px;
+}
+.bloc {
+  margin-block: 24px;
+}
+.liste {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.liste li {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  overflow-wrap: anywhere;
+}
+/* Liste de fiches a ouvrir : boutons secondaires de meme largeur. */
+.liste-selection li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+.liste-selection li > button {
+  flex: 1 1 16rem;
+  margin: 0;
+  text-align: left;
+}
+.liste-selection li > button[aria-current='true'] {
+  background: var(--surface-alt);
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin: 0;
+}
+.grille {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.navigation {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-block: 24px;
+}
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.carte {
+  overflow-wrap: anywhere;
+}
+textarea {
+  min-height: 100px;
+}
+dt {
+  font-weight: 600;
+}
+dd {
+  margin: 0 0 12px;
+}
+button {
+  margin: 4px;
+  min-height: 44px;
+}
+.actions button {
+  margin: 0;
+}
+select,
+input,
+textarea {
+  max-width: 100%;
+}
+/* Barre de recherche ou de filtre : champ et bouton sur une ligne, repli sous le champ. */
+.barre-recherche {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px 12px;
+  margin-bottom: 16px;
+}
+.barre-recherche .champ {
+  flex: 1 1 16rem;
+  margin-bottom: 0;
+}
+.formulaire.barre-recherche input:not([type='checkbox']),
+.formulaire.barre-recherche select {
+  margin-bottom: 0;
+}
+.formulaire.barre-recherche button[type='submit'] {
+  margin: 0;
+}
+/* Tableaux : en-tetes sur surface secondaire, lignes alternees sur le fond de page. */
+.tableau {
+  overflow-x: auto;
+  margin-bottom: 16px;
+  border: 1px solid #dce5ee;
+  border-radius: 8px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+}
+caption {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+}
+td,
+th {
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #dce5ee;
+}
+thead th {
+  background: var(--surface-alt);
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+tbody tr:nth-child(even) td {
+  background: var(--page);
+}
+tbody tr:last-child td {
+  border-bottom: none;
+}
+@media (max-width: 767px) {
+  .grille {
+    grid-template-columns: 1fr;
+  }
+}
+
+.visuellement-cache {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.formulaire input[type='checkbox'] {
+  display: inline-block;
+  width: 24px;
+  min-height: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 8px;
+  accent-color: var(--primary);
+}
+.formulaire input:not([type='checkbox']),
+.formulaire select,
+.formulaire textarea {
+  margin-bottom: 16px;
+}
+
+/* Valeurs cles et listes du tableau de bord. */
+.indicateurs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 48px;
+  margin: 0;
+}
+.indicateurs dd {
+  margin: 0;
+  color: var(--primary);
+  font-size: 2rem;
+  font-weight: 700;
+}
+.liste-bord li {
+  padding: 16px;
+}
+.liste-bord h3 {
+  margin-bottom: 8px;
+}
+.liste-bord h3 a {
+  display: inline-block;
+  min-height: 44px;
+  padding-block: 8px;
+}
+.liste-bord p:last-child {
+  margin-bottom: 0;
+}
+.texte-note {
+  white-space: pre-line;
+}

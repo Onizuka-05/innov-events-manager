@@ -1,17 +1,87 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Innov'Events Manager</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Innov'Events Manager</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Application mobile en cours de construction</strong>
-  </div>
-</ion-content>
+<ion-header
+  ><ion-toolbar><ion-title>Innov’Events · Équipe</ion-title></ion-toolbar></ion-header
+>
+<ion-content
+  ><main class="page-mobile">
+    <h1>Événements à venir</h1>
+    <p>Classés par date de début. Touchez un événement pour ouvrir sa fiche.</p>
+    <div class="actions">
+      <button type="button" [disabled]="chargement()" (click)="charger()">Actualiser</button
+      ><button type="button" class="bouton-secondaire" (click)="deconnecter()">
+        Se déconnecter
+      </button>
+    </div>
+    <form
+      class="filtres"
+      role="search"
+      aria-label="Rechercher des événements"
+      (submit)="$event.preventDefault()"
+    >
+      <label for="recherche-evenements">Rechercher</label>
+      <input
+        id="recherche-evenements"
+        type="search"
+        autocomplete="off"
+        maxlength="200"
+        aria-describedby="aide-recherche"
+        [value]="recherche()"
+        (input)="rechercher($event)"
+      />
+      <p id="aide-recherche" class="aide">Nom de l’événement, client ou lieu.</p>
+      <label for="filtre-statut">Statut</label>
+      <select id="filtre-statut" [value]="statut()" (change)="filtrer($event)">
+        <option value="">Tous les statuts</option>
+        @for(s of statuts;track s){
+        <option [value]="s">{{libelle(s)}}</option>
+        }
+      </select>
+      @if(recherche()||statut()){
+      <button type="button" class="bouton-secondaire" (click)="reinitialiser()">
+        Réinitialiser
+      </button>
+      }
+    </form>
+    @if(erreur()){
+    <p role="alert" class="erreur">{{erreur()}}</p>
+    } @if(chargement()){
+    <p role="status">Chargement des événements…</p>
+    }@else{
+    <p role="status" class="resultats">
+      {{affiches().length}} {{affiches().length > 1 ? 'événements affichés' : 'événement affiché'}}
+      sur {{evenements().length}}
+    </p>
+    <ul class="evenements">
+      @for(e of affiches();track e.id_evenement){
+      <li>
+        <article class="carte-cliquable">
+          <h2>
+            <a class="lien-carte" [routerLink]="['/evenements', e.id_evenement]">{{e.nom}}</a>
+          </h2>
+          <p>{{e.entreprise||'Client anonymisé'}}</p>
+          <p>
+            <time [attr.datetime]="e.date_debut">{{e.date_debut|date:'dd/MM/yyyy · HH:mm'}}</time>
+            —
+            <time [attr.datetime]="e.date_fin">{{e.date_fin|date:'dd/MM/yyyy · HH:mm'}}</time>
+          </p>
+          <p>{{e.lieu}}</p>
+          <p>
+            <span [class]="'statut statut-' + famille(e.statut_evenement)"
+              >{{libelle(e.statut_evenement)}}</span
+            >
+          </p>
+        </article>
+      </li>
+      }@empty{
+      <li>
+        {{evenements().length ? 'Aucun événement ne correspond à la recherche.' : 'Aucun événement à
+        venir.'}}
+      </li>
+      }
+    </ul>
+    }
+    <nav class="liens-legaux" aria-label="Informations légales">
+      <a routerLink="/cgu">Conditions générales d’utilisation</a>
+      <a routerLink="/cgv">Conditions générales de vente</a>
+    </nav>
+  </main></ion-content
+>

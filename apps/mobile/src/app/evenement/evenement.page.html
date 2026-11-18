@@ -1,0 +1,102 @@
+<ion-header
+  ><ion-toolbar><ion-title>Fiche événement</ion-title></ion-toolbar></ion-header
+>
+<ion-content
+  ><main class="page-mobile">
+    <p><a class="retour" routerLink="/home">‹ Retour aux événements</a></p>
+    @if(erreur()){
+    <h1>Fiche événement</h1>
+    <p role="alert" class="erreur">{{erreur()}}</p>
+    } @if(chargement() && !fiche()){
+    <p role="status">Chargement de la fiche…</p>
+    } @if(fiche(); as e){
+    <h1>{{e.nom}}</h1>
+    <p>
+      <span [class]="'statut statut-' + famille(e.statut_evenement)"
+        >{{libelle(e.statut_evenement)}}</span
+      >
+    </p>
+    @if(!saisie()){
+    <button
+      #boutonAjout
+      type="button"
+      class="bouton-pleine-largeur"
+      [disabled]="envoi()"
+      (click)="ouvrirSaisie()"
+    >
+      Ajouter une note
+    </button>
+    } @if(confirmation()){
+    <p role="status" class="confirmation">{{confirmation()}}</p>
+    } @if(saisie()){
+    <form class="carte" [formGroup]="formulaire" (ngSubmit)="enregistrer()">
+      <label for="nouvelle-note">Nouvelle note</label>
+      <textarea
+        #zoneNote
+        id="nouvelle-note"
+        rows="5"
+        maxlength="5000"
+        required
+        aria-describedby="aide-note"
+        [attr.aria-invalid]="erreurNote() ? 'true' : null"
+        formControlName="contenu"
+      ></textarea>
+      <p id="aide-note" class="aide">La note sera partagée avec l’équipe.</p>
+      @if(erreurNote()){
+      <p role="alert" class="erreur">{{erreurNote()}}</p>
+      }
+      <button type="submit" class="bouton-pleine-largeur" [disabled]="envoi()">
+        {{envoi() ? 'Enregistrement…' : 'Enregistrer la note'}}
+      </button>
+      <button type="button" class="bouton-secondaire" [disabled]="envoi()" (click)="annuler()">
+        Annuler
+      </button>
+    </form>
+    }
+    <section class="carte" aria-labelledby="titre-informations">
+      <h2 id="titre-informations">Informations</h2>
+      <dl class="informations">
+        <dt>Début</dt>
+        <dd>
+          <time [attr.datetime]="e.date_debut">{{e.date_debut|date:'dd/MM/yyyy · HH:mm'}}</time>
+        </dd>
+        <dt>Fin</dt>
+        <dd><time [attr.datetime]="e.date_fin">{{e.date_fin|date:'dd/MM/yyyy · HH:mm'}}</time></dd>
+        <dt>Lieu</dt>
+        <dd>{{e.lieu}}</dd>
+      </dl>
+    </section>
+    <section class="carte" aria-labelledby="titre-client">
+      <h2 id="titre-client">Client</h2>
+      @if(e.entreprise){
+      <p class="valeur">{{e.entreprise}}</p>
+      <p>
+        <a [routerLink]="['/clients', e.id_client]" [queryParams]="{ evenement: e.id_evenement }"
+          >Voir la fiche client de {{e.entreprise}}</a
+        >
+      </p>
+      }@else{
+      <p>Client anonymisé : ses coordonnées ne sont plus disponibles.</p>
+      }
+    </section>
+    <section aria-labelledby="titre-notes">
+      <h2 id="titre-notes">Notes partagées</h2>
+      <ul class="notes">
+        @for(n of e.notes;track n.id_note){
+        <li class="carte">
+          <p class="aide">
+            {{n.prenom}} {{n.nom}} ·
+            <time [attr.datetime]="n.date_creation"
+              >{{n.date_creation|date:'dd/MM/yyyy · HH:mm'}}</time
+            >
+          </p>
+          <p class="contenu-note">{{n.contenu}}</p>
+        </li>
+        }@empty{
+        <li>Aucune note pour cet événement.</li>
+        }
+      </ul>
+    </section>
+    }
+  </main></ion-content
+>

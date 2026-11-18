@@ -57,18 +57,22 @@ describe('devis', () => {
   it('refuse de divulguer la fiche si le client ne la possede pas', async () => {
     const { service, repo } = creerService();
     repo.possede.mockResolvedValue(false);
-    await expect(service.consulter('1', '4', 'client')).rejects.toMatchObject({ statut: 404 });
+    await expect(service.consulter('1', '4', 'client', 'hache')).rejects.toMatchObject({
+      statut: 404,
+    });
     expect(repo.detail).not.toHaveBeenCalled();
   });
   it('autorise la consultation administrateur', async () => {
     const { service, repo } = creerService();
-    await expect(service.consulter('1', '4', 'admin')).resolves.toMatchObject({ id_devis: '1' });
+    await expect(service.consulter('1', '4', 'admin', null)).resolves.toMatchObject({
+      id_devis: '1',
+    });
     expect(repo.possede).not.toHaveBeenCalled();
   });
   it('journalise une reponse de devis', async () => {
     const { service, repo, logs } = creerService();
-    await service.repondre('1', '4', 'refuse', '');
-    expect(repo.repondre).toHaveBeenCalledWith('1', '4', 'refuse', '');
+    await service.repondre('1', '4', 'hache', 'refuse', '');
+    expect(repo.repondre).toHaveBeenCalledWith('1', '4', 'hache', 'refuse', '');
     expect(logs.action).toHaveBeenCalledWith('REPONSE_DEVIS', '4', {
       id_devis: '1',
       statut_devis: 'refuse',

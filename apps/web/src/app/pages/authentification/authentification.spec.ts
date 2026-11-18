@@ -79,7 +79,7 @@ describe('Parcours de connexion', () => {
       email_connexion: admin.email_connexion,
       mot_de_passe: 'Valide1!',
     });
-    expect(TestBed.inject(Router).url).toBe('/administration/remerciement');
+    expect(TestBed.inject(Router).url).toBe('/administration/parametres');
   });
   it('passe d’abord par le renouvellement avec la destination conservee', async () => {
     temporaire = true;
@@ -94,7 +94,7 @@ describe('Parcours de connexion', () => {
     saisir(h, 'mot_de_passe', 'Nouveau1!');
     await envoyer(h);
     expect(modifier).toHaveBeenCalledWith('PATCH', '/mot-de-passe', { mot_de_passe: 'Nouveau1!' });
-    expect(TestBed.inject(Router).url).toBe('/administration/remerciement');
+    expect(TestBed.inject(Router).url).toBe('/administration/parametres');
   });
   it('permet d’abandonner la session temporaire avant un nouvel oubli', async () => {
     restreinte.set(true);
@@ -131,7 +131,7 @@ describe('Parcours de connexion', () => {
     expect(router.url).toBe(`/nouveau-mot-de-passe${destination}`);
     saisir(h, 'mot_de_passe', 'Nouveau1!');
     await envoyer(h);
-    expect(router.url).toBe('/administration/remerciement');
+    expect(router.url).toBe('/administration/parametres');
   });
   it('conserve la destination quand la session temporaire est abandonnee', async () => {
     restreinte.set(true);
