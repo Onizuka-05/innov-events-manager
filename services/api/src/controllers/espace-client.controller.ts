@@ -57,10 +57,10 @@ export class EspaceClientController {
     return hache;
   }
   accueil = async (_r: Request, s: Response) => {
-    s.json(await this.service.repository.accueil(this.compte(s)));
+    s.json(await this.service.repository.accueil(this.compte(s), this.hacheSession(s)));
   };
   profil = async (_r: Request, s: Response) => {
-    s.json(await this.service.repository.profil(this.compte(s)));
+    s.json(await this.service.repository.profil(this.compte(s), undefined, this.hacheSession(s)));
   };
   modifierProfil = async (r: Request, s: Response) => {
     const d = objet(r.body, ['compte', 'fiche', 'mot_de_passe_actuel']);
@@ -87,7 +87,7 @@ export class EspaceClientController {
     s.json({ message: 'Votre compte a été supprimé.' });
   };
   evenements = async (_r: Request, s: Response) => {
-    s.json(await this.service.repository.evenements(this.compte(s)));
+    s.json(await this.service.repository.evenements(this.compte(s), this.hacheSession(s)));
   };
   creerAvis = async (r: Request, s: Response) => {
     const d = objet(r.body, ['note_evaluation', 'commentaire']);
@@ -99,6 +99,7 @@ export class EspaceClientController {
       await this.service.repository.creerAvis(
         identifiant(r.params['id']),
         this.compte(s),
+        this.hacheSession(s),
         note as number,
         commentaire,
       ),
@@ -109,6 +110,7 @@ export class EspaceClientController {
       await this.service.repository.accordPublication(
         identifiant(r.params['id']),
         this.compte(s),
+        this.hacheSession(s),
         true,
       ),
     );
@@ -118,6 +120,7 @@ export class EspaceClientController {
       await this.service.repository.accordPublication(
         identifiant(r.params['id']),
         this.compte(s),
+        this.hacheSession(s),
         false,
       ),
     );

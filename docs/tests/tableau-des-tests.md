@@ -12,12 +12,12 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 | [Sécurité et contrôle des accès](#sécurité-et-contrôle-des-accès) | 21 | 29 | 0 | 50 |
 | [Authentification et comptes](#authentification-et-comptes) | 13 | 24 | 0 | 37 |
 | [Site public, demande de devis et contact](#site-public-demande-de-devis-et-contact) | 56 | 28 | 2 | 86 |
-| [Devis et événements](#devis-et-événements) | 23 | 27 | 0 | 50 |
+| [Devis et événements](#devis-et-événements) | 23 | 28 | 0 | 51 |
 | [Espace de l’équipe et administration](#espace-de-léquipe-et-administration) | 75 | 22 | 0 | 97 |
-| [Espace client](#espace-client) | 28 | 25 | 0 | 53 |
+| [Espace client](#espace-client) | 28 | 33 | 0 | 61 |
 | [Journaux et purges des données](#journaux-et-purges-des-données) | 5 | 3 | 0 | 8 |
 | [Application mobile](#application-mobile) | 58 | 1 | 3 | 62 |
-| **Total** | **306** | **159** | **5** | **470** |
+| **Total** | **306** | **168** | **5** | **479** |
 
 ## Socle technique
 
@@ -167,7 +167,7 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 
 ## Devis et événements
 
-50 tests.
+51 tests.
 
 | Fichier | Test | Niveau | Cas |
 | --- | --- | --- | ---: |
@@ -198,6 +198,7 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › envoie le PDF, cree le compte temporaire et journalise le devis | Intégration | 1 |
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › annule le compte et le statut si le courriel du devis echoue | Intégration | 1 |
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › remplace le mot de passe d un compte inscrit avec l e-mail du contact avant de le rattacher | Intégration | 1 |
+| `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › refuse la reponse d une session ouverte avant le rattachement du compte au devis | Intégration | 1 |
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › reutilise le compte deja rattache si son email differe du contact | Intégration | 1 |
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › refuse une image d evenement non HTTPS sans creer l evenement | Intégration | 1 |
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › refuse l envoi d un devis sans prestation sans modifier son etat | Intégration | 1 |
@@ -280,7 +281,7 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 
 ## Espace client
 
-53 tests.
+61 tests.
 
 | Fichier | Test | Niveau | Cas |
 | --- | --- | --- | ---: |
@@ -318,6 +319,7 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › refuse une sauvegarde partie avant un changement d e-mail confirme | Intégration | 1 |
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › suspend la conversion si deux fiches partagent l adresse de la demande | Intégration | 1 |
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › garde la demande de Beta hors de l espace d Alpha, meme si Alpha vise son adresse | Intégration | 1 |
+| `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › ne donne rien de la fiche rattachee apres l ouverture de la session : %s %s | Intégration | 8 |
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › accepte un seul avis, seulement sur un evenement termine, en attente de moderation | Intégration | 1 |
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › donne puis retire l accord de publication en conservant la premiere date | Intégration | 1 |
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › effacement demande par le client › efface le compte, anonymise la fiche, detruit les sessions et retire le nom des journaux | Intégration | 1 |
