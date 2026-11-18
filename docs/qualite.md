@@ -112,19 +112,19 @@ Aucune approbation GitHub par un tiers n'est exigée.
 
 ## 6. Intégration continue (CI)
 
-À J3, GitHub Actions exécutera les contrôles adaptés
-aux applications à chaque push et à chaque PR sur
-`dev` et `main`.
-
-Contrôles prévus :
+GitHub Actions (`.github/workflows/ci.yml`) exécute les
+contrôles des trois applications à chaque push et à chaque
+PR sur `dev` et `main` :
+- Formatage (Prettier).
 - Lint.
 - Vérification des types TypeScript.
-- Tests automatisés.
+- Tests automatisés et couverture.
 - Build.
-- Audit des dépendances npm.
+- Audit des dépendances npm de production.
 
-Les vérifications CI obligatoires devront réussir
-avant toute fusion vers `main`.
+Les trois jobs `validation (…)` doivent réussir avant toute
+fusion vers `main`. Lecture des rapports :
+`docs/technique/05-tests-et-integration-continue.md`.
 
 ## 7. Livraison continue (CD)
 
@@ -137,10 +137,11 @@ leurs Dockerfiles), Neon (PostgreSQL), MongoDB Atlas
 
 - Web : build et déploiement sur Render.
 - API : build et déploiement du service Node.js sur Render.
-- Mobile : application PWA Ionic + Angular,
+- Mobile : application web Ionic + Angular,
   packagée dans un conteneur Docker avec Nginx,
-  déployée en HTTPS et accessible sur Android
-  et iOS. APK Android via Capacitor en option.
+  déployée en HTTPS et ouverte dans le navigateur
+  d'un téléphone Android ou iOS. APK Android via
+  Capacitor en option, non réalisée.
 
 
 La fusion de la PR vers `main` vaut validation manuelle ;
@@ -149,8 +150,10 @@ Render sont reliés au dépôt GitHub et ne déploient `main`
 qu'après réussite des vérifications CI (option
 « After CI Checks Pass »).
 
-Chaque livraison sur `main` reçoit un tag `vX.Y.Z` ;
-le retour arrière consiste à redéployer le tag précédent.
+La livraison finale reçoit un tag `vX.Y.Z` sur le commit
+de fusion de `main`. Retour arrière : « Rollback » vers un
+déploiement précédent dans Render, ou PR qui annule le merge
+commit (`docs/technique/06-deploiement.md`).
 
 ## 8. Protection de main
 
