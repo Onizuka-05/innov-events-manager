@@ -32,7 +32,7 @@
         <mxCell id="lane-mob" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FAFAFA;strokeColor=#D8DDE3;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
           <mxGeometry as="geometry" x="50" y="1450" width="2290" height="350" />
         </mxCell>
-        <mxCell id="label-mob" value="Équipe · PWA mobile" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=20;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="label-mob" value="Équipe · application mobile" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontColor=#28313A;fontSize=20;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry as="geometry" x="70" y="1458" width="2220" height="34" />
         </mxCell>
         <mxCell id="w1" value="W1 · Demande de devis" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#E6E9ED;strokeColor=#88929D;fontColor=#28313A;fontSize=18;fontFamily=Arial;align=center;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">
