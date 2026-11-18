@@ -2,7 +2,7 @@
 
 Un parcours par profil : visiteur, client, employé (site web et application mobile), administratrice. Les captures d'écran de référence sont les maquettes de `docs/conception/CO-10-maquettes.pdf`.
 
-**À savoir** : les services sont hébergés sur des offres gratuites qui se mettent en veille sans visite. Le premier affichage après une pause peut prendre jusqu'à une minute ; si la page « Le service est momentanément indisponible » apparaît, patienter puis recharger.
+**À savoir** : les services sont hébergés sur des offres gratuites mises en veille après 15 minutes sans visite. Si la page « Le service est momentanément indisponible » apparaît à la première visite après une période d'inactivité, l'API peut être en veille. Pour la réveiller : ouvrir un nouvel onglet, garder le nom de domaine du site ou de l'application mobile et remplacer le reste de l'adresse par `/api/sante` (adresse de la forme `https://<domaine du site>/api/sante`). Pendant le réveil, cet onglet peut afficher une erreur (502) : le recharger après une minute, jusqu'à une réponse contenant `"statut":"ok"`, puis recharger la page du site ou de l'application. Une réponse contenant `"statut":"degrade"` signale une base de données momentanément indisponible : réessayer quelques minutes plus tard. Si le message apparaît juste après l'envoi d'un formulaire, alors que le reste du site répond, voir la dernière question de la section 6.
 
 ## 1. Visiteur
 
@@ -110,5 +110,5 @@ Connexion avec le compte créé par script ; arrivée sur le **Tableau de bord**
 |---|---|
 | « Trop de demandes » | Les connexions, inscriptions, demandes de devis et messages sont limités par adresse IP sur 15 minutes : patienter |
 | Mot de passe temporaire refusé | Il a déjà servi ou il a expiré : **Mot de passe oublié ?** |
-| Page « Le service est momentanément indisponible » | Service en veille : patienter une minute et recharger |
-| Demande refusée avec une page de blocage | La protection de l'hébergeur refuse certains textes qui ressemblent à du code ; reformuler ou passer par le formulaire de contact |
+| Page « Le service est momentanément indisponible » à la première visite après une pause | API peut-être en veille : voir « À savoir » en tête du guide |
+| Formulaire refusé juste après l'envoi, avec une page de blocage ou le message « Le service est momentanément indisponible » | La protection de l'hébergeur refuse certains textes qui ressemblent à du code : reformuler le texte saisi, ou passer par le formulaire de contact ou le téléphone. Recharger la page ne suffit pas |
