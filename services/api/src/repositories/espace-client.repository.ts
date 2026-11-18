@@ -148,9 +148,15 @@ export class EspaceClientRepository {
         emailActuel.toLowerCase() !== compte.email_connexion.toLowerCase()
       )
         throw new ErreurHttp(400, 'Mot de passe actuel incorrect.', 'MOT_DE_PASSE_ACTUEL_INVALIDE');
+      // Changement d'adresse : le mot de passe temporaire envoye a l'ancienne adresse est efface,
+      // ce qui ferme aussi une session de recuperation ouverte avec lui.
       if (compte)
         await db.query(
-          `UPDATE innov_events.utilisateurs SET prenom=$2,nom=$3,nom_utilisateur=$4,email_connexion=$5
+          `UPDATE innov_events.utilisateurs SET prenom=$2,nom=$3,nom_utilisateur=$4,email_connexion=$5::text,
+            mdp_temporaire_hache=CASE WHEN LOWER(email_connexion)=LOWER($5::text)
+              THEN mdp_temporaire_hache END,
+            mdp_temporaire_expire_le=CASE WHEN LOWER(email_connexion)=LOWER($5::text)
+              THEN mdp_temporaire_expire_le END
           WHERE id_utilisateur=$1`,
           [
             idUtilisateur,

@@ -10,14 +10,14 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 | --- | ---: | ---: | ---: | ---: |
 | [Socle technique](#socle-technique) | 27 | 0 | 0 | 27 |
 | [Sécurité et contrôle des accès](#sécurité-et-contrôle-des-accès) | 21 | 29 | 0 | 50 |
-| [Authentification et comptes](#authentification-et-comptes) | 13 | 24 | 0 | 37 |
+| [Authentification et comptes](#authentification-et-comptes) | 13 | 26 | 0 | 39 |
 | [Site public, demande de devis et contact](#site-public-demande-de-devis-et-contact) | 56 | 28 | 2 | 86 |
 | [Devis et événements](#devis-et-événements) | 23 | 28 | 0 | 51 |
 | [Espace de l’équipe et administration](#espace-de-léquipe-et-administration) | 75 | 22 | 0 | 97 |
 | [Espace client](#espace-client) | 28 | 33 | 0 | 61 |
 | [Journaux et purges des données](#journaux-et-purges-des-données) | 5 | 3 | 0 | 8 |
 | [Application mobile](#application-mobile) | 58 | 1 | 3 | 62 |
-| **Total** | **306** | **168** | **5** | **479** |
+| **Total** | **306** | **170** | **5** | **481** |
 
 ## Socle technique
 
@@ -80,7 +80,7 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 
 ## Authentification et comptes
 
-37 tests.
+39 tests.
 
 | Fichier | Test | Niveau | Cas |
 | --- | --- | --- | ---: |
@@ -100,6 +100,8 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 | `services/api/src/routes/j7.integration.spec.ts` | J7 avec PostgreSQL reel › donne une seule reussite a deux connexions temporaires concurrentes, sur PostgreSQL reel | Intégration | 1 |
 | `services/api/src/routes/j7.integration.spec.ts` | J7 avec PostgreSQL reel › refuse la reutilisation apres abandon et conserve le mot de passe permanent | Intégration | 1 |
 | `services/api/src/routes/j7.integration.spec.ts` | J7 avec PostgreSQL reel › enregistre le nouveau hache, efface le temporaire et invalide l’ancienne session normale | Intégration | 1 |
+| `services/api/src/routes/j7.integration.spec.ts` | J7 avec PostgreSQL reel › ferme la session de recuperation de l ancienne adresse au changement d adresse | Intégration | 1 |
+| `services/api/src/routes/j7.integration.spec.ts` | J7 avec PostgreSQL reel › n envoie pas de temporaire a l ancienne adresse si l adresse change pendant la demande | Intégration | 1 |
 | `services/api/src/routes/j7.integration.spec.ts` | J7 avec PostgreSQL reel › oubli : meme reponse, expiration une heure, mot de passe permanent conserve | Intégration | 1 |
 | `services/api/src/routes/j7.integration.spec.ts` | J7 avec PostgreSQL reel › controle chaque route protegee pour le role %s | Intégration | 3 |
 | `services/api/src/routes/j7.integration.spec.ts` | J7 avec PostgreSQL reel › refuse %s %s sans session authentifiee | Intégration | 4 |

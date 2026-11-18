@@ -105,7 +105,11 @@ export class AuthentificationService {
     const utilisateur = await this.comptes.parEmail(email);
     if (
       utilisateur?.statut_compte === 'actif' &&
-      (await this.comptes.preparerOubli(utilisateur.id_utilisateur, hache))
+      (await this.comptes.preparerOubli(
+        utilisateur.id_utilisateur,
+        hache,
+        utilisateur.email_connexion,
+      ))
     ) {
       try {
         await this.courriels.envoyer({
