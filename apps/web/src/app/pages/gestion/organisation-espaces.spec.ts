@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
@@ -216,13 +217,33 @@ describe('Organisation des espaces', () => {
       h.detectChanges();
       const adresse = h.routeNativeElement!.querySelector<HTMLInputElement>('#adresse')!;
       expect(adresse.required).toBe(true);
+      const bouton = () =>
+        h.routeNativeElement!.querySelector<HTMLButtonElement>(
+          'section[aria-labelledby="titre-conversion"] button[type="submit"]',
+        )!;
       if (revient) {
         expect(adresse.value).toBe(client.adresse_postale);
         expect(h.routeNativeElement!.textContent).toContain('Client existant avec cet e-mail');
-      } else champ(h, 'adresse', client.adresse_postale);
+        // Rattachement a une fiche existante : seulement apres confirmation explicite.
+        expect(bouton().disabled).toBe(true);
+        await soumettre(h, 'section[aria-labelledby="titre-conversion"] form');
+        expect(modifier).not.toHaveBeenCalled();
+        const confirmation = h.routeNativeElement!.querySelector<HTMLInputElement>(
+          '#confirmation-rattachement',
+        )!;
+        expect(confirmation.labels![0]!.textContent).toContain(client.entreprise);
+        confirmation.click();
+        await h.fixture.whenStable();
+        h.detectChanges();
+        expect(bouton().disabled).toBe(false);
+      } else {
+        expect(h.routeNativeElement!.querySelector('#confirmation-rattachement')).toBeNull();
+        champ(h, 'adresse', client.adresse_postale);
+      }
       await soumettre(h, 'section[aria-labelledby="titre-conversion"] form');
       expect(modifier).toHaveBeenCalledWith('POST', '/prospects/7/conversion', {
         adresse_postale: client.adresse_postale,
+        id_client_confirme: revient ? client.id_client : null,
       });
       expect(TestBed.inject(Router).url).toBe('/administration/devis?prospect=7');
       expect(get.mock.calls.filter(([p]) => p === '/prospects')).toHaveLength(2);
@@ -245,6 +266,86 @@ describe('Organisation des espaces', () => {
       );
     },
   );
+  it('relit les fiches et redemande la confirmation si la fiche a rattacher a change', async () => {
+    const { get, modifier } = preparer('admin', true);
+    modifier.mockRejectedValueOnce(
+      new HttpErrorResponse({
+        status: 409,
+        error: {
+          erreur: 'La fiche à laquelle rattacher la demande a changé : rechargez la page.',
+          code: 'RATTACHEMENT_A_CONFIRMER',
+        },
+      }),
+    );
+    const h = await RouterTestingHarness.create('/administration/prospects');
+    await h.fixture.whenStable();
+    h.detectChanges();
+    h.routeNativeElement!.querySelector<HTMLButtonElement>(
+      'button[aria-label="Convertir en client : Test SAS"]',
+    )!.click();
+    await h.fixture.whenStable();
+    h.detectChanges();
+    h.routeNativeElement!.querySelector<HTMLInputElement>('#confirmation-rattachement')!.click();
+    await h.fixture.whenStable();
+    await soumettre(h, 'section[aria-labelledby="titre-conversion"] form');
+    expect(TestBed.inject(Router).url).toBe('/administration/prospects');
+    expect(get.mock.calls.filter(([p]) => p === '/clients')).toHaveLength(2);
+    expect(h.routeNativeElement!.querySelector('[role="alert"]')!.textContent).toContain(
+      'a changé',
+    );
+    expect(
+      h.routeNativeElement!.querySelector<HTMLInputElement>('#confirmation-rattachement')!.checked,
+    ).toBe(false);
+  });
+  it('annule la confirmation si la fiche affichee change apres un classement sans suite', async () => {
+    const { get, modifier } = preparer('admin', true);
+    const base = get.getMockImplementation()!;
+    const autre = { ...prospectInitial, id_prospect: '8', entreprise: 'Autre SARL' };
+    let fiches = [client];
+    get.mockImplementation(async (p: string) => {
+      if (p === '/prospects') return [{ ...prospectInitial }, autre];
+      if (p === '/clients') return fiches;
+      return base(p);
+    });
+    const h = await RouterTestingHarness.create('/administration/prospects');
+    await h.fixture.whenStable();
+    h.detectChanges();
+    const element = <T extends Element>(selecteur: string) =>
+      h.routeNativeElement!.querySelector<T>(selecteur)!;
+    const conversion = 'section[aria-labelledby="titre-conversion"] form';
+    const bouton = () => element<HTMLButtonElement>(conversion + ' button[type="submit"]');
+    const caseConfirmation = () => element<HTMLInputElement>('#confirmation-rattachement');
+    element<HTMLButtonElement>('button[aria-label="Convertir en client : Test SAS"]').click();
+    await h.fixture.whenStable();
+    h.detectChanges();
+    caseConfirmation().click();
+    await h.fixture.whenStable();
+    h.detectChanges();
+    expect(bouton().disabled).toBe(false);
+    // Alpha effacee entre-temps : Beta devient la seule fiche a cette adresse.
+    fiches = [{ ...client, id_client: '3', entreprise: 'Beta SAS' }];
+    element<HTMLButtonElement>('button[aria-label="Classer sans suite : Autre SARL"]').click();
+    await h.fixture.whenStable();
+    h.detectChanges();
+    champ(h, 'message-echec', 'Merci pour votre demande.');
+    await soumettre(h, 'form.panneau');
+    expect(modifier).toHaveBeenCalledWith('POST', '/prospects/8/echec', {
+      message: 'Merci pour votre demande.',
+    });
+    expect(get.mock.calls.filter(([p]) => p === '/clients')).toHaveLength(2);
+    expect(caseConfirmation().checked).toBe(false);
+    expect(caseConfirmation().labels![0]!.textContent).toContain('Beta SAS');
+    expect(bouton().disabled).toBe(true);
+    await soumettre(h, conversion);
+    expect(modifier).not.toHaveBeenCalledWith('POST', '/prospects/7/conversion', expect.anything());
+    caseConfirmation().click();
+    await h.fixture.whenStable();
+    await soumettre(h, conversion);
+    expect(modifier).toHaveBeenCalledWith('POST', '/prospects/7/conversion', {
+      adresse_postale: client.adresse_postale,
+      id_client_confirme: '3',
+    });
+  });
   it('refuse de preremplir un evenement depuis une demande non convertie', async () => {
     preparer();
     const h = await RouterTestingHarness.create('/administration/devis?prospect=7');

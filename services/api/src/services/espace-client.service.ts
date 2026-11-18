@@ -25,11 +25,12 @@ export class EspaceClientService {
     }
   }
 
-  /** Verifie le mot de passe actuel ; meme message s'il manque ou s'il est faux. */
-  private async verifierMotDePasse(idUtilisateur: string, valeur: string | null): Promise<void> {
-    const valide =
-      valeur !== null &&
-      (await this.mots.verifier(await this.repository.hacheMotDePasse(idUtilisateur), valeur));
+  /**
+   * Verifie le mot de passe actuel contre le hache qui a autorise la session ; meme message
+   * s'il manque ou s'il est faux. Le repository reverifie ce hache sous le verrou du compte.
+   */
+  private async verifierMotDePasse(hacheSession: string, valeur: string | null): Promise<void> {
+    const valide = valeur !== null && (await this.mots.verifier(hacheSession, valeur));
     if (!valide)
       throw new ErreurHttp(400, 'Mot de passe actuel incorrect.', 'MOT_DE_PASSE_ACTUEL_INVALIDE');
   }
@@ -40,19 +41,26 @@ export class EspaceClientService {
    */
   async modifierProfil(
     idUtilisateur: string,
+    hacheSession: string,
     compte: CompteProfil | null,
     fiche: FicheProfil | null,
     motDePasseActuel: string | null,
   ) {
+    let motDePasseVerifie = false;
     if (compte) {
       const actuel = await this.repository.profil(idUtilisateur);
-      if (actuel.compte.email_connexion.toLowerCase() !== compte.email_connexion.toLowerCase())
-        await this.verifierMotDePasse(idUtilisateur, motDePasseActuel);
+      if (actuel.compte.email_connexion.toLowerCase() !== compte.email_connexion.toLowerCase()) {
+        await this.verifierMotDePasse(hacheSession, motDePasseActuel);
+        motDePasseVerifie = true;
+      }
     }
+    // Le repository refait la comparaison sous le verrou du compte.
     const { profil, fiche_modifiee } = await this.repository.modifierProfil(
       idUtilisateur,
+      hacheSession,
       compte,
       fiche,
+      motDePasseVerifie,
     );
     if (fiche_modifiee)
       await this.journal('MODIFICATION_CLIENT', idUtilisateur, { id_client: fiche_modifiee });
@@ -67,12 +75,12 @@ export class EspaceClientService {
    * retire des que la base confirme que la fiche n'est pas anonymisee ; la purge, elle, ne
    * reprend que les fiches anonymisees.
    */
-  async effacer(idUtilisateur: string, motDePasse: string): Promise<void> {
-    await this.verifierMotDePasse(idUtilisateur, motDePasse);
+  async effacer(idUtilisateur: string, hacheSession: string, motDePasse: string): Promise<void> {
+    await this.verifierMotDePasse(hacheSession, motDePasse);
     const idClient = await this.repository.ficheActive(idUtilisateur);
     if (!idClient) {
       // Sans fiche, aucun journal ne porte de nom : la trace est ecrite apres coup.
-      await this.repository.effacer(idUtilisateur, null);
+      await this.repository.effacer(idUtilisateur, hacheSession, null);
       await this.journal('EFFACEMENT_CLIENT', idUtilisateur, { id_client: null });
       return;
     }
@@ -95,7 +103,7 @@ export class EspaceClientService {
       );
     }
     try {
-      await this.repository.effacer(idUtilisateur, idClient);
+      await this.repository.effacer(idUtilisateur, hacheSession, idClient);
     } catch (erreur) {
       await this.annulerJournalEffacement(idClient, horodatage);
       throw erreur;

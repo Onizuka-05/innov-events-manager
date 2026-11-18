@@ -45,10 +45,12 @@ export class DevisController {
     s.json({ message: 'Demande classée sans suite.' });
   };
   convertir = async (r: Request, s: Response) => {
-    const d = objet(r.body, ['adresse_postale']);
+    const d = objet(r.body, ['adresse_postale', 'id_client_confirme']);
+    const confirme = d['id_client_confirme'];
     const resultat = await this.service.repository.convertir(
       identifiant(r.params['id']),
       texte(d, 'adresse_postale', 2000),
+      confirme === undefined || confirme === null ? null : identifiant(confirme),
     );
     if (resultat.cree)
       await this.service.journal('CREATION_CLIENT', this.acteur(r), {

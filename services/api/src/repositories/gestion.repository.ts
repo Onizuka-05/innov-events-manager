@@ -1,6 +1,7 @@
 import type { Pool, PoolClient } from 'pg';
 import { ErreurHttp } from '../http/erreur-http.js';
 import { DevisRepository } from './devis.repository.js';
+import { supprimerDemandesDeLaFiche } from './espace-client.repository.js';
 import type {
   ClientSaisie,
   EvenementModification,
@@ -93,10 +94,7 @@ export class GestionRepository {
       ).rows[0];
       if (!c) throw new ErreurHttp(404, 'Client introuvable.');
       if (c.id_utilisateur) await this.detruireSessions(db, c.id_utilisateur);
-      await db.query(
-        `DELETE FROM innov_events.prospects WHERE id_client IS NULL AND LOWER(email)=LOWER($1)`,
-        [c.email_contact],
-      );
+      await supprimerDemandesDeLaFiche(db, id);
       await db.query('SELECT innov_events.supprimer_compte_client($1)', [id]);
       return c.nom_client;
     });
@@ -376,6 +374,17 @@ export class GestionRepository {
         'SELECT id_utilisateur FROM innov_events.utilisateurs WHERE id_utilisateur=$1 FOR UPDATE',
         [id],
       );
+      // Rattachement a une fiche entre la lecture et le verrou (premier devis envoye) : le
+      // compte doit alors suivre le parcours de sa fiche.
+      if (
+        u.role === 'client' &&
+        (await db.query('SELECT 1 FROM innov_events.clients WHERE id_utilisateur=$1', [id]))
+          .rowCount
+      )
+        throw new ErreurHttp(
+          409,
+          'Ce compte vient d’être rattaché à une fiche client : réessayez la suppression.',
+        );
       await this.detruireSessions(db, id);
       if (u.role === 'employe') {
         await db.query(
@@ -384,11 +393,8 @@ export class GestionRepository {
         );
         await db.query('SELECT innov_events.supprimer_compte_employe($1)', [id]);
       } else {
-        await db.query(
-          `DELETE FROM innov_events.prospects WHERE id_client IS NULL AND LOWER(email)=
-          (SELECT LOWER(email_connexion) FROM innov_events.utilisateurs WHERE id_utilisateur=$1)`,
-          [id],
-        );
+        // Compte client sans fiche : son e-mail de connexion, jamais verifie, ne designe aucune
+        // demande ; les demandes non converties restent a traiter par l'administratrice.
         await db.query('DELETE FROM innov_events.utilisateurs WHERE id_utilisateur=$1', [id]);
       }
     });

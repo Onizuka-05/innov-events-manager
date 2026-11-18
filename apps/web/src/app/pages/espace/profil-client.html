@@ -96,13 +96,19 @@
                   [formControlName]="c.cle"
                   [maxlength]="c.max"
                   required
+                  [readOnly]="c.cle === 'email_contact'"
                   [attr.aria-invalid]="
                     fiche.controls[c.cle].touched && fiche.controls[c.cle].invalid ? 'true' : null
                   "
                   [attr.aria-describedby]="'aide-fiche-' + c.cle"
                 />
                 <p class="aide" [id]="'aide-fiche-' + c.cle">
-                  {{ c.max }} caractères au plus.
+                  @if (c.cle === 'email_contact') {
+                    Adresse gérée par Innov’Events : écrivez-nous depuis la page Contact pour la
+                    modifier.
+                  } @else {
+                    {{ c.max }} caractères au plus.
+                  }
                   @if (fiche.controls[c.cle].touched && fiche.controls[c.cle].invalid) {
                     <span class="erreur-champ"> Vérifiez ce champ obligatoire.</span>
                   }

@@ -12,12 +12,12 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 | [Sécurité et contrôle des accès](#sécurité-et-contrôle-des-accès) | 21 | 29 | 0 | 50 |
 | [Authentification et comptes](#authentification-et-comptes) | 13 | 24 | 0 | 37 |
 | [Site public, demande de devis et contact](#site-public-demande-de-devis-et-contact) | 56 | 28 | 2 | 86 |
-| [Devis et événements](#devis-et-événements) | 23 | 26 | 0 | 49 |
-| [Espace de l’équipe et administration](#espace-de-léquipe-et-administration) | 73 | 22 | 0 | 95 |
-| [Espace client](#espace-client) | 27 | 15 | 0 | 42 |
+| [Devis et événements](#devis-et-événements) | 23 | 27 | 0 | 50 |
+| [Espace de l’équipe et administration](#espace-de-léquipe-et-administration) | 75 | 22 | 0 | 97 |
+| [Espace client](#espace-client) | 28 | 25 | 0 | 53 |
 | [Journaux et purges des données](#journaux-et-purges-des-données) | 5 | 3 | 0 | 8 |
 | [Application mobile](#application-mobile) | 58 | 1 | 3 | 62 |
-| **Total** | **303** | **148** | **5** | **456** |
+| **Total** | **306** | **159** | **5** | **470** |
 
 ## Socle technique
 
@@ -167,7 +167,7 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 
 ## Devis et événements
 
-49 tests.
+50 tests.
 
 | Fichier | Test | Niveau | Cas |
 | --- | --- | --- | ---: |
@@ -197,6 +197,7 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › garde l acceptation et trace l echec de la notification a Innov Events | Intégration | 1 |
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › envoie le PDF, cree le compte temporaire et journalise le devis | Intégration | 1 |
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › annule le compte et le statut si le courriel du devis echoue | Intégration | 1 |
+| `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › remplace le mot de passe d un compte inscrit avec l e-mail du contact avant de le rattacher | Intégration | 1 |
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › reutilise le compte deja rattache si son email differe du contact | Intégration | 1 |
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › refuse une image d evenement non HTTPS sans creer l evenement | Intégration | 1 |
 | `services/api/src/routes/j8.integration.spec.ts` | J8 avec PostgreSQL reel › refuse l envoi d un devis sans prestation sans modifier son etat | Intégration | 1 |
@@ -215,7 +216,7 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 
 ## Espace de l’équipe et administration
 
-95 tests.
+97 tests.
 
 | Fichier | Test | Niveau | Cas |
 | --- | --- | --- | ---: |
@@ -251,6 +252,8 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 | `apps/web/src/app/pages/gestion/organisation-espaces.spec.ts` | Organisation des espaces › redirige le message de remerciement vers Parametres | Unitaire | 1 |
 | `apps/web/src/app/pages/gestion/organisation-espaces.spec.ts` | Organisation des espaces › conserve les anciennes adresses equipe et l’identifiant de fiche | Unitaire | 1 |
 | `apps/web/src/app/pages/gestion/organisation-espaces.spec.ts` | Organisation des espaces › convertit puis relit et preremplit l’evenement (client existant=%s) | Unitaire | 2 |
+| `apps/web/src/app/pages/gestion/organisation-espaces.spec.ts` | Organisation des espaces › relit les fiches et redemande la confirmation si la fiche a rattacher a change | Unitaire | 1 |
+| `apps/web/src/app/pages/gestion/organisation-espaces.spec.ts` | Organisation des espaces › annule la confirmation si la fiche affichee change apres un classement sans suite | Unitaire | 1 |
 | `apps/web/src/app/pages/gestion/organisation-espaces.spec.ts` | Organisation des espaces › refuse de preremplir un evenement depuis une demande non convertie | Unitaire | 1 |
 | `apps/web/src/app/pages/gestion/organisation-espaces.spec.ts` | Organisation des espaces › liste les taches selon le compte %s | Unitaire | 2 |
 | `services/api/src/routes/j9.integration.spec.ts` | J9 avec PostgreSQL reel et sessions persistantes › controle chaque route pour %s, y compris heritage employe | Intégration | 4 |
@@ -277,7 +280,7 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 
 ## Espace client
 
-42 tests.
+53 tests.
 
 | Fichier | Test | Niveau | Cas |
 | --- | --- | --- | ---: |
@@ -299,6 +302,7 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 | `apps/web/src/app/pages/espace/espace-client.spec.ts` | Profil et effacement du compte › separe compte et fiche et masque la fiche si elle est absente | Unitaire | 1 |
 | `apps/web/src/app/pages/espace/espace-client.spec.ts` | Profil et effacement du compte › valide le compte et ne demande le mot de passe que pour un nouvel e-mail | Unitaire | 1 |
 | `apps/web/src/app/pages/espace/espace-client.spec.ts` | Profil et effacement du compte › transmet un bloc fiche complet et affiche les erreurs du serveur | Unitaire | 1 |
+| `apps/web/src/app/pages/espace/espace-client.spec.ts` | Profil et effacement du compte › affiche l e-mail du contact en lecture seule, gere par Innov Events | Unitaire | 1 |
 | `apps/web/src/app/pages/espace/espace-client.spec.ts` | Profil et effacement du compte › exige mot de passe et confirmation avant la suppression | Unitaire | 1 |
 | `apps/web/src/app/pages/espace/espace-client.spec.ts` | Profil et effacement du compte › efface l etat de connexion apres succes puis revient a l accueil avec le message | Unitaire | 1 |
 | `apps/web/src/app/pages/espace/espace-client.spec.ts` | Profil et effacement du compte › conserve compte, session et formulaire sur le 503 d effacement indisponible | Unitaire | 1 |
@@ -309,10 +313,19 @@ Niveaux : **unitaire** (fonction, service ou composant isolé, dépendances simu
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › refuse en 404 l evenement d un autre client | Intégration | 1 |
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › modifie le profil avec les controles de saisie, de doublon et de mot de passe | Intégration | 1 |
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › refuse la modification de coordonnees pour un compte sans fiche | Intégration | 1 |
+| `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › refuse au client la modification de l e-mail du contact de sa fiche | Intégration | 1 |
+| `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › refuse la modification du profil si le mot de passe est remplace avant l ecriture | Intégration | 1 |
+| `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › refuse une sauvegarde partie avant un changement d e-mail confirme | Intégration | 1 |
+| `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › suspend la conversion si deux fiches partagent l adresse de la demande | Intégration | 1 |
+| `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › garde la demande de Beta hors de l espace d Alpha, meme si Alpha vise son adresse | Intégration | 1 |
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › accepte un seul avis, seulement sur un evenement termine, en attente de moderation | Intégration | 1 |
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › espace client › donne puis retire l accord de publication en conservant la premiere date | Intégration | 1 |
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › effacement demande par le client › efface le compte, anonymise la fiche, detruit les sessions et retire le nom des journaux | Intégration | 1 |
-| `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › effacement demande par le client › supprime un compte sans fiche et ses demandes non converties | Intégration | 1 |
+| `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › effacement demande par le client › supprime un compte sans fiche sans effacer les demandes d une autre entreprise | Intégration | 1 |
+| `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › effacement demande par le client › garde les demandes d une autre entreprise quand l administratrice supprime un compte sans fiche | Intégration | 1 |
+| `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › effacement demande par le client › conserve la demande commune quand Alpha est supprimee par %s, sans la rattacher a Beta sans confirmation | Intégration | 2 |
+| `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › effacement demande par le client › refuse la suppression d un compte rattache a une fiche pendant la suppression | Intégration | 1 |
+| `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › effacement demande par le client › refuse l effacement si le mot de passe est remplace avant l ecriture | Intégration | 1 |
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › effacement demande par le client › consigne un echec MongoDB sans donnee personnelle puis la purge rejoue le retrait | Intégration | 1 |
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › effacement demande par le client › refuse l effacement sans rien supprimer si MongoDB est entierement indisponible, puis l accepte au retablissement | Intégration | 1 |
 | `services/api/src/routes/j10.integration.spec.ts` | J10 avec PostgreSQL reel : espace client, catalogue public, purges et matrice d acces › effacement demande par le client › retire le journal d effacement si la transaction echoue, sans rien supprimer | Intégration | 1 |

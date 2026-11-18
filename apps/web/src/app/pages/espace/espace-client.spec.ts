@@ -376,6 +376,16 @@ describe('Profil et effacement du compte', () => {
     fixture.detectChanges();
     expect(el.textContent).toContain('Cette valeur est déjà utilisée.');
   });
+  it('affiche l e-mail du contact en lecture seule, gere par Innov Events', async () => {
+    const { el } = await ouvrir(ProfilClientPage);
+    const champ = el.querySelector<HTMLInputElement>('#fiche-email_contact')!;
+    expect(champ.readOnly).toBe(true);
+    expect(champ.value).toBe(fiche.email_contact);
+    expect(el.querySelector('#aide-fiche-email_contact')?.textContent).toContain(
+      'Adresse gérée par Innov’Events',
+    );
+    expect(el.querySelector<HTMLInputElement>('#fiche-telephone')!.readOnly).toBe(false);
+  });
   it('exige mot de passe et confirmation avant la suppression', async () => {
     const { el, api } = await ouvrir(ProfilClientPage);
     saisir(el, '#mot-suppression', 'Valide1!');

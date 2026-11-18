@@ -162,9 +162,24 @@
         <h3 class="titre-infos">Informations de la demande</h3>
         @if (clientExistant(p); as c) {
           <p class="aide">
-            Client existant avec cet e-mail : {{ c.entreprise }}. La demande lui sera rattachée ; sa
-            fiche, son adresse et son compte sont conservés.
+            Client existant avec cet e-mail : {{ c.entreprise }} ({{ c.prenom_contact }}
+            {{ c.nom_contact }}). L’adresse d’une demande n’est pas vérifiée : comparez l’entreprise
+            et le contact ci-dessous avant de rattacher la demande à cette fiche. Sa fiche, son
+            adresse et son compte sont conservés.
           </p>
+          <div class="champ">
+            <label class="case" for="confirmation-rattachement"
+              ><input
+                id="confirmation-rattachement"
+                type="checkbox"
+                name="confirmationRattachement"
+                required
+                [ngModel]="rattachementConfirme()"
+                (ngModelChange)="confirmerRattachement($event)"
+              />
+              Je confirme que cette demande vient de {{ c.entreprise }}</label
+            >
+          </div>
         }
         <dl class="infos-demande">
           <dt>Entreprise</dt>
@@ -183,7 +198,7 @@
         <button
           type="submit"
           class="bouton-primaire"
-          [disabled]="chargement() || !id_prospect || !adresse_postale.trim()"
+          [disabled]="chargement() || !conversionPrete()"
         >
           Convertir
         </button>

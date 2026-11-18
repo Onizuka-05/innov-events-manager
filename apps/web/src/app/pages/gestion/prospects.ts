@@ -1,6 +1,7 @@
 import { Component, Injector, afterNextRender, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ApiService, messageErreur } from '../../core/api.service';
 import type { Prospect } from '../../core/prospects.models';
 import type { Client } from '../../core/gestion.models';
@@ -20,6 +21,11 @@ export class Prospects {
   protected readonly clients = signal<Client[]>([]);
   protected id_prospect = '';
   protected adresse_postale = '';
+  /**
+   * Confirmation du rattachement : la demande et la fiche affichees au moment ou la case est
+   * cochee. Si la fiche affichee change ensuite (liste relue), la confirmation ne vaut plus.
+   */
+  private confirmation: { id_prospect: string; id_client: string } | null = null;
   protected readonly prospects = signal<Prospect[]>([]);
   protected readonly prospectEchec = signal<Prospect | null>(null);
   protected readonly erreur = signal('');
@@ -98,23 +104,61 @@ export class Prospects {
     this.id_prospect = id;
     const p = this.prospectConversion();
     this.adresse_postale = (p && this.clientExistant(p)?.adresse_postale) || '';
+    this.confirmation = null;
+  }
+  /** Fiche existante a confirmer pour la demande en cours de conversion, ou null. */
+  private ficheAConfirmer(): Client | null {
+    const p = this.prospectConversion();
+    return p && this.clientExistant(p);
+  }
+  /** Vrai seulement si la case a ete cochee pour cette demande et cette fiche precises. */
+  protected rattachementConfirme(): boolean {
+    const c = this.ficheAConfirmer();
+    return (
+      !!c &&
+      this.confirmation?.id_prospect === this.id_prospect &&
+      this.confirmation.id_client === c.id_client
+    );
+  }
+  protected confirmerRattachement(coche: boolean) {
+    const c = this.ficheAConfirmer();
+    this.confirmation =
+      coche && c ? { id_prospect: this.id_prospect, id_client: c.id_client } : null;
+  }
+  /** Vrai si la conversion peut partir : adresse saisie et rattachement confirme s'il y a lieu. */
+  protected conversionPrete(): boolean {
+    const p = this.prospectConversion();
+    return (
+      !!p &&
+      !!this.adresse_postale.trim() &&
+      (!this.clientExistant(p) || this.rattachementConfirme())
+    );
   }
   protected choisirConversion(id: string) {
     this.preparerConversion(id);
     afterNextRender(() => document.getElementById('adresse')?.focus(), { injector: this.injector });
   }
   protected async convertir() {
-    if (this.chargement() || !this.id_prospect || !this.adresse_postale.trim()) return;
+    if (this.chargement() || !this.conversionPrete()) return;
     const id = this.id_prospect;
+    // Fiche confirmee par la case (meme fiche que celle affichee, verifie par conversionPrete).
+    const confirmee = this.ficheAConfirmer() ? this.confirmation : null;
     this.chargement.set(true);
     this.erreur.set('');
     this.information.set('');
     try {
       await this.api.modifier('POST', '/prospects/' + id + '/conversion', {
         adresse_postale: this.adresse_postale,
+        id_client_confirme: confirmee?.id_client ?? null,
       });
       await this.router.navigate(['/administration/devis'], { queryParams: { prospect: id } });
     } catch (e) {
+      // Fiche apparue, modifiee ou effacee depuis l'affichage : la liste est relue avant de
+      // demander une nouvelle confirmation.
+      if (e instanceof HttpErrorResponse && e.error?.code === 'RATTACHEMENT_A_CONFIRMER') {
+        await this.charger();
+        this.preparerConversion(id);
+      }
       this.erreur.set(messageErreur(e));
     } finally {
       this.chargement.set(false);
