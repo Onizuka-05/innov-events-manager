@@ -139,7 +139,8 @@ Changer un secret ne demande pas de supprimer les volumes :
 ## Documentation
 
 - [`docs/technique/`](docs/technique/README.md) : documentation technique consolidée.
-- [`docs/conception/`](docs/conception/) : cas d'utilisation, cycles de statuts, MCD, MLD, architecture, wireframes, charte graphique, maquettes.
+- [`docs/utilisateur/guide-utilisateur.md`](docs/utilisateur/guide-utilisateur.md) : guide d'utilisation, un parcours par profil.
+- [`docs/conception/CO-12-dossier-de-conception.md`](docs/conception/CO-12-dossier-de-conception.md) : dossier de conception (besoins, règles métier, livrables, traçabilité) ; [`docs/conception/`](docs/conception/) : cas d'utilisation, cycles de statuts, MCD, MLD, architecture, wireframes, charte graphique, maquettes.
 - [`docs/tests/`](docs/tests/) : plan de tests, tableau des tests, couverture, rapports de vérification.
 - [`docs/qualite.md`](docs/qualite.md) : branches, définition de « terminé », revues, CI/CD.
 - [`docs/sauvegarde-restauration.md`](docs/sauvegarde-restauration.md) : sauvegarde et restauration des bases.
