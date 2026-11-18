@@ -62,9 +62,9 @@ Résultat attendu dans chaque ligne ; colonne « Résultat » : OK ou anomalie d
 
 | N° | Vérification | Résultat | Preuve |
 | --- | --- | --- | --- |
-| I1 | Dates de la liste et de la fiche au format `jj/mm/aaaa · hh:mm` (aucune date vide ou invalide). | à compléter | |
-| I2 | « Appeler … » propose l’appel du numéro de la fiche. | à compléter | |
-| I3 | « Envoyer un e-mail à … » ouvre Mail avec le destinataire prérempli. | à compléter | |
-| I4 | « Ouvrir l’itinéraire vers … » ouvre Plans sur l’adresse du client. | à compléter | |
-| I5 | Ajout d’une note depuis la fiche : clavier virtuel sans masquer les boutons, confirmation, note visible ensuite dans l’espace web de l’équipe. | à compléter | |
-| I6 | CGU et CGV lisibles sans zoom ni défilement horizontal. | à compléter | |
+| I1 | Dates de la liste et de la fiche au format `jj/mm/aaaa · hh:mm` (aucune date vide ou invalide). | OK | Constat manuel, iPhone (Safari), compte employé de José, 18/11/2026 |
+| I2 | « Appeler … » propose l’appel du numéro de la fiche. | OK | Constat manuel, iPhone (Safari), compte employé de José, 18/11/2026 |
+| I3 | « Envoyer un e-mail à … » ouvre Mail avec le destinataire prérempli. | OK | Constat manuel, iPhone (Safari), compte employé de José, 18/11/2026 |
+| I4 | « Ouvrir l’itinéraire vers … » ouvre Plans sur l’adresse du client. | OK | Constat manuel, iPhone (Safari), compte employé de José, 18/11/2026 |
+| I5 | Ajout d’une note depuis la fiche : clavier virtuel sans masquer les boutons, confirmation, note visible ensuite dans l’espace web de l’équipe. | OK | Constat manuel, iPhone (Safari), compte employé de José, 18/11/2026 |
+| I6 | CGU et CGV lisibles sans zoom ni défilement horizontal. | OK | Constat manuel, iPhone (Safari), compte employé de José, 18/11/2026 |

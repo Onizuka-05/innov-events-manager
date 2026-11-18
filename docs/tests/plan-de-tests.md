@@ -122,28 +122,34 @@ Scénarios d’acceptation et contrôles manuels. Une ligne non conforme ouvre u
 
 | N° | Exigence | Scénario | Résultat attendu | Résultat obtenu | Date |
 | --- | --- | --- | --- | --- | --- |
-| A1 | PUB-06 | Demande de devis depuis l’accueil, en visiteur | Remerciement affiché ; ligne « à contacter » ; e-mail reçu à l’adresse de contact | à compléter | |
-| A2 | AUTH-01, AUTH-02 | Inscription puis connexion d’un client | Compte créé, e-mail de confirmation ; connexion vers l’espace client | à compléter | |
-| A3 | AUTH-03 | Mot de passe oublié | E-mail avec mot de passe temporaire ; changement imposé à la connexion | à compléter | |
-| A4 | AUTH-04 | Client qui saisit l’adresse d’une page d’administration | Accès refusé, redirection vers son espace | à compléter | |
-| A5 | DEV-01 à DEV-07 | Conversion d’une demande, événement, devis à deux prestations, PDF, envoi | Totaux HT, TVA et TTC exacts ; PDF ; e-mail au client ; compte client créé si absent | à compléter | |
-| A6 | CLI-01 | Le client accepte le devis | Statut « accepté » visible par l’administratrice | à compléter | |
-| A7 | CLI-03 | Le client modifie son téléphone | Fiche à jour ; journal de modification sans nom | à compléter | |
-| A8 | CLI-06, EMP-05, PUB-09 | Avis sur un événement terminé, modération par l’employé | Avis publié sur la page Avis, sans nom de client | à compléter | |
-| A9 | CLI-07, PUB-07, PUB-08 | Accord de publication donné puis retiré | Événement visible puis absent de la page Événements, jamais de prix | à compléter | |
-| A10 | CLI-04 | Le client supprime son compte | Déconnexion ; connexion refusée ensuite ; fiche anonymisée ; nom absent des journaux | à compléter | |
-| A11 | EMP-01 à EMP-04 | Employé : fiche client, fiche événement, note, tâche | Données affichées ; note et tâche enregistrées | à compléter | |
-| A12 | ADM-01, ADM-07 | Administratrice : tableau de bord, journaux | Chiffres clés ; journaux filtrés par type | à compléter | |
-| A13 | MOB-01 à MOB-04 | Employé sur iPhone : liste, fiche, client, note | Appel, e-mail et itinéraire ouverts ; note visible sur le web | à compléter | |
-| A14 | MOB-07, PUB-04 | CGU et CGV sur le web et le mobile, sans connexion | Pages lisibles, contenu identique | à compléter | |
-| A15 | LOG-02, LOG-03 | Connexion puis action d’un administrateur | Journaux dans MongoDB Atlas avec la date au format ISODate ; adresse IP réelle ; aucun mot de passe | à compléter | |
-| A16 | DEP-05 | Fusion dans `main` modifiant l’API | Déploiement automatique ; `/api/sante` répond | à compléter | |
+| A1 | PUB-06 | Demande de devis depuis l’accueil, en visiteur | Remerciement affiché ; ligne « à contacter » ; e-mail reçu à l’adresse de contact | Conforme : bloc « Votre demande a été enregistrée » ; e-mail « Nouvelle demande de devis » reçu à l’adresse de contact ; demande « à contacter » dans « Prospects » | 18/11/2026 |
+| A2 | AUTH-01, AUTH-02 | Inscription puis connexion d’un client | Compte créé, e-mail de confirmation ; connexion vers l’espace client | Conforme : compte créé, e-mail de confirmation sans mot de passe ; connexion vers l’espace client | 18/11/2026 |
+| A3 | AUTH-03 | Mot de passe oublié | E-mail avec mot de passe temporaire ; changement imposé à la connexion | Conforme : e-mail « Mot de passe temporaire Innov’Events » ; page « Choisir un nouveau mot de passe » imposée, puis espace client | 18/11/2026 |
+| A4 | AUTH-04 | Client qui saisit l’adresse d’une page d’administration | Accès refusé, redirection vers son espace | Conforme : `/administration` saisi par un client redirige vers l’espace client | 18/11/2026 |
+| A5 | DEV-01 à DEV-07 | Conversion d’une demande, événement, devis à deux prestations, PDF, envoi | Totaux HT, TVA et TTC exacts ; PDF ; e-mail au client ; compte client créé si absent | Conforme : conversion, événement, devis à deux prestations ; HT 2 050,50 €, TVA 410,10 €, TTC 2 460,60 € à l’écran et dans le PDF ; e-mail au client avec le PDF et un mot de passe temporaire (compte créé) | 18/11/2026 |
+| A6 | CLI-01 | Le client accepte le devis | Statut « accepté » visible par l’administratrice | Conforme : devis « accepté » côté client et dans la liste des devis de l’administratrice | 18/11/2026 |
+| A7 | CLI-03 | Le client modifie son téléphone | Fiche à jour ; journal de modification sans nom | Conforme : téléphone mis à jour, e-mail du contact en lecture seule ; journal sans nom vérifié par le test d’intégration « modifie le profil avec les controles… » | 18/11/2026 |
+| A8 | CLI-06, EMP-05, PUB-09 | Avis sur un événement terminé, modération par l’employé | Avis publié sur la page Avis, sans nom de client | Conforme : avis « en attente », validé par l’employé, publié sur la page Avis sans nom ni entreprise | 18/11/2026 |
+| A9 | CLI-07, PUB-07, PUB-08 | Accord de publication donné puis retiré | Événement visible puis absent de la page Événements, jamais de prix | Conforme : événement visible sur la page Événements après l’accord, sans prix, puis absent après le retrait | 18/11/2026 |
+| A10 | CLI-04 | Le client supprime son compte | Déconnexion ; connexion refusée ensuite ; fiche anonymisée ; nom absent des journaux | Conforme : déconnexion immédiate, reconnexion refusée, fiche anonymisée ; événement, devis et avis conservés ; retrait du nom des journaux vérifié par le test d’intégration « efface le compte, anonymise la fiche… » | 18/11/2026 |
+| A11 | EMP-01 à EMP-04 | Employé : fiche client, fiche événement, note, tâche | Données affichées ; note et tâche enregistrées | Conforme, avec le compte employé de José créé par l’administratrice : fiches client et événement affichées, note et tâche enregistrées | 18/11/2026 |
+| A12 | ADM-01, ADM-07 | Administratrice : tableau de bord, journaux | Chiffres clés ; journaux filtrés par type | Conforme : chiffres clés du tableau de bord ; journaux filtrés par type d’action | 18/11/2026 |
+| A13 | MOB-01 à MOB-04 | Employé sur iPhone : liste, fiche, client, note | Appel, e-mail et itinéraire ouverts ; note visible sur le web | Conforme : I1 à I5 de `docs/tests/J10-mobile-resultats.md` (iPhone, Safari, compte de José) | 18/11/2026 |
+| A14 | MOB-07, PUB-04 | CGU et CGV sur le web et le mobile, sans connexion | Pages lisibles, contenu identique | Conforme : CGU et CGV lisibles sans connexion sur le web et le mobile, contenu identique | 18/11/2026 |
+| A15 | LOG-02, LOG-03 | Connexion puis action d’un administrateur | Journaux dans MongoDB Atlas avec la date au format ISODate ; adresse IP réelle ; aucun mot de passe | Conforme : collection `logs` d’Atlas, connexion de l’administratrice : `horodatage` de type Date (ISODate), adresse IP publique réelle, aucun mot de passe | 18/11/2026 |
+| A16 | DEP-05 | Fusion dans `main` modifiant l’API | Déploiement automatique ; `/api/sante` répond | Conforme : `main` à `86edc0a`, CI n° 69 verte ; trois services Render « Deploy live » sur ce commit ; `/api/sante` répond via le web et le mobile | 18/11/2026 |
 | A17 | DEP-07 | Sauvegarde de Neon et d’Atlas, restauration locale | Comptages identiques entre sauvegarde et restauration | Conforme : 12 tables et 9 journaux identiques ; données des sessions exclues par construction (détail : `docs/tests/J10-validation-resultats.md`, B1 à B6) | 17/11/2026 |
-| S1 | TR-03 | Champ « Entreprise » de la demande de devis : `Test'); DROP TABLE prospects;--` | Demande enregistrée avec ce texte exact ; aucune table affectée | à compléter | |
-| S2 | TR-03 | Description du besoin : `<img src=x onerror=alert(1)>` puis affichage dans l’espace de l’équipe | Texte affiché tel quel, aucun script exécuté | à compléter | |
-| S3 | TR-03 | Appel direct de l’API Render sans passer par le site | Réponse 403 | à compléter | |
-| S4 | TR-03 | Six demandes de devis en moins de 15 minutes depuis le même poste | La sixième est refusée (429) | à compléter | |
-| S5 | TR-01, TR-02 | Parcours au clavier seul et à 375 px de large | Ordre logique, focus visible, aucun défilement horizontal | à compléter | |
+| S1 | TR-03 | Champ « Entreprise » de la demande de devis : `Test'); DROP TABLE prospects;--` | Demande enregistrée avec ce texte exact ; aucune table affectée | Bloquée en amont par la protection de l’hébergeur : 403 avec une page de blocage, aucune trace dans les journaux de l’API, rien n’est enregistré, aucune table affectée. Comportement de l’application vérifié sur une copie isolée (code `86edc0a`, base jetable) : texte enregistré au caractère près | 18/11/2026 |
+| S2 | TR-03 | Description du besoin : `<img src=x onerror=alert(1)>` puis affichage dans l’espace de l’équipe | Texte affiché tel quel, aucun script exécuté | Conforme : description enregistrée ; texte `<img src=x onerror=alert(1)>` saisi aussi dans « Entreprise » et affiché tel quel dans « Prospects », sans script exécuté (la description du besoin n’est affichée que dans l’e-mail de notification, en texte brut) | 18/11/2026 |
+| S3 | TR-03 | Appel direct de l’API Render sans passer par le site | Réponse 403 | Conforme : `GET /api/csrf` sur l’adresse Render de l’API → 403 (`/api/sante` reste ouverte aux sondes de l’hébergeur) | 18/11/2026 |
+| S4 | TR-03 | Six demandes de devis en moins de 15 minutes depuis le même poste | La sixième est refusée (429) | Conforme : cinq demandes enregistrées, la sixième refusée avec « Trop de demandes. Réessayez dans quelques minutes. » | 18/11/2026 |
+| S5 | TR-01, TR-02 | Parcours au clavier seul et à 375 px de large | Ordre logique, focus visible, aucun défilement horizontal | Conforme : accueil, demande de devis et espace client au clavier seul (ordre logique, focus visible) ; aucun défilement horizontal à 375 px | 18/11/2026 |
+
+Recette du 18/11/2026 sur la production, comptes de démonstration et compte employé de José. En complément, les mêmes scénarios ont été rejoués au niveau de l’application sur une copie isolée du code de production (`86edc0a`, base PostgreSQL jetable, aucune donnée de production) : 234 tests de l’API, 182 du web et 58 du mobile réussis, dont les tests cités dans `docs/tests/tableau-des-tests.md` pour chaque scénario.
+
+Observations :
+- La protection de l’hébergeur placée devant les services refuse les requêtes dont le texte ressemble à une commande SQL (S1) : une saisie légitime de ce type serait refusée avec le message « Le service est momentanément indisponible ».
+- La description du besoin d’une demande n’est visible par l’équipe que dans l’e-mail de notification ; elle n’est pas affichée dans « Prospects » (piste d’amélioration).
 
 ## 9. Gestion des anomalies
 
