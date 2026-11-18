@@ -73,7 +73,7 @@ Ajoutés ou adaptés avant la correction : 14 tests d’intégration en échec, 
 | `apps/web` : `npm.cmd run format:check`, `lint`, `typecheck`, `build` | OK | Sortie des commandes |
 | `apps/web` : `npm.cmd run test:coverage` | 182 réussis ; lignes 83,80 %, instructions 81,98 %, branches 75,58 %, fonctions 68,55 % | Sortie de la commande |
 | `node outils/tableau-des-tests.mjs --verifier` (racine) | « docs/tests/tableau-des-tests.md est à jour. » ; 470 cas (306 unitaires, 159 d’intégration, 5 de bout en bout) | Sortie de la commande |
-| CI de la PR (trois jobs `validation`) | à compléter | Onglet « Checks » de la PR |
+| CI de la PR (trois jobs `validation`) | OK : `validation (api)`, `validation (web)` et `validation (mobile)` réussis sur `c47b273` (exécution n° 57, 2 min 6 s) | https://github.com/Onizuka-05/innov-events-manager/actions/runs/44218298738 |
 
 ## Limites connues
 
