@@ -47,7 +47,7 @@
             <mxPoint as="targetPoint" x="2220" y="3129" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="CO11-standard-note-1" value="Préconditions : web ou PWA sur sa propre origine. Cookie HttpOnly / SameSite ; Secure en production. Le secret proxy reste sur les serveurs." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
+        <mxCell id="CO11-standard-note-1" value="Préconditions : web ou mobile sur sa propre origine. Cookie HttpOnly / SameSite ; Secure en production. Le secret proxy reste sur les serveurs." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;" vertex="1" parent="1">
           <mxGeometry as="geometry" x="55" y="250" width="2330" height="76" />
         </mxCell>
         <mxCell id="CO11-standard-phase-2" value="1. Obtenir le jeton CSRF avant le formulaire" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF3F7;strokeColor=#BBC4CE;fontColor=#28313A;fontSize=17;fontFamily=Arial;align=left;verticalAlign=middle;spacingLeft=12;spacingRight=12;strokeWidth=1.4;fontStyle=1;" vertex="1" parent="1">

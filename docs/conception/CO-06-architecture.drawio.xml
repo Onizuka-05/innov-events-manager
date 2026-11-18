@@ -14,13 +14,13 @@
         <mxCell id="n0003" value="Navigateur web&lt;br&gt;Angular (SPA)" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E2F2FF;strokeColor=#3589B0;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="35" y="270" width="214" height="105" as="geometry" />
         </mxCell>
-        <mxCell id="n0004" value="Téléphone / navigateur&lt;br&gt;Ionic Angular (PWA)" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E2F2FF;strokeColor=#3589B0;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="n0004" value="Téléphone / navigateur&lt;br&gt;Ionic Angular (application web)" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E2F2FF;strokeColor=#3589B0;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="35" y="510" width="214" height="113" as="geometry" />
         </mxCell>
         <mxCell id="n0005" value="SERVICE web&lt;br&gt;nginx · port local 8080&lt;br&gt;SPA Angular + proxy /api" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#E4F1FF;strokeColor=#2C78A8;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="365" y="270" width="260" height="119" as="geometry" />
         </mxCell>
-        <mxCell id="n0006" value="SERVICE mobile&lt;br&gt;nginx · port local 8100&lt;br&gt;PWA Ionic + proxy /api" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#E4F1FF;strokeColor=#2C78A8;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="n0006" value="SERVICE mobile&lt;br&gt;nginx · port local 8100&lt;br&gt;Ionic Angular + proxy /api" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=17;fontColor=#14243A;fillColor=#E4F1FF;strokeColor=#2C78A8;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="365" y="510" width="260" height="119" as="geometry" />
         </mxCell>
         <mxCell id="b0007" value="SERVICE api · Node.js / Express · accès uniquement via nginx" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=15;fontStyle=1;fontSize=18;fontColor=#20354F;fillColor=#FDFDFD;strokeColor=#587596;strokeWidth=2;dashed=1;dashPattern=8 5;" vertex="1" parent="1">
@@ -100,7 +100,7 @@
         <mxCell id="n0029" value="Navigateur web&lt;br&gt;Angular" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E2F2FF;strokeColor=#3589B0;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="45" y="249" width="208" height="91" as="geometry" />
         </mxCell>
-        <mxCell id="n0030" value="Téléphone / PWA&lt;br&gt;Ionic Angular" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E2F2FF;strokeColor=#3589B0;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="n0030" value="Téléphone / navigateur&lt;br&gt;Ionic Angular" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=8;fontSize=18;fontColor=#14243A;fillColor=#E2F2FF;strokeColor=#3589B0;strokeWidth=2;shadow=0;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="45" y="478" width="208" height="100" as="geometry" />
         </mxCell>
         <mxCell id="b0031" value="Render · trois services Docker publics en HTTPS · Francfort" style="rounded=1;arcSize=12;whiteSpace=wrap;html=0;align=left;verticalAlign=top;spacing=15;fontStyle=1;fontSize=20;fontColor=#20354F;fillColor=#F3F7FB;strokeColor=#7F9CB8;strokeWidth=2;dashed=1;dashPattern=8 5;" vertex="1" parent="1">

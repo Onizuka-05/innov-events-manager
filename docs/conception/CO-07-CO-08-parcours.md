@@ -20,9 +20,9 @@ Les wireframes restent en niveaux de gris. La charte `CO-09-charte.md` s'appliqu
 | **W1** | Visiteur, web | Demande de devis, champs obligatoires, envoi et confirmation | PUB-06 |
 | **W2** | Administratrice, web | Qualification, conversion avec adresse postale, événement, prestations HT, TVA/TTC, PDF, envoi et contre-proposition | DEV-01 à DEV-09, ADM-03 |
 | **W3** | Client, web | Ses devis, détail et PDF ; accepter, demander une modification motivée ou refuser | CLI-01, CLI-02 |
-| **M1** | Employé ou administratrice, PWA | Événements à venir triés par date ; ouverture d'une fiche | MOB-01, MOB-05 |
-| **M2** | Employé ou administratrice, PWA | Fiche événement, accès au client, ajout et enregistrement d'une note | MOB-02, MOB-04 |
-| **M3** | Employé ou administratrice, PWA | Fiche client ; appel, e-mail et itinéraire | MOB-03 |
+| **M1** | Employé ou administratrice, mobile | Événements à venir triés par date ; ouverture d'une fiche | MOB-01, MOB-05 |
+| **M2** | Employé ou administratrice, mobile | Fiche événement, accès au client, ajout et enregistrement d'une note | MOB-02, MOB-04 |
+| **M3** | Employé ou administratrice, mobile | Fiche client ; appel, e-mail et itinéraire | MOB-03 |
 
 W2 représente des étapes successives. La création du devis et son envoi sont bloqués tant que la conversion et l'événement associé ne sont pas validés. Les coordonnées du prospect sont reprises ; **l'adresse postale complète du client est obligatoire à la conversion**, notamment pour l'itinéraire mobile. Elle est distincte du lieu de l'événement.
 
@@ -35,7 +35,7 @@ Les exemples sont fictifs : `client@example.org`, « Société Aster », `00 00 
 3. **W2, étapes 2 et 3 — Administratrice :** choisit le statut initial « Brouillon » ou « Accepté », renseigne l'événement et prépare une ou plusieurs formules de devis. Chaque formule contient des prestations HT ; HT, TVA et TTC sont calculés. Le PDF est généré à la demande et n'est pas stocké. L'envoi fait passer le devis en « étude côté client ».
 4. **Connexion web du client :** le compte existant est réutilisé ou un compte est créé à l'envoi du premier devis. Un compte nouvellement créé reçoit un mot de passe provisoire. Après sa première utilisation, une session restreinte impose le choix d'un nouveau mot de passe avant l'accès à W3. Le client disposant déjà de son mot de passe habituel rejoint directement W3 après connexion. Une action demandée avant connexion est reprise après les étapes obligatoires.
 5. **W3 — Client :** accède à ses seuls devis et à leur PDF. Il accepte, refuse ou demande une modification avec motif obligatoire. La modification conduit à une contre-proposition préparée en W2 puis renvoyée au client. L'acceptation notifie Innov'Events, passe l'événement à « Accepté » et refuse les autres devis ouverts du même événement. Un seul devis peut être accepté par événement.
-6. **Connexion mobile de l'équipe :** l'employé ou l'administratrice se connecte sur la PWA avant M1. Un événement peut avoir été accepté par un devis ou validé manuellement par l'administratrice ; la liste reste triée par date de début.
+6. **Connexion mobile de l'équipe :** l'employé ou l'administratrice se connecte sur l'application mobile avant M1. Un événement peut avoir été accepté par un devis ou validé manuellement par l'administratrice ; la liste reste triée par date de début.
 7. **M1 → M2 → M3 :** ouvrir un événement, consulter son client, puis lancer un appel, un e-mail ou un itinéraire. Depuis M2, « Ajouter une note » ouvre la saisie dans la fiche ; après enregistrement, la note est visible dans cette fiche.
 
 Les retours M3 → M2 → M1 sont disponibles. La fermeture du formulaire de note ramène à M2. W3 reste accessible par « Mes devis ». Les boîtes de connexion, de changement obligatoire, de confirmation et de qualification du schéma sont des étapes fonctionnelles ; elles n'ajoutent pas de wireframes aux six écrans.
@@ -58,6 +58,6 @@ Le mot de passe provisoire est stocké séparément du mot de passe habituel. Il
 - En-tête, navigation, contenu principal, titres hiérarchisés et pied de page ; lien d'évitement ; ordre de tabulation logique et absence de piège clavier.
 - Focus visible selon CO-09 ; cibles mobiles d'au moins 44 × 44 px ; textes adaptés aux petits écrans.
 - Palette, états, typographie et contrastes de CO-09 à reprendre dans les six mockups CO-10.
-- CGU/CGV accessibles dans la PWA ; mentions légales, CGU, CGV et confidentialité accessibles depuis le web.
+- CGU/CGV accessibles dans l'application mobile ; mentions légales, CGU, CGV et confidentialité accessibles depuis le web.
 
 Les wireframes sont non interactifs. La conformité et le comportement sont à vérifier sur les mockups CO-10 puis sur l'implémentation.
