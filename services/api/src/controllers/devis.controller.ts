@@ -20,6 +20,13 @@ export class DevisController {
   private acteur(r: Request): string {
     return String(r.session.authentification!.id_utilisateur);
   }
+  /** Hache du mot de passe qui a autorise la session (routes reservees aux sessions normales). */
+  private hacheSession(s: Response): string {
+    const hache = (s.locals['utilisateur'] as { mot_de_passe_hache: string | null })
+      .mot_de_passe_hache;
+    if (!hache) throw new ErreurHttp(401, 'Session invalide.');
+    return hache;
+  }
   private role(r: Request): string {
     return String(r.res!.locals['utilisateur'].role);
   }
@@ -114,10 +121,25 @@ export class DevisController {
     );
   };
   liste = async (r: Request, s: Response) => {
-    s.json(await this.service.repository.liste(this.acteur(r), this.role(r)));
+    const client = this.role(r) === 'client';
+    s.json(
+      await this.service.repository.liste(
+        this.acteur(r),
+        this.role(r),
+        client ? this.hacheSession(s) : null,
+      ),
+    );
   };
   detail = async (r: Request, s: Response) => {
-    s.json(await this.service.consulter(identifiant(r.params['id']), this.acteur(r), this.role(r)));
+    const client = this.role(r) === 'client';
+    s.json(
+      await this.service.consulter(
+        identifiant(r.params['id']),
+        this.acteur(r),
+        this.role(r),
+        client ? this.hacheSession(s) : null,
+      ),
+    );
   };
   intitule = async (r: Request, s: Response) => {
     const d = objet(r.body, ['intitule']);
@@ -152,7 +174,10 @@ export class DevisController {
   };
   pdf = async (r: Request, s: Response) => {
     const id = identifiant(r.params['id']);
-    if (this.role(r) === 'client' && !(await this.service.repository.possede(id, this.acteur(r))))
+    if (
+      this.role(r) === 'client' &&
+      !(await this.service.repository.possede(id, this.acteur(r), this.hacheSession(s)))
+    )
       throw new ErreurHttp(404, 'Devis introuvable.');
     const fichier = await this.service.genererPdf(id, this.acteur(r));
     s.setHeader('Content-Type', 'application/pdf');
@@ -168,7 +193,13 @@ export class DevisController {
     const choix = d['choix'];
     if (choix !== 'accepte' && choix !== 'refuse' && choix !== 'modification') invalide();
     const motif = choix === 'modification' ? texte(d, 'motif_modification', 3000) : '';
-    await this.service.repondre(identifiant(r.params['id']), this.acteur(r), choix as Choix, motif);
+    await this.service.repondre(
+      identifiant(r.params['id']),
+      this.acteur(r),
+      this.hacheSession(s),
+      choix as Choix,
+      motif,
+    );
     s.json({ message: 'Réponse enregistrée.' });
   };
 }

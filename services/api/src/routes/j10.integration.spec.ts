@@ -8,6 +8,7 @@ import type { Configuration } from '../config/config.js';
 import { EspaceClientRepository } from '../repositories/espace-client.repository.js';
 import { LogsRepository, type Journal } from '../repositories/logs.repository.js';
 import { PurgesRepository } from '../repositories/purges.repository.js';
+import { AuthentificationService } from '../services/authentification.service.js';
 import { MotsDePasseService } from '../services/mots-de-passe.service.js';
 import { PurgesService } from '../services/purges.service.js';
 
@@ -764,6 +765,93 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
         const suivi = (await appel(alpha.agent, 'get', '/espace-client')).body.suivi;
         expect(suivi).toEqual([]);
       });
+      it.each([
+        ['GET', '/espace-client'],
+        ['GET', '/profil'],
+        ['GET', '/mes-evenements'],
+        ['GET', '/devis'],
+        ['GET', '/devis/:devis'],
+        ['GET', '/devis/:devis/pdf'],
+        ['POST', '/mes-evenements/:evenement/accord-publication'],
+        ['POST', '/mes-evenements/:termine/avis'],
+      ])(
+        'ne donne rien de la fiche rattachee apres l ouverture de la session : %s %s',
+        async (methode, modele) => {
+          // Bertrand s'est inscrit avec l'adresse d'Ada. Sa requete est autorisee par sa session,
+          // puis l'envoi du premier devis d'Ada rattache son compte et remplace son mot de passe
+          // avant que la requete n'interroge la base.
+          const u = await session();
+          const idClient = await fiche(null, u.email_connexion);
+          const demande = await prospect(u.email_connexion, {
+            statut: 'converti',
+            client: idClient,
+            contact: 'NOW()',
+          });
+          const ouvert = await evenement(idClient, { prospect: demande, visible: true });
+          const termine = await evenement(idClient, {
+            statut: 'termine',
+            debut: "NOW()-INTERVAL '9 days'",
+            fin: "NOW()-INTERVAL '8 days'",
+          });
+          const devis = (
+            await admin.query(
+              `INSERT INTO innov_events.devis(id_evenement,intitule,taux_tva_applique,statut_devis,date_envoi)
+              VALUES($1,'Formule',20,'etude_client',NOW()) RETURNING id_devis::text`,
+              [ouvert],
+            )
+          ).rows[0].id_devis as string;
+          const chemin = modele
+            .replace(':devis', devis)
+            .replace(':evenement', ouvert)
+            .replace(':termine', termine);
+          const verifier = AuthentificationService.prototype.verifierSession;
+          let rattacher = true;
+          const espion = vi
+            .spyOn(AuthentificationService.prototype, 'verifierSession')
+            .mockImplementation(async function (this: AuthentificationService, auth) {
+              const compteSession = await verifier.call(this, auth);
+              if (rattacher && compteSession.id_utilisateur === u.id_utilisateur) {
+                rattacher = false;
+                await admin.query(
+                  `UPDATE innov_events.utilisateurs SET mot_de_passe_hache=NULL,
+                  mdp_temporaire_hache=$2,mdp_temporaire_expire_le=NOW()+INTERVAL '7 days'
+                  WHERE id_utilisateur=$1`,
+                  [u.id_utilisateur, hache],
+                );
+                await admin.query(
+                  'UPDATE innov_events.clients SET id_utilisateur=$2 WHERE id_client=$1',
+                  [idClient, u.id_utilisateur],
+                );
+              }
+              return compteSession;
+            });
+          const r = await (methode === 'GET'
+            ? appel(u.agent, 'get', chemin)
+            : appel(u.agent, 'post', chemin, { note_evaluation: 5, commentaire: 'Bien' }));
+          espion.mockRestore();
+          expect(rattacher).toBe(false);
+          expect(
+            (
+              await admin.query(
+                'SELECT id_utilisateur::text FROM innov_events.clients WHERE id_client=$1',
+                [idClient],
+              )
+            ).rows[0].id_utilisateur,
+          ).toBe(u.id_utilisateur);
+          if (chemin === '/espace-client')
+            expect(r.body).toEqual({ prochains_evenements: [], suivi: [] });
+          else if (chemin === '/profil') expect(r.body.fiche).toBeNull();
+          else if (chemin === '/mes-evenements' || chemin === '/devis') expect(r.body).toEqual([]);
+          else expect(r.status).toBe(404);
+          expect(JSON.stringify(r.body)).not.toContain('Test SAS');
+          const etat = await admin.query(
+            `SELECT (SELECT date_accord_publication FROM innov_events.evenements WHERE id_evenement=$1) AS accord,
+              (SELECT count(*)::int FROM innov_events.avis) AS avis`,
+            [ouvert],
+          );
+          expect(etat.rows[0]).toEqual({ accord: null, avis: 0 });
+        },
+      );
       it('accepte un seul avis, seulement sur un evenement termine, en attente de moderation', async () => {
         const u = await session();
         const idClient = await fiche(u.id_utilisateur);

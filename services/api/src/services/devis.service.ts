@@ -58,8 +58,11 @@ export class DevisService {
   async remplacerLignes(id: string, lignes: LigneDevis[]) {
     await this.repository.remplacerLignes(id, lignes);
   }
-  async consulter(id: string, idUtilisateur: string, role: string) {
-    if (role === 'client' && !(await this.repository.possede(id, idUtilisateur)))
+  async consulter(id: string, idUtilisateur: string, role: string, hacheSession: string | null) {
+    if (
+      role === 'client' &&
+      !(hacheSession && (await this.repository.possede(id, idUtilisateur, hacheSession)))
+    )
       throw new ErreurHttp(404, 'Devis introuvable.');
     const d = await this.repository.detail(id);
     return { ...d, totaux: this.totaux(d) };
@@ -189,10 +192,17 @@ export class DevisService {
   async repondre(
     id: string,
     utilisateur: string,
+    hacheSession: string,
     choix: 'accepte' | 'refuse' | 'modification',
     motif: string,
   ) {
-    const evenementChange = await this.repository.repondre(id, utilisateur, choix, motif);
+    const evenementChange = await this.repository.repondre(
+      id,
+      utilisateur,
+      hacheSession,
+      choix,
+      motif,
+    );
     await this.journal('REPONSE_DEVIS', utilisateur, { id_devis: id, statut_devis: choix });
     if (choix === 'accepte') {
       const d = await this.repository.detail(id);

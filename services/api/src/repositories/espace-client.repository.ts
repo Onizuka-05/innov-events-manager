@@ -1,6 +1,6 @@
 import type { Pool, PoolClient } from 'pg';
 import { ErreurHttp } from '../http/erreur-http.js';
-import { DevisRepository } from './devis.repository.js';
+import { compteSession, DevisRepository } from './devis.repository.js';
 
 /** Bloc « compte » du profil : identite de connexion, jamais de hache. */
 export interface CompteProfil {
@@ -28,7 +28,9 @@ const PROJECTION_EVENEMENT = `e.id_evenement::text,e.nom,to_json(e.date_debut)#>
 
 /**
  * Requetes de l'espace client. La propriete est toujours verifiee ici, par
- * clients.id_utilisateur = compte de la session : la ressource d'un autre client est introuvable.
+ * clients.id_utilisateur = compte de la session, avec le hache du mot de passe qui a autorise la
+ * session dans la meme instruction (compteSession) : la ressource d'un autre client, ou d'une
+ * fiche rattachee au compte apres l'ouverture de la session, est introuvable.
  */
 export class EspaceClientRepository {
   private readonly transactions: DevisRepository;
@@ -37,15 +39,15 @@ export class EspaceClientRepository {
   }
 
   /** Trois prochains evenements (hors annules et termines) et suivi des demandes rattachees. */
-  async accueil(idUtilisateur: string) {
+  async accueil(idUtilisateur: string, hacheSession: string) {
     const [prochains, suivi] = await Promise.all([
       this.pool.query(
         `SELECT ${PROJECTION_EVENEMENT} FROM innov_events.evenements e
         JOIN innov_events.clients c ON c.id_client=e.id_client
-        WHERE c.id_utilisateur=$1 AND e.date_debut>=NOW()
+        WHERE c.id_utilisateur=${compteSession(1, 2)} AND e.date_debut>=NOW()
           AND e.statut_evenement NOT IN ('annule','termine')
         ORDER BY e.date_debut,e.id_evenement LIMIT 3`,
-        [idUtilisateur],
+        [idUtilisateur, hacheSession],
       ),
       this.pool.query(
         `SELECT p.id_prospect::text,to_json(p.date_demande)#>>'{}' AS date_demande,
@@ -61,16 +63,23 @@ export class EspaceClientRepository {
         FROM innov_events.prospects p
         JOIN innov_events.clients c ON c.id_client=p.id_client
         JOIN innov_events.types_evenement t ON t.id_type_evenement=p.id_type_evenement
-        WHERE c.id_utilisateur=$1
+        WHERE c.id_utilisateur=${compteSession(1, 2)}
         ORDER BY p.date_demande DESC,p.id_prospect DESC`,
-        [idUtilisateur],
+        [idUtilisateur, hacheSession],
       ),
     ]);
     return { prochains_evenements: prochains.rows, suivi: suivi.rows };
   }
 
-  /** Compte et fiche du titulaire ; une fiche anonymisee n'est plus rattachee a un compte. */
-  async profil(idUtilisateur: string, db: Pool | PoolClient = this.pool): Promise<Profil> {
+  /**
+   * Compte et fiche du titulaire ; une fiche anonymisee n'est plus rattachee a un compte. Sans
+   * hache de session, la lecture se fait sous le verrou du compte, deja verifie (modification).
+   */
+  async profil(
+    idUtilisateur: string,
+    db: Pool | PoolClient = this.pool,
+    hacheSession: string | null = null,
+  ): Promise<Profil> {
     const compte = (
       await db.query<CompteProfil>(
         `SELECT prenom,nom,nom_utilisateur,email_connexion FROM innov_events.utilisateurs
@@ -82,8 +91,9 @@ export class EspaceClientRepository {
     const fiche = (
       await db.query<FicheProfil>(
         `SELECT entreprise,prenom_contact,nom_contact,email_contact,telephone,adresse_postale
-        FROM innov_events.clients WHERE id_utilisateur=$1 AND date_anonymisation IS NULL`,
-        [idUtilisateur],
+        FROM innov_events.clients WHERE date_anonymisation IS NULL AND id_utilisateur=
+          ${hacheSession === null ? '$1' : compteSession(1, 2)}`,
+        hacheSession === null ? [idUtilisateur] : [idUtilisateur, hacheSession],
       )
     ).rows[0];
     return { compte, fiche: fiche ?? null };
@@ -255,7 +265,7 @@ export class EspaceClientRepository {
   }
 
   /** Tous les evenements du client, avec l'accord de publication et son avis eventuel. */
-  async evenements(idUtilisateur: string) {
+  async evenements(idUtilisateur: string, hacheSession: string) {
     return (
       await this.pool.query(
         `SELECT ${PROJECTION_EVENEMENT},t.libelle AS libelle_type,
@@ -266,21 +276,26 @@ export class EspaceClientRepository {
         FROM innov_events.evenements e
         JOIN innov_events.clients c ON c.id_client=e.id_client
         JOIN innov_events.types_evenement t ON t.id_type_evenement=e.id_type_evenement
-        WHERE c.id_utilisateur=$1
+        WHERE c.id_utilisateur=${compteSession(1, 2)}
         ORDER BY e.date_debut DESC,e.id_evenement DESC`,
-        [idUtilisateur],
+        [idUtilisateur, hacheSession],
       )
     ).rows;
   }
 
   /** Verrouille l'evenement du client ; celui d'un autre client repond 404. */
-  private async evenementDuClient(db: PoolClient, id: string, idUtilisateur: string) {
+  private async evenementDuClient(
+    db: PoolClient,
+    id: string,
+    idUtilisateur: string,
+    hacheSession: string,
+  ) {
     const e = (
       await db.query<{ statut_evenement: string }>(
         `SELECT e.statut_evenement FROM innov_events.evenements e
         JOIN innov_events.clients c ON c.id_client=e.id_client
-        WHERE e.id_evenement=$1 AND c.id_utilisateur=$2 FOR UPDATE OF e`,
-        [id, idUtilisateur],
+        WHERE e.id_evenement=$1 AND c.id_utilisateur=${compteSession(2, 3)} FOR UPDATE OF e`,
+        [id, idUtilisateur, hacheSession],
       )
     ).rows[0];
     if (!e) throw new ErreurHttp(404, 'Événement introuvable.');
@@ -288,9 +303,15 @@ export class EspaceClientRepository {
   }
 
   /** Un seul avis, sur un evenement termine, en attente de moderation. */
-  async creerAvis(id: string, idUtilisateur: string, note: number, commentaire: string) {
+  async creerAvis(
+    id: string,
+    idUtilisateur: string,
+    hacheSession: string,
+    note: number,
+    commentaire: string,
+  ) {
     return this.transactions.transaction(async (db) => {
-      const e = await this.evenementDuClient(db, id, idUtilisateur);
+      const e = await this.evenementDuClient(db, id, idUtilisateur, hacheSession);
       if (e.statut_evenement !== 'termine')
         throw new ErreurHttp(409, 'Un avis ne peut être donné que sur un événement terminé.');
       if ((await db.query('SELECT 1 FROM innov_events.avis WHERE id_evenement=$1', [id])).rowCount)
@@ -306,9 +327,14 @@ export class EspaceClientRepository {
   }
 
   /** Donne l'accord (date conservee s'il existe deja) ou le retire. */
-  async accordPublication(id: string, idUtilisateur: string, accord: boolean) {
+  async accordPublication(
+    id: string,
+    idUtilisateur: string,
+    hacheSession: string,
+    accord: boolean,
+  ) {
     return this.transactions.transaction(async (db) => {
-      await this.evenementDuClient(db, id, idUtilisateur);
+      await this.evenementDuClient(db, id, idUtilisateur, hacheSession);
       return (
         await db.query<{ date_accord_publication: string | null }>(
           `UPDATE innov_events.evenements SET date_accord_publication=

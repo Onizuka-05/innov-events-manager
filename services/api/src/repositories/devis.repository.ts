@@ -4,6 +4,40 @@ import { ErreurHttp } from '../http/erreur-http.js';
 /** Statuts d'evenement qui ferment l'envoi et l'acceptation des devis. */
 const EVENEMENT_CLOS = ['annule', 'termine'];
 
+/**
+ * Compte de la session, dans la meme instruction que le controle de propriete : le compte n'est
+ * retenu que s'il est actif et si son mot de passe est encore celui qui a autorise la session.
+ * Le rattachement d'un compte a une fiche, a l'envoi du premier devis, remplace ce mot de passe :
+ * une requete autorisee juste avant ne voit donc ni la fiche, ni ses evenements, ni ses devis.
+ * Parametres : position de l'identifiant du compte, puis du hache de la session.
+ */
+export function compteSession(idCompte: number, hache: number): string {
+  return `(SELECT s.id_utilisateur FROM innov_events.utilisateurs s WHERE s.id_utilisateur=$${idCompte}
+    AND s.mot_de_passe_hache=$${hache} AND s.statut_compte='actif')`;
+}
+
+/**
+ * A appeler apres le verrou de l'evenement : le rattachement d'un compte a l'envoi du premier
+ * devis remplace son mot de passe sous ce meme verrou. Une requete d'un client deja autorisee
+ * par l'ancien mot de passe, et qui attendait ce verrou, est donc refusee (401) au lieu d'agir
+ * sur une fiche qui vient de lui etre rattachee. Lecture simple, sans verrou du compte : l'ordre
+ * des verrous (fiche, evenement, devis, puis compte a l'envoi) reste inchange.
+ */
+async function verifierSessionApresVerrou(
+  db: PoolClient,
+  idUtilisateur: string,
+  hacheSession: string,
+): Promise<void> {
+  const u = (
+    await db.query<{ mot_de_passe_hache: string | null; statut_compte: string }>(
+      'SELECT mot_de_passe_hache,statut_compte FROM innov_events.utilisateurs WHERE id_utilisateur=$1',
+      [idUtilisateur],
+    )
+  ).rows[0];
+  if (!u || u.statut_compte !== 'actif' || u.mot_de_passe_hache !== hacheSession)
+    throw new ErreurHttp(401, 'Session invalide.');
+}
+
 export interface LigneDevis {
   libelle_prestation: string;
   montant_ht: number;
@@ -237,7 +271,7 @@ export class DevisRepository {
     if (!r.rows[0]) throw new ErreurHttp(503, 'Paramètres de TVA indisponibles.');
     return r.rows[0].id_devis;
   }
-  async liste(idUtilisateur: string, role: string) {
+  async liste(idUtilisateur: string, role: string, hacheSession: string | null = null) {
     const client = role === 'client';
     return (
       await this.pool.query(
@@ -245,9 +279,9 @@ export class DevisRepository {
        e.nom AS evenement, c.entreprise, d.date_envoi
        FROM innov_events.devis d JOIN innov_events.evenements e ON e.id_evenement=d.id_evenement
        JOIN innov_events.clients c ON c.id_client=e.id_client
-       WHERE ($1::boolean = FALSE OR (c.id_utilisateur=$2 AND d.date_envoi IS NOT NULL))
+       WHERE ($1::boolean = FALSE OR (c.id_utilisateur=${compteSession(2, 3)} AND d.date_envoi IS NOT NULL))
        ORDER BY d.date_creation DESC LIMIT 200`,
-        [client, idUtilisateur],
+        [client, idUtilisateur, hacheSession],
       )
     ).rows;
   }
@@ -271,11 +305,12 @@ export class DevisRepository {
     );
     return { ...r.rows[0], lignes: lignes.rows };
   }
-  async possede(id: string, utilisateur: string): Promise<boolean> {
+  async possede(id: string, utilisateur: string, hacheSession: string): Promise<boolean> {
     const r = await this.pool.query(
       `SELECT 1 FROM innov_events.devis d JOIN innov_events.evenements e USING (id_evenement)
-       JOIN innov_events.clients c USING (id_client) WHERE d.id_devis=$1 AND c.id_utilisateur=$2 AND d.date_envoi IS NOT NULL`,
-      [id, utilisateur],
+       JOIN innov_events.clients c USING (id_client)
+       WHERE d.id_devis=$1 AND c.id_utilisateur=${compteSession(2, 3)} AND d.date_envoi IS NOT NULL`,
+      [id, utilisateur, hacheSession],
     );
     return r.rowCount === 1;
   }
@@ -361,11 +396,13 @@ export class DevisRepository {
   async repondre(
     id: string,
     idUtilisateur: string,
+    hacheSession: string,
     choix: 'accepte' | 'refuse' | 'modification',
     motif: string,
   ): Promise<boolean> {
     return this.transaction(async (db) => {
       const statutEvenement = await this.verrouillerEvenement(id, db);
+      await verifierSessionApresVerrou(db, idUtilisateur, hacheSession);
       const d = await this.detail(id, db, true);
       const proprietaire = await db.query(
         `SELECT 1 FROM innov_events.evenements e JOIN innov_events.clients c USING(id_client)
