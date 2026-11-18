@@ -111,4 +111,4 @@ Connexion avec le compte créé par script ; arrivée sur le **Tableau de bord**
 | « Trop de demandes » | Les connexions, inscriptions, demandes de devis et messages sont limités par adresse IP sur 15 minutes : patienter |
 | Mot de passe temporaire refusé | Il a déjà servi ou il a expiré : **Mot de passe oublié ?** |
 | Page « Le service est momentanément indisponible » à la première visite après une pause | API peut-être en veille : voir « À savoir » en tête du guide |
-| Formulaire refusé juste après l'envoi, avec une page de blocage ou le message « Le service est momentanément indisponible » | La protection de l'hébergeur refuse certains textes qui ressemblent à du code : reformuler le texte saisi, ou passer par le formulaire de contact ou le téléphone. Recharger la page ne suffit pas |
+| Formulaire refusé juste après l'envoi, avec une page de blocage ou le message « Le service est momentanément indisponible » | La protection de l'hébergeur refuse certains textes qui ressemblent à du code, quel que soit le formulaire : reformuler le texte saisi, ou joindre l'agence par téléphone. Recharger la page ne suffit pas |

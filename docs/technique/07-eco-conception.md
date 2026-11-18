@@ -11,7 +11,7 @@ Objectif : transférer, calculer et stocker le moins possible pour rendre le mê
 | Architecture | Services gratuits mis en veille sans trafic (Render, calcul Neon) : aucune ressource consommée la nuit sans visiteur | Hébergement |
 | Architecture | Notes partagées sans connexion permanente (pas de WebSocket) : elles s'affichent au chargement suivant | API, web, mobile |
 | JavaScript | Routes chargées à la demande : 29 routes du site ne téléchargent leur page que lorsqu'on les ouvre | `apps/web/src/app/app.routes.ts` |
-| JavaScript | Budgets de build : avertissement au-delà de 500 ko pour le code initial, erreur au-delà de 1 Mo ; 4 ko par feuille de style de composant | `apps/web/angular.json` |
+| JavaScript | Budgets de build : avertissement au-delà de 500 ko pour le code initial, erreur au-delà de 1 Mo ; avertissement au-delà de 4 ko et erreur au-delà de 8 ko par feuille de style de composant | `apps/web/angular.json` |
 | JavaScript | Aucune bibliothèque d'interface ni de CSS ajoutée au site web (Angular seul) | `apps/web/package.json` |
 | Images | Illustrations en SVG (quelques kilo-octets, nettes à toutes les tailles) ; image hors du premier écran chargée en différé (`loading="lazy"`) | `apps/web/public/images/` |
 | Images | Images des événements : simple adresse `https`, aucune image stockée ni redimensionnée par le serveur | API, page Événements |
