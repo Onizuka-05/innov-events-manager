@@ -2,7 +2,7 @@
 
 Un parcours par profil : visiteur, client, employé (site web et application mobile), administratrice. Les captures d'écran de référence sont les maquettes de `docs/conception/CO-10-maquettes.pdf`.
 
-**À savoir** : les services sont hébergés sur des offres gratuites qui se mettent en veille sans visite. Le premier affichage après une pause peut prendre jusqu'à une minute ; si la page « Le service est momentanément indisponible » apparaît, patienter puis recharger.
+**À savoir** : les services sont hébergés sur des offres gratuites mises en veille après 15 minutes sans visite. Si la page « Le service est momentanément indisponible » apparaît, l'API est en veille : ouvrir dans un nouvel onglet l'adresse Render de l'API suivie de `/api/sante`, attendre qu'elle affiche une réponse contenant `"statut":"ok"` (environ une minute), puis recharger la page du site ou de l'application mobile.
 
 ## 1. Visiteur
 
@@ -110,5 +110,5 @@ Connexion avec le compte créé par script ; arrivée sur le **Tableau de bord**
 |---|---|
 | « Trop de demandes » | Les connexions, inscriptions, demandes de devis et messages sont limités par adresse IP sur 15 minutes : patienter |
 | Mot de passe temporaire refusé | Il a déjà servi ou il a expiré : **Mot de passe oublié ?** |
-| Page « Le service est momentanément indisponible » | Service en veille : patienter une minute et recharger |
+| Page « Le service est momentanément indisponible » | API en veille : ouvrir l'adresse Render de l'API suivie de `/api/sante`, attendre la réponse `"statut":"ok"`, puis recharger la page (voir « À savoir » en tête du guide) |
 | Demande refusée avec une page de blocage | La protection de l'hébergeur refuse certains textes qui ressemblent à du code ; reformuler ou passer par le formulaire de contact |
