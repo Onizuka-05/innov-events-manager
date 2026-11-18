@@ -1,6 +1,8 @@
 import type { Request, Response } from 'express';
+import { ErreurHttp } from '../http/erreur-http.js';
 import { email, invalide, objet, texte } from '../http/validation.js';
 import type { CompteProfil, FicheProfil } from '../repositories/espace-client.repository.js';
+import type { Utilisateur } from '../repositories/utilisateurs.repository.js';
 import { EspaceClientService } from '../services/espace-client.service.js';
 
 const identifiant = (v: unknown): string => {
@@ -48,6 +50,12 @@ export class EspaceClientController {
   private compte(s: Response): string {
     return s.locals['utilisateur'].id_utilisateur;
   }
+  /** Hache du mot de passe qui a autorise la session (route reservee aux sessions normales). */
+  private hacheSession(s: Response): string {
+    const hache = (s.locals['utilisateur'] as Utilisateur).mot_de_passe_hache;
+    if (!hache) throw new ErreurHttp(401, 'Session invalide.');
+    return hache;
+  }
   accueil = async (_r: Request, s: Response) => {
     s.json(await this.service.repository.accueil(this.compte(s)));
   };
@@ -61,6 +69,7 @@ export class EspaceClientController {
     s.json(
       await this.service.modifierProfil(
         this.compte(s),
+        this.hacheSession(s),
         d['compte'] === undefined ? null : lireCompte(d['compte']),
         d['fiche'] === undefined ? null : lireFiche(d['fiche']),
         mot === undefined || mot === '' ? null : motSaisi(mot),
@@ -70,7 +79,7 @@ export class EspaceClientController {
   /** Apres l'effacement, la session courante est detruite et le cookie efface. */
   supprimerProfil = async (r: Request, s: Response) => {
     const d = objet(r.body, ['mot_de_passe']);
-    await this.service.effacer(this.compte(s), motSaisi(d['mot_de_passe']));
+    await this.service.effacer(this.compte(s), this.hacheSession(s), motSaisi(d['mot_de_passe']));
     await new Promise<void>((resolve, reject) =>
       r.session.destroy((erreur) => (erreur ? reject(erreur) : resolve())),
     );

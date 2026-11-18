@@ -313,7 +313,17 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)('J8 avec PostgreSQL reel', () =>
     const f = await fixture();
     await compte(f.idClient, 'ada@example.org');
     const id = await prospect('ADA@example.org');
-    const conversion = await repository.convertir(id, '9 autre adresse');
+    // L'adresse d'une demande n'est pas verifiee : sans confirmation de la fiche, rien n'est rattache.
+    await expect(repository.convertir(id, '9 autre adresse')).rejects.toMatchObject({
+      statut: 409,
+      code: 'RATTACHEMENT_A_CONFIRMER',
+    });
+    const enAttente = await admin.query(
+      'SELECT statut_prospect,id_client FROM innov_events.prospects WHERE id_prospect=$1',
+      [id],
+    );
+    expect(enAttente.rows[0]).toEqual({ statut_prospect: 'a_contacter', id_client: null });
+    const conversion = await repository.convertir(id, '9 autre adresse', f.idClient);
     expect(conversion).toMatchObject({ id_client: f.idClient, cree: false });
     const fiches = await admin.query<{ n: string; adresse: string }>(
       'SELECT count(*)::text AS n, max(adresse_postale) AS adresse FROM innov_events.clients',
@@ -443,6 +453,46 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)('J8 avec PostgreSQL reel', () =>
     );
     expect(compte.rowCount).toBe(0);
     expect(courriels).toHaveLength(0);
+  });
+  it('remplace le mot de passe d un compte inscrit avec l e-mail du contact avant de le rattacher', async () => {
+    // Bertrand s'est inscrit avec l'adresse d'Ada sans la verifier : il connait le mot de passe.
+    const f = await fixture();
+    const bertrand = await connecte('ada@example.org', 'client');
+    await repository.remplacerLignes(f.devis, [{ libelle_prestation: 'Salle', montant_ht: 110 }]);
+    const { agent } = await connecte('admin@example.org', 'admin');
+    const resultat = await agent
+      .post(`/api/devis/${f.devis}/envoi`)
+      .set(proxy)
+      .set('X-CSRF-Token', await csrf(agent))
+      .send({});
+    expect(resultat.status).toBe(200);
+    const fiche = await admin.query<{ id_utilisateur: string }>(
+      'SELECT id_utilisateur::text FROM innov_events.clients WHERE id_client=$1',
+      [f.idClient],
+    );
+    expect(fiche.rows[0]?.id_utilisateur).toBe(bertrand.id);
+    const compteRattache = await admin.query<{
+      mot_de_passe_hache: string | null;
+      mdp_temporaire_hache: string | null;
+    }>(
+      'SELECT mot_de_passe_hache,mdp_temporaire_hache FROM innov_events.utilisateurs WHERE id_utilisateur=$1',
+      [bertrand.id],
+    );
+    expect(compteRattache.rows[0]?.mot_de_passe_hache).toBeNull();
+    expect(compteRattache.rows[0]?.mdp_temporaire_hache).toBeTruthy();
+    // Le temporaire part a l'adresse de contact, que seul son titulaire lit.
+    expect(courriels).toHaveLength(1);
+    expect(courriels[0]?.destinataire).toBe('ada@example.org');
+    expect(courriels[0]?.texte).toContain('Mot de passe temporaire');
+    // La session de Bertrand et son ancien mot de passe ne donnent plus acces au devis.
+    expect((await bertrand.agent.get('/api/sessions/courante').set(proxy)).status).toBe(401);
+    expect((await bertrand.agent.get(`/api/devis/${f.devis}`).set(proxy)).status).toBe(401);
+    const reconnexion = await bertrand.agent
+      .post('/api/sessions')
+      .set(proxy)
+      .set('X-CSRF-Token', await csrf(bertrand.agent))
+      .send({ email_connexion: 'ada@example.org', mot_de_passe: 'Valide1!' });
+    expect(reconnexion.status).toBe(401);
   });
   it('reutilise le compte deja rattache si son email differe du contact', async () => {
     const f = await fixture();

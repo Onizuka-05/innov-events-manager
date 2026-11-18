@@ -16,12 +16,12 @@ Dans la CI GitHub Actions, chaque exécution publie trois artefacts conservés 9
 
 ## Résultats
 
-Relevés le 17/11/2026 sur le poste (Windows 11, Node.js 24.22.0), sur `dev` après la fusion de toutes les PR du J10, complété par les tests de cette validation. Ligne de l’API relevée de nouveau le 18/11/2026 après la correction des devis d’un événement annulé ou terminé. Colonnes du rapport : instructions (`% Stmts`), branches (`% Branch`), fonctions (`% Funcs`), lignes (`% Lines`).
+Relevés le 17/11/2026 sur le poste (Windows 11, Node.js 24.22.0), sur `dev` après la fusion de toutes les PR du J10, complété par les tests de cette validation. Lignes de l’API et du site web relevées de nouveau le 18/11/2026 après les correctifs des devis (événement annulé ou terminé) et des adresses e-mail non vérifiées. Colonnes du rapport : instructions (`% Stmts`), branches (`% Branch`), fonctions (`% Funcs`), lignes (`% Lines`).
 
 | Application | Commit | Tests réussis | Instructions | Branches | Fonctions | Lignes | Source |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| API | `fix/devis-evenement-clos` (base `4612fbe`) | 212 (+ 2 ignorés : nginx absent du poste) | 89,00 % | 82,43 % | 92,21 % | 91,00 % | poste, avec `TEST_DATABASE_URL` |
-| Site web | `feature/j10-validation` (base `45ec400`) | 179 | 80,74 % | 74,42 % | 66,94 % | 82,49 % | poste |
+| API | `fix/emails-non-verifies` (base `4dfa54d`) | 223 (+ 2 ignorés : nginx absent du poste) | 89,90 % | 84,23 % | 92,26 % | 92,01 % | poste, avec `TEST_DATABASE_URL` |
+| Site web | `fix/emails-non-verifies` (base `4dfa54d`) | 182 | 81,98 % | 75,58 % | 68,55 % | 83,80 % | poste |
 | Mobile | `feature/j10-validation` (base `45ec400`) | 58 | 86,36 % | 84,26 % | 75,30 % | 86,24 % | poste |
 
 Les tests de bout en bout (Playwright) ne sont pas inclus dans ces chiffres : ils pilotent un navigateur sur l’application construite et ne mesurent pas la couverture. Ils sont recensés dans `docs/tests/tableau-des-tests.md`.

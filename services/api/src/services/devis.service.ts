@@ -118,11 +118,25 @@ export class DevisService {
       );
       if (lie.rows[0] && lie.rows[0].id_client !== d.id_client)
         throw new ErreurHttp(409, 'Ce compte est déjà rattaché à une autre fiche client.');
+      const idCompte = compte.rows[0].id_utilisateur;
+      // Ce compte a ete cree avec une adresse jamais verifiee : quiconque l'a saisie connait son
+      // mot de passe. Il est remplace par un temporaire envoye a l'adresse de contact et les
+      // sessions sont detruites : seul le titulaire de la boite peut lire le devis.
+      const temporaire = this.mots.genererTemporaire();
+      await db.query(
+        `UPDATE innov_events.utilisateurs SET mot_de_passe_hache=NULL,mdp_temporaire_hache=$2,
+        mdp_temporaire_expire_le=clock_timestamp()+INTERVAL '7 days' WHERE id_utilisateur=$1`,
+        [idCompte, await this.mots.hacher(temporaire)],
+      );
+      await db.query(
+        `DELETE FROM innov_events.sessions WHERE sess->'authentification'->>'id_utilisateur'=$1`,
+        [idCompte],
+      );
       await db.query(`UPDATE innov_events.clients SET id_utilisateur=$2 WHERE id_client=$1`, [
         d.id_client,
-        compte.rows[0].id_utilisateur,
+        idCompte,
       ]);
-      return { email: d.email_contact, temporaire: null };
+      return { email: d.email_contact, temporaire };
     }
     const fiche = await db.query<{ prenom_contact: string; nom_contact: string }>(
       `SELECT prenom_contact,nom_contact

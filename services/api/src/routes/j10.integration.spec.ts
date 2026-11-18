@@ -308,6 +308,58 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
         )
       ).rows[0].id_prospect as string;
     }
+    /** Attend qu'une requete de l'API soit bloquee sur un verrou PostgreSQL. */
+    const attendreVerrou = () =>
+      vi.waitFor(
+        async () => {
+          const attente = await admin.query(
+            `SELECT 1 FROM pg_stat_activity
+            WHERE datname=current_database() AND wait_event_type='Lock'`,
+          );
+          expect(attente.rowCount).toBeGreaterThan(0);
+        },
+        { timeout: 5000, interval: 50 },
+      );
+    /**
+     * Applique une modification concurrente pendant qu'une requete deja autorisee attend le
+     * verrou du compte, puis renvoie la reponse de cette requete.
+     */
+    async function pendantVerrouDuCompte(
+      idUtilisateur: string,
+      requete: () => Promise<{ status: number; body: { code?: string } }>,
+      modification: (db: import('pg').PoolClient) => Promise<unknown>,
+    ) {
+      const verrou = await admin.connect();
+      try {
+        await verrou.query('BEGIN');
+        await verrou.query(
+          'SELECT 1 FROM innov_events.utilisateurs WHERE id_utilisateur=$1 FOR UPDATE',
+          [idUtilisateur],
+        );
+        const enCours = requete();
+        await attendreVerrou();
+        await modification(verrou);
+        await verrou.query('COMMIT');
+        return await enCours;
+      } catch (erreur) {
+        await verrou.query('ROLLBACK').catch(() => undefined);
+        throw erreur;
+      } finally {
+        verrou.release();
+      }
+    }
+    /** Remplacement du mot de passe, comme au rattachement du compte a un premier devis. */
+    const remplacerMotDePassePendant = (
+      idUtilisateur: string,
+      requete: () => Promise<{ status: number; body: { code?: string } }>,
+    ) =>
+      pendantVerrouDuCompte(idUtilisateur, requete, (db) =>
+        db.query(
+          `UPDATE innov_events.utilisateurs SET mot_de_passe_hache=NULL,mdp_temporaire_hache=$2,
+          mdp_temporaire_expire_le=NOW()+INTERVAL '7 days' WHERE id_utilisateur=$1`,
+          [idUtilisateur, hache],
+        ),
+      );
     const nbSessions = async (id: string) =>
       (
         await admin.query(
@@ -577,6 +629,141 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
         });
         expect(r.status).toBe(409);
       });
+      it('refuse au client la modification de l e-mail du contact de sa fiche', async () => {
+        const u = await session();
+        const idClient = await fiche(u.id_utilisateur, 'Contact@Example.org');
+        const profil = (await appel(u.agent, 'get', '/profil')).body;
+        const refus = await appel(u.agent, 'patch', '/profil', {
+          fiche: {
+            ...profil.fiche,
+            email_contact: 'contact@beta.example',
+            telephone: '0700000000',
+          },
+        });
+        expect(refus.status).toBe(400);
+        expect(refus.body.code).toBe('EMAIL_CONTACT_NON_MODIFIABLE');
+        const avant = await admin.query(
+          'SELECT email_contact,telephone FROM innov_events.clients WHERE id_client=$1',
+          [idClient],
+        );
+        expect(avant.rows[0]).toEqual({
+          email_contact: 'Contact@Example.org',
+          telephone: '0600000000',
+        });
+        expect(journaux.filter((j) => j.type_action === 'MODIFICATION_CLIENT')).toHaveLength(0);
+        // Meme adresse a la casse pres : les autres coordonnees changent, l'adresse reste.
+        const ok = await appel(u.agent, 'patch', '/profil', {
+          fiche: { ...profil.fiche, email_contact: 'contact@example.org', telephone: '0700000000' },
+        });
+        expect(ok.status).toBe(200);
+        expect(ok.body.fiche).toMatchObject({
+          email_contact: 'Contact@Example.org',
+          telephone: '0700000000',
+        });
+      });
+      it('refuse la modification du profil si le mot de passe est remplace avant l ecriture', async () => {
+        const u = await session();
+        const profil = (await appel(u.agent, 'get', '/profil')).body;
+        const jeton = (await u.agent.get('/api/csrf').set(proxy)).body.jeton_csrf as string;
+        const r = await remplacerMotDePassePendant(u.id_utilisateur, () =>
+          u.agent
+            .patch('/api/profil')
+            .set(proxy)
+            .set('X-CSRF-Token', jeton)
+            .send({
+              compte: { ...profil.compte, email_connexion: 'ailleurs@example.org' },
+              mot_de_passe_actuel: 'Valide1!',
+            })
+            .then((x) => x),
+        );
+        expect(r.status).toBe(401);
+        const apres = await admin.query(
+          'SELECT email_connexion FROM innov_events.utilisateurs WHERE id_utilisateur=$1',
+          [u.id_utilisateur],
+        );
+        expect(apres.rows[0].email_connexion).toBe(u.email_connexion);
+      });
+      it('refuse une sauvegarde partie avant un changement d e-mail confirme', async () => {
+        const u = await session();
+        const profil = (await appel(u.agent, 'get', '/profil')).body;
+        const jeton = (await u.agent.get('/api/csrf').set(proxy)).body.jeton_csrf as string;
+        // Onglet ancien : prenom modifie, ancienne adresse renvoyee, sans mot de passe.
+        const r = await pendantVerrouDuCompte(
+          u.id_utilisateur,
+          () =>
+            u.agent
+              .patch('/api/profil')
+              .set(proxy)
+              .set('X-CSRF-Token', jeton)
+              .send({ compte: { ...profil.compte, prenom: 'Camille' } })
+              .then((x) => x),
+          (db) =>
+            db.query(
+              `UPDATE innov_events.utilisateurs SET email_connexion='confirmee@example.org'
+              WHERE id_utilisateur=$1`,
+              [u.id_utilisateur],
+            ),
+        );
+        expect(r.status).toBe(400);
+        expect(r.body.code).toBe('MOT_DE_PASSE_ACTUEL_INVALIDE');
+        const apres = await admin.query(
+          'SELECT email_connexion,prenom FROM innov_events.utilisateurs WHERE id_utilisateur=$1',
+          [u.id_utilisateur],
+        );
+        expect(apres.rows[0]).toEqual({
+          email_connexion: 'confirmee@example.org',
+          prenom: 'Lea',
+        });
+      });
+      it('suspend la conversion si deux fiches partagent l adresse de la demande', async () => {
+        const alpha = await fiche(null, 'contact@partage.example');
+        const beta = await fiche(null, 'CONTACT@partage.example');
+        const demande = await prospect('contact@partage.example');
+        const administratrice = await session('admin');
+        const r = await appel(administratrice.agent, 'post', `/prospects/${demande}/conversion`, {
+          adresse_postale: '3 rue Commune, Paris',
+        });
+        expect(r.status).toBe(409);
+        expect(r.body.code).toBe('FICHES_EN_DOUBLE');
+        const etat = await admin.query(
+          'SELECT statut_prospect,id_client FROM innov_events.prospects WHERE id_prospect=$1',
+          [demande],
+        );
+        expect(etat.rows[0]).toEqual({ statut_prospect: 'a_contacter', id_client: null });
+        expect([alpha, beta]).toHaveLength(2);
+      });
+      it('garde la demande de Beta hors de l espace d Alpha, meme si Alpha vise son adresse', async () => {
+        const alpha = await session();
+        await fiche(alpha.id_utilisateur, 'contact@alpha.example');
+        const profil = (await appel(alpha.agent, 'get', '/profil')).body;
+        expect(
+          (
+            await appel(alpha.agent, 'patch', '/profil', {
+              fiche: { ...profil.fiche, email_contact: 'contact@beta.example' },
+            })
+          ).status,
+        ).toBe(400);
+        const demandeBeta = await prospect('contact@beta.example');
+        const administratrice = await session('admin');
+        const conversion = await appel(
+          administratrice.agent,
+          'post',
+          `/prospects/${demandeBeta}/conversion`,
+          { adresse_postale: '2 rue de Beta, Paris' },
+        );
+        expect(conversion.status).toBeLessThan(300);
+        const rattachement = await admin.query(
+          `SELECT c.email_contact,c.id_utilisateur::text FROM innov_events.prospects p
+          JOIN innov_events.clients c USING(id_client) WHERE p.id_prospect=$1`,
+          [demandeBeta],
+        );
+        expect(rattachement.rows[0]).toEqual({
+          email_contact: 'contact@beta.example',
+          id_utilisateur: null,
+        });
+        const suivi = (await appel(alpha.agent, 'get', '/espace-client')).body.suivi;
+        expect(suivi).toEqual([]);
+      });
       it('accepte un seul avis, seulement sur un evenement termine, en attente de moderation', async () => {
         const u = await session();
         const idClient = await fiche(u.id_utilisateur);
@@ -664,7 +851,8 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
           contact: 'NOW()',
         });
         await prospect('CONTACT@example.org');
-        await prospect(u.email_connexion.toUpperCase());
+        // L'e-mail de connexion n'est pas verifie : il ne designe pas les demandes du client.
+        const parConnexion = await prospect(u.email_connexion.toUpperCase());
         const conserve = await prospect('inconnu@example.org');
         const e = await evenement(idClient, { statut: 'termine', prospect: idProspect });
         const employe = await compte('employe');
@@ -727,8 +915,12 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
         expect(anonyme.date_anonymisation).toBeTruthy();
         expect(await nbSessions(u.id_utilisateur)).toBe(0);
         expect(
-          (await admin.query('SELECT id_prospect::text FROM innov_events.prospects')).rows,
-        ).toEqual([{ id_prospect: conserve }]);
+          (
+            await admin.query(
+              'SELECT id_prospect::text FROM innov_events.prospects ORDER BY id_prospect',
+            )
+          ).rows,
+        ).toEqual([{ id_prospect: parConnexion }, { id_prospect: conserve }]);
         expect((await admin.query('SELECT 1 FROM innov_events.evenements')).rowCount).toBe(1);
         expect((await admin.query('SELECT 1 FROM innov_events.devis')).rowCount).toBe(1);
         expect((await admin.query('SELECT 1 FROM innov_events.avis')).rowCount).toBe(1);
@@ -756,16 +948,137 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
           ).status,
         ).toBe(401);
       });
-      it('supprime un compte sans fiche et ses demandes non converties', async () => {
+      it('supprime un compte sans fiche sans effacer les demandes d une autre entreprise', async () => {
+        // Bertrand s'inscrit avec l'adresse de Beta, jamais verifiee, puis efface son compte.
         const u = await session();
-        await prospect(u.email_connexion);
+        const demandeBeta = await prospect(u.email_connexion);
         const r = await appel(u.agent, 'delete', '/profil', { mot_de_passe: 'Valide1!' });
         expect(r.status).toBe(200);
         expect((await admin.query('SELECT 1 FROM innov_events.utilisateurs')).rowCount).toBe(0);
-        expect((await admin.query('SELECT 1 FROM innov_events.prospects')).rowCount).toBe(0);
+        expect(
+          (await admin.query('SELECT id_prospect::text FROM innov_events.prospects')).rows,
+        ).toEqual([{ id_prospect: demandeBeta }]);
         expect(journaux.find((j) => j.type_action === 'EFFACEMENT_CLIENT')?.details).toEqual({
           id_client: null,
         });
+      });
+      it('garde les demandes d une autre entreprise quand l administratrice supprime un compte sans fiche', async () => {
+        const u = await compte();
+        const demandeBeta = await prospect(u.email_connexion);
+        const administratrice = await session('admin');
+        const r = await appel(administratrice.agent, 'delete', `/comptes/${u.id_utilisateur}`);
+        expect(r.status).toBeLessThan(300);
+        expect(
+          (
+            await admin.query('SELECT 1 FROM innov_events.utilisateurs WHERE id_utilisateur=$1', [
+              u.id_utilisateur,
+            ])
+          ).rowCount,
+        ).toBe(0);
+        expect(
+          (await admin.query('SELECT id_prospect::text FROM innov_events.prospects')).rows,
+        ).toEqual([{ id_prospect: demandeBeta }]);
+      });
+      it.each(['client', 'administratrice'])(
+        'conserve la demande commune quand Alpha est supprimee par %s, sans la rattacher a Beta sans confirmation',
+        async (parcours) => {
+          const alpha = await session();
+          const ficheAlpha = await fiche(alpha.id_utilisateur, 'contact@partage.example');
+          const ficheBeta = await fiche(null, 'Contact@Partage.example');
+          const demande = await prospect('contact@partage.example');
+          const r =
+            parcours === 'client'
+              ? await appel(alpha.agent, 'delete', '/profil', { mot_de_passe: 'Valide1!' })
+              : await appel((await session('admin')).agent, 'delete', `/clients/${ficheAlpha}`);
+          expect(r.status).toBeLessThan(300);
+          const fiches = await admin.query(
+            `SELECT id_client::text,email_contact,date_anonymisation IS NOT NULL AS anonyme
+            FROM innov_events.clients ORDER BY id_client`,
+          );
+          expect(fiches.rows).toEqual([
+            { id_client: ficheAlpha, email_contact: null, anonyme: true },
+            { id_client: ficheBeta, email_contact: 'Contact@Partage.example', anonyme: false },
+          ]);
+          expect(
+            (await admin.query('SELECT id_prospect::text FROM innov_events.prospects')).rows,
+          ).toEqual([{ id_prospect: demande }]);
+          // La demande peut etre celle d'Alpha : Beta, desormais seule fiche a cette adresse,
+          // ne la recoit que si l'administratrice confirme cette fiche precise.
+          const administratrice = (await session('admin')).agent;
+          for (const confirmation of [{}, { id_client_confirme: ficheAlpha }]) {
+            const conversion = await appel(
+              administratrice,
+              'post',
+              `/prospects/${demande}/conversion`,
+              { adresse_postale: '3 rue Commune, Paris', ...confirmation },
+            );
+            expect(conversion.status).toBe(409);
+            expect(conversion.body.code).toBe('RATTACHEMENT_A_CONFIRMER');
+          }
+          const etat = await admin.query(
+            'SELECT statut_prospect,id_client FROM innov_events.prospects WHERE id_prospect=$1',
+            [demande],
+          );
+          expect(etat.rows[0]).toEqual({ statut_prospect: 'a_contacter', id_client: null });
+          const confirmee = await appel(
+            administratrice,
+            'post',
+            `/prospects/${demande}/conversion`,
+            { adresse_postale: '3 rue Commune, Paris', id_client_confirme: ficheBeta },
+          );
+          expect(confirmee.status).toBe(200);
+          expect(confirmee.body).toMatchObject({ id_client: ficheBeta, cree: false });
+        },
+      );
+      it('refuse la suppression d un compte rattache a une fiche pendant la suppression', async () => {
+        const u = await compte();
+        const ficheRattachee = await fiche(null, u.email_connexion);
+        const administratrice = await session('admin');
+        const jeton = (await administratrice.agent.get('/api/csrf').set(proxy)).body
+          .jeton_csrf as string;
+        const r = await pendantVerrouDuCompte(
+          u.id_utilisateur,
+          () =>
+            administratrice.agent
+              .delete(`/api/comptes/${u.id_utilisateur}`)
+              .set(proxy)
+              .set('X-CSRF-Token', jeton)
+              .send({})
+              .then((x) => x),
+          // Premier devis envoye entre-temps : le compte est rattache a la fiche.
+          (db) =>
+            db.query('UPDATE innov_events.clients SET id_utilisateur=$2 WHERE id_client=$1', [
+              ficheRattachee,
+              u.id_utilisateur,
+            ]),
+        );
+        expect(r.status).toBe(409);
+        const etat = await admin.query(
+          `SELECT c.id_utilisateur::text,c.entreprise FROM innov_events.clients c
+          JOIN innov_events.utilisateurs u USING(id_utilisateur) WHERE c.id_client=$1`,
+          [ficheRattachee],
+        );
+        expect(etat.rows[0]).toEqual({ id_utilisateur: u.id_utilisateur, entreprise: 'Test SAS' });
+      });
+      it('refuse l effacement si le mot de passe est remplace avant l ecriture', async () => {
+        const u = await session();
+        const jeton = (await u.agent.get('/api/csrf').set(proxy)).body.jeton_csrf as string;
+        const r = await remplacerMotDePassePendant(u.id_utilisateur, () =>
+          u.agent
+            .delete('/api/profil')
+            .set(proxy)
+            .set('X-CSRF-Token', jeton)
+            .send({ mot_de_passe: 'Valide1!' })
+            .then((x) => x),
+        );
+        expect(r.status).toBe(401);
+        expect(
+          (
+            await admin.query('SELECT 1 FROM innov_events.utilisateurs WHERE id_utilisateur=$1', [
+              u.id_utilisateur,
+            ])
+          ).rowCount,
+        ).toBe(1);
       });
       it('consigne un echec MongoDB sans donnee personnelle puis la purge rejoue le retrait', async () => {
         const u = await session();

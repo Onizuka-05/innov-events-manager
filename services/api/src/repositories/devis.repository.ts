@@ -61,11 +61,15 @@ export class DevisRepository {
 
   /**
    * Conversion atomique : verrouille le prospect, puis rattache la demande a la fiche existante
-   * du meme e-mail (client qui revient) ou cree une nouvelle fiche.
+   * du meme e-mail (client qui revient) ou cree une nouvelle fiche. L'e-mail d'une demande n'est
+   * jamais verifie : le rattachement a une fiche existante exige que l'administratrice ait
+   * confirme cette fiche precise (idClientConfirme), et une confirmation devenue sans objet est
+   * refusee plutot que transformee en creation.
    */
   async convertir(
     id: string,
     adresse: string,
+    idClientConfirme: string | null = null,
   ): Promise<{ id_client: string; nom_client: string; cree: boolean }> {
     return this.transaction(async (db) => {
       const resultat = await db.query<{
@@ -90,14 +94,36 @@ export class DevisRepository {
         throw new ErreurHttp(409, 'La demande est absente ou déjà convertie.');
       // Deux demandes du meme e-mail converties en meme temps ne creent pas deux fiches.
       await db.query('SELECT pg_advisory_xact_lock(hashtext(LOWER($1)))', [p.email]);
-      const existante = await db.query<{ id_client: string; nom_client: string }>(
-        `SELECT id_client::text, prenom_contact || ' ' || nom_contact AS nom_client
+      const existantes = await db.query<{
+        id_client: string;
+        nom_client: string;
+        entreprise: string | null;
+      }>(
+        `SELECT id_client::text, prenom_contact || ' ' || nom_contact AS nom_client, entreprise
         FROM innov_events.clients
         WHERE LOWER(email_contact)=LOWER($1) AND date_anonymisation IS NULL
-        ORDER BY (id_utilisateur IS NULL), id_client DESC LIMIT 1 FOR UPDATE`,
+        ORDER BY id_client FOR UPDATE`,
         [p.email],
       );
-      let fiche = existante.rows[0];
+      // Plusieurs fiches pour une meme adresse : le rattachement ne doit pas etre devine.
+      if (existantes.rows.length > 1)
+        throw new ErreurHttp(
+          409,
+          'Plusieurs fiches clients portent l’adresse de cette demande : corrigez le doublon dans « Clients » avant de convertir.',
+          'FICHES_EN_DOUBLE',
+        );
+      const existante = existantes.rows[0];
+      // Exemple : la demande d'Alpha, conservee a son effacement parce que Beta partageait son
+      // adresse, ne rejoint pas Beta du seul fait que Beta est devenue l'unique fiche active.
+      if ((existante?.id_client ?? null) !== idClientConfirme)
+        throw new ErreurHttp(
+          409,
+          existante
+            ? `Une fiche client porte déjà l’adresse de cette demande (${existante.entreprise ?? existante.nom_client}) : vérifiez qu’il s’agit de la même entreprise, puis confirmez le rattachement.`
+            : 'La fiche à laquelle rattacher la demande a changé : rechargez la page.',
+          'RATTACHEMENT_A_CONFIRMER',
+        );
+      let fiche = existante && { id_client: existante.id_client, nom_client: existante.nom_client };
       const cree = !fiche;
       if (!fiche) {
         const insertion = await db.query<{ id_client: string }>(

@@ -89,16 +89,32 @@ export class EspaceClientRepository {
     return { compte, fiche: fiche ?? null };
   }
 
-  /** Hache du mot de passe choisi, lu seulement pour une verification par le service. */
-  async hacheMotDePasse(idUtilisateur: string): Promise<string | null> {
-    return (
-      (
-        await this.pool.query<{ mot_de_passe_hache: string | null }>(
-          'SELECT mot_de_passe_hache FROM innov_events.utilisateurs WHERE id_utilisateur=$1',
-          [idUtilisateur],
-        )
-      ).rows[0]?.mot_de_passe_hache ?? null
-    );
+  /**
+   * Verrouille le compte et verifie, sous ce verrou, que le mot de passe qui a autorise la
+   * requete est toujours celui du compte : un mot de passe remplace entre la verification de
+   * la session et l'ecriture (rattachement a l'envoi d'un devis, changement, suspension)
+   * annule l'operation. Renvoie l'e-mail de connexion lu sous ce verrou.
+   */
+  private async verrouillerCompte(
+    db: PoolClient,
+    idUtilisateur: string,
+    hacheSession: string,
+  ): Promise<string> {
+    const u = (
+      await db.query<{
+        email_connexion: string;
+        mot_de_passe_hache: string | null;
+        statut_compte: string;
+      }>(
+        `SELECT email_connexion,mot_de_passe_hache,statut_compte FROM innov_events.utilisateurs
+        WHERE id_utilisateur=$1 AND role='client' FOR UPDATE`,
+        [idUtilisateur],
+      )
+    ).rows[0];
+    if (!u) throw new ErreurHttp(404, 'Compte introuvable.');
+    if (u.statut_compte !== 'actif' || u.mot_de_passe_hache !== hacheSession)
+      throw new ErreurHttp(401, 'Session invalide.');
+    return u.email_connexion;
   }
 
   /**
@@ -107,15 +123,21 @@ export class EspaceClientRepository {
    */
   async modifierProfil(
     idUtilisateur: string,
+    hacheSession: string,
     compte: CompteProfil | null,
     fiche: FicheProfil | null,
+    motDePasseVerifie: boolean,
   ): Promise<{ profil: Profil; fiche_modifiee: string | null }> {
     return this.transactions.transaction(async (db) => {
-      const verrou = await db.query(
-        'SELECT 1 FROM innov_events.utilisateurs WHERE id_utilisateur=$1 FOR UPDATE',
-        [idUtilisateur],
-      );
-      if (!verrou.rowCount) throw new ErreurHttp(404, 'Compte introuvable.');
+      const emailActuel = await this.verrouillerCompte(db, idUtilisateur, hacheSession);
+      // Comparaison sur l'adresse en base sous le verrou : une sauvegarde partie avant un
+      // changement d'adresse confirme ne peut pas retablir l'ancienne sans mot de passe.
+      if (
+        compte &&
+        !motDePasseVerifie &&
+        emailActuel.toLowerCase() !== compte.email_connexion.toLowerCase()
+      )
+        throw new ErreurHttp(400, 'Mot de passe actuel incorrect.', 'MOT_DE_PASSE_ACTUEL_INVALIDE');
       if (compte)
         await db.query(
           `UPDATE innov_events.utilisateurs SET prenom=$2,nom=$3,nom_utilisateur=$4,email_connexion=$5
@@ -130,22 +152,35 @@ export class EspaceClientRepository {
         );
       let ficheModifiee: string | null = null;
       if (fiche) {
+        const avant = await db.query<{ email_contact: string | null }>(
+          `SELECT email_contact FROM innov_events.clients
+          WHERE id_utilisateur=$1 AND date_anonymisation IS NULL FOR UPDATE`,
+          [idUtilisateur],
+        );
+        if (!avant.rows[0]) throw new ErreurHttp(409, 'Aucune fiche client à modifier.');
+        // L'e-mail de contact rattache les demandes et les devis a la fiche : une adresse non
+        // verifiee saisie par le client pourrait capter ceux d'une autre entreprise.
+        if ((avant.rows[0].email_contact ?? '').toLowerCase() !== fiche.email_contact.toLowerCase())
+          throw new ErreurHttp(
+            400,
+            'L’e-mail du contact est géré par Innov’Events : écrivez-nous depuis la page Contact pour le modifier.',
+            'EMAIL_CONTACT_NON_MODIFIABLE',
+          );
         const r = await db.query<{ id_client: string; change: boolean }>(
           `WITH avant AS (
-            SELECT id_client,entreprise,prenom_contact,nom_contact,email_contact,telephone,adresse_postale
-            FROM innov_events.clients WHERE id_utilisateur=$1 AND date_anonymisation IS NULL FOR UPDATE)
+            SELECT id_client,entreprise,prenom_contact,nom_contact,telephone,adresse_postale
+            FROM innov_events.clients WHERE id_utilisateur=$1 AND date_anonymisation IS NULL)
           UPDATE innov_events.clients c SET entreprise=$2,prenom_contact=$3,nom_contact=$4,
-            email_contact=$5,telephone=$6,adresse_postale=$7
+            telephone=$5,adresse_postale=$6
           FROM avant WHERE c.id_client=avant.id_client
           RETURNING c.id_client::text,
-            (avant.entreprise,avant.prenom_contact,avant.nom_contact,avant.email_contact,
-             avant.telephone,avant.adresse_postale) IS DISTINCT FROM ($2,$3,$4,$5,$6,$7) AS change`,
+            (avant.entreprise,avant.prenom_contact,avant.nom_contact,
+             avant.telephone,avant.adresse_postale) IS DISTINCT FROM ($2,$3,$4,$5,$6) AS change`,
           [
             idUtilisateur,
             fiche.entreprise,
             fiche.prenom_contact,
             fiche.nom_contact,
-            fiche.email_contact,
             fiche.telephone,
             fiche.adresse_postale,
           ],
@@ -182,20 +217,17 @@ export class EspaceClientRepository {
 
   /**
    * Effacement demande par le client, en une transaction : sessions detruites, demandes non
-   * converties du meme e-mail (connexion ou contact) effacees, puis fiche anonymisee par la
-   * fonction de reference, ou seul compte supprime s'il n'a pas de fiche.
+   * converties portant l'e-mail de contact de la fiche effacees, puis fiche anonymisee par la
+   * fonction de reference, ou seul compte supprime s'il n'a pas de fiche (aucune demande).
    * La fiche verrouillee doit etre celle annoncee au journal avant la transaction : sinon 409.
    */
-  async effacer(idUtilisateur: string, idClientAttendu: string | null): Promise<void> {
+  async effacer(
+    idUtilisateur: string,
+    hacheSession: string,
+    idClientAttendu: string | null,
+  ): Promise<void> {
     await this.transactions.transaction(async (db) => {
-      const u = (
-        await db.query<{ email_connexion: string }>(
-          `SELECT email_connexion FROM innov_events.utilisateurs
-          WHERE id_utilisateur=$1 AND role='client' FOR UPDATE`,
-          [idUtilisateur],
-        )
-      ).rows[0];
-      if (!u) throw new ErreurHttp(404, 'Compte introuvable.');
+      await this.verrouillerCompte(db, idUtilisateur, hacheSession);
       const fiche = (
         await db.query<{ id_client: string; email_contact: string }>(
           `SELECT id_client::text,email_contact FROM innov_events.clients
@@ -209,11 +241,10 @@ export class EspaceClientRepository {
         `DELETE FROM innov_events.sessions WHERE sess->'authentification'->>'id_utilisateur'=$1`,
         [idUtilisateur],
       );
-      await db.query(
-        `DELETE FROM innov_events.prospects WHERE id_client IS NULL
-        AND LOWER(email) IN (LOWER($1),LOWER($2))`,
-        [u.email_connexion, fiche?.email_contact ?? u.email_connexion],
-      );
+      // Seul l'e-mail de contact de la fiche, issu de la demande convertie ou saisi par
+      // l'administratrice, designe les demandes du client ; l'e-mail de connexion, choisi
+      // librement et jamais verifie, pourrait designer celles d'un tiers.
+      if (fiche) await supprimerDemandesDeLaFiche(db, fiche.id_client);
       if (fiche)
         await db.query('SELECT innov_events.supprimer_compte_client($1)', [fiche.id_client]);
       else
@@ -288,4 +319,21 @@ export class EspaceClientRepository {
       ).rows[0]!;
     });
   }
+}
+
+/**
+ * Supprime les demandes non converties portant l'e-mail de contact de la fiche, sauf si une
+ * autre fiche active porte la meme adresse : leur appartenance est alors ambigue et elles sont
+ * conservees. A appeler avant l'anonymisation de la fiche, dans la transaction de suppression.
+ */
+export async function supprimerDemandesDeLaFiche(db: PoolClient, idClient: string): Promise<void> {
+  await db.query(
+    `DELETE FROM innov_events.prospects p USING innov_events.clients f
+    WHERE f.id_client=$1 AND f.email_contact IS NOT NULL AND p.id_client IS NULL
+      AND LOWER(p.email)=LOWER(f.email_contact)
+      AND NOT EXISTS (SELECT 1 FROM innov_events.clients autre
+        WHERE autre.id_client<>f.id_client AND autre.date_anonymisation IS NULL
+          AND LOWER(autre.email_contact)=LOWER(f.email_contact))`,
+    [idClient],
+  );
 }
