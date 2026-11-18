@@ -25,6 +25,7 @@
 | Navigation | Lien | `#135DA0` | Liens et navigation |
 | Navigation | Lien survol | `#0D427B` | Liens au survol |
 | Contrôle | Bordure | `#687B90` | Bordures visibles de champs, boutons secondaires, panneaux interactifs |
+| Contrôle | Bordure discrète | `#DCE5EE` | Séparations décoratives des cartes et des tableaux, jamais seule porteuse d'information ni contour d'un élément interactif (pas d'exigence de contraste) |
 | Contrôle | Focus | `#6D28D9` | Contour clavier distinctif |
 | État | Succès texte | `#176344` | Confirmation, accepté, terminé |
 | État | Succès fond | `#E6F4EB` | Fond de confirmation |
