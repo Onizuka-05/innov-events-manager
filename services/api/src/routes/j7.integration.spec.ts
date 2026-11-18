@@ -377,6 +377,77 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)('J7 avec PostgreSQL reel', () =>
     expect((await a.get('/api/csrf').set(entetes)).status).toBe(401);
   });
 
+  it('ferme la session de recuperation de l ancienne adresse au changement d adresse', async () => {
+    // Un temporaire a ete envoye a l'ancienne adresse et une session de recuperation est ouverte.
+    await creerCompte('client', true);
+    const recuperation = agent();
+    expect(
+      (
+        await modifier(recuperation, 'post', '/api/sessions', {
+          email_connexion: adresse,
+          mot_de_passe: temporaire,
+        })
+      ).status,
+    ).toBe(200);
+    const titulaire = agent();
+    expect(
+      (
+        await modifier(titulaire, 'post', '/api/sessions', {
+          email_connexion: adresse,
+          mot_de_passe: mdp,
+        })
+      ).status,
+    ).toBe(200);
+    const jetonRecuperation = await jeton(recuperation);
+    const profil = (await titulaire.get('/api/profil').set(entetes)).body;
+    expect(
+      (
+        await modifier(titulaire, 'patch', '/api/profil', {
+          compte: { ...profil.compte, email_connexion: 'nouvelle@example.org' },
+          mot_de_passe_actuel: mdp,
+        })
+      ).status,
+    ).toBe(200);
+    expect(
+      (
+        await recuperation
+          .patch('/api/mot-de-passe')
+          .set(entetes)
+          .set('X-CSRF-Token', jetonRecuperation)
+          .send({ mot_de_passe: 'Pirate1!x' })
+      ).status,
+    ).toBe(401);
+    const compte = await new UtilisateursRepository(admin).parEmail('nouvelle@example.org');
+    expect(compte?.mdp_temporaire_hache).toBeNull();
+    expect(compte?.mdp_temporaire_expire_le).toBeNull();
+    expect(compte?.mot_de_passe_hache).toBe(hache);
+    expect((await titulaire.get('/api/sessions/courante').set(entetes)).status).toBe(200);
+  });
+
+  it('n envoie pas de temporaire a l ancienne adresse si l adresse change pendant la demande', async () => {
+    await creerCompte();
+    const lire = UtilisateursRepository.prototype.parEmail;
+    const espion = vi
+      .spyOn(UtilisateursRepository.prototype, 'parEmail')
+      .mockImplementationOnce(async function (this: UtilisateursRepository, email: string) {
+        const compte = await lire.call(this, email);
+        // Changement d'adresse confirme par le titulaire entre la lecture et l'ecriture.
+        await admin.query(
+          "UPDATE innov_events.utilisateurs SET email_connexion='nouvelle@example.org'",
+        );
+        return compte;
+      });
+    const r = await modifier(agent(), 'post', '/api/mots-de-passe-oublies', {
+      email_connexion: adresse,
+    });
+    espion.mockRestore();
+    expect(r.status).toBe(202);
+    expect(courriels).toHaveLength(0);
+    const compte = await new UtilisateursRepository(admin).parEmail('nouvelle@example.org');
+    expect(compte?.mdp_temporaire_hache).toBeNull();
+    expect(compte?.mot_de_passe_hache).toBe(hache);
+  });
+
   it('oubli : meme reponse, expiration une heure, mot de passe permanent conserve', async () => {
     const a = agent();
     const absent = await modifier(a, 'post', '/api/mots-de-passe-oublies', {
